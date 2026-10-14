@@ -14,6 +14,8 @@ const routes = {
   '/good': () => [200, {}, page('<link rel="canonical" href="/good">')],
   '/short': () => [200, {}, page('<link rel="canonical" href="/short">', '<p>团队版每月 299 元，含 20 个席位。</p>')],
   '/loading': () => [200, {}, '<html lang="zh"><head><title>价格</title></head><body><div id="app">加载中…</div><noscript>请启用 JavaScript</noscript><script src="/app.js"></script></body></html>'],
+  '/padded-shell': () => [200, {}, page('', '<nav>首页 产品介绍 价格方案 客户案例 帮助中心 关于我们 联系我们 加入我们</nav><div id="root">加载中…</div><footer>© 2026 某某科技有限公司 版权所有 京ICP备12345678号 京公网安备11010502012345号 地址：北京市海淀区某某路 1 号 联系电话 010-12345678</footer>')],
+  '/ssr-app': () => [200, {}, page('', '<div id="app"><p>团队版每月 299 元，含 20 个席位，超出部分每席 20 元。适合 5 到 50 人的团队。</p></div>')],
   '/empty': () => [200, {}, '<html><head><title>价格</title></head><body><div id="app"></div></body></html>'],
   '/invalid-entity': () => [200, {}, page('', BODY + '<p>&#x110000; &#99999999;</p>')],
   '/href-first': () => [200, {}, page('<link href="/href-first" rel="canonical">')],
@@ -101,6 +103,13 @@ test('a JS shell with only a loading message is still a critical failure', async
   const fail = find(r, 'content', 'fail');
   assert.ok(fail.some((c) => c.critical && /空壳页/.test(c.msg)));
   assert.ok(r.score <= 60);
+});
+
+test('an empty SPA mount point padded with nav/footer text is still a shell', async () => {
+  const r = await audit(base + '/padded-shell', { lang: 'zh', probe: false });
+  assert.ok(find(r, 'content', 'fail').some((c) => c.critical && /空壳页/.test(c.msg)));
+  const ok = await audit(base + '/ssr-app', { lang: 'zh', probe: false });
+  assert.equal(find(ok, 'content', 'fail').length, 0, 'server-rendered content inside #app is fine');
 });
 
 test('invalid numeric HTML references cannot crash text extraction or an audit', async () => {

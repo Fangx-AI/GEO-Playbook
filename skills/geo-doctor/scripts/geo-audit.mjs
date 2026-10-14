@@ -397,15 +397,18 @@ export async function audit(url, opts = {}) {
   // content
   const text = visibleText(clean);
   const chars = [...text].length;
-  // Under SHELL_CHARS is almost always a JS shell ("加载中…", a nav bar), which is the failure
-  // that matters most for AI crawlers. Short but real pages only get a reminder; finding the
-  // requested --phrase in the visible text is proof enough that it is not a shell.
+  // Two shell signals: very little text overall ("加载中…"), or an SPA mount point (#app, #root,
+  // #__next, #__nuxt) that is empty or holds only a loading message while nav/footer text pads
+  // the page. Either is the failure that matters most for AI crawlers. Short but real pages only
+  // get a reminder; finding the requested --phrase in the visible text proves it is not a shell.
   const SHELL_CHARS = 50;
   const phraseVisible = Boolean(opts.phrase) && text.replace(/\s+/g, '').includes(opts.phrase.replace(/\s+/g, ''));
+  const emptyMount = /<(div|main|section)\b[^>]*\bid\s*=\s*["']?(?:app|root|__next|__nuxt)["'\s>][^>]*>?[^<]{0,20}<\/\1>/i.test(clean);
+  const shell = !phraseVisible && (chars < SHELL_CHARS || (emptyMount && chars < 500));
   if (chars === 0) add('content', 'fail', t.textEmpty, 3, true);
-  else if (chars < SHELL_CHARS && !phraseVisible) add('content', 'fail', t.textThin(chars), 3, true);
+  else if (shell) add('content', 'fail', t.textThin(chars), 3, true);
   else add('content', 'pass', t.textOk(chars), 3, true);
-  if (chars > 0 && chars < 200 && (chars >= SHELL_CHARS || phraseVisible)) add('content', 'info', t.textShort, 0);
+  if (!shell && chars > 0 && chars < 200) add('content', 'info', t.textShort, 0);
   if (opts.phrase) {
     const squash = (s) => s.replace(/\s+/g, '');
     if (text.includes(opts.phrase)) add('content', 'pass', t.phraseOk(opts.phrase), 2);
