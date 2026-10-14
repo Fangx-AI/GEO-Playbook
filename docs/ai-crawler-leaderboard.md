@@ -92,7 +92,7 @@
 | [唯品会](https://www.vip.com/robots.txt) | ✅ | ✅ | ✅ | ✅ | ✅ | ✅ | ✅ | ✅ | ✅ | ✅ | ✅ | ✅ |
 | [苏宁易购](https://www.suning.com/robots.txt) ¹ | ✅ | ✅ | ✅ | ✅ | ✅ | ✅ | ✅ | ✅ | ✅ | ✅ | ✅ | ✅ |
 | [什么值得买](https://www.smzdm.com/robots.txt) | ✅ | ✅ | ✅ | ✅ | ✅ | ✅ | ✅ | ✅ | ✅ | ✅ | ✅ | ✅ |
-| [当当](https://www.dangdang.com/robots.txt) ¹ | ✅ | ✅ | ✅ | ✅ | ✅ | ✅ | ✅ | ✅ | ✅ | ✅ | ✅ | ✅ |
+| [当当](https://www.dangdang.com/robots.txt) | — | — | — | — | — | — | — | — | — | — | — | — |
 
 ## 本地生活
 
@@ -184,7 +184,7 @@
 | [学堂在线](https://www.xuetangx.com/robots.txt) ¹ | ✅ | ✅ | ✅ | ✅ | ✅ | ✅ | ✅ | ✅ | ✅ | ✅ | ✅ | ✅ |
 | [中国大学MOOC](https://www.icourse163.org/robots.txt) ¹ | ✅ | ✅ | ✅ | ✅ | ✅ | ✅ | ✅ | ✅ | ✅ | ✅ | ✅ | ✅ |
 | [作业帮](https://www.zuoyebang.com/robots.txt) | ✅ | ✅ | 🚫 | 🚫 | 🚫 | 🚫 | 🚫 | 🚫 | 🚫 | 🚫 | ✅ | 🚫 |
-| [网易有道](https://www.youdao.com/robots.txt) | — | — | — | — | — | — | — | — | — | — | — | — |
+| [网易有道](https://www.youdao.com/robots.txt) ¹ | ✅ | ✅ | ✅ | ✅ | ✅ | ✅ | ✅ | ✅ | ✅ | ✅ | ✅ | ✅ |
 | [中国知网](https://www.cnki.net/robots.txt) ² | 🚫 | 🚫 | 🚫 | 🚫 | 🚫 | 🚫 | 🚫 | 🚫 | 🚫 | 🚫 | 🚫 | 🚫 |
 
 ## 方法与局限
