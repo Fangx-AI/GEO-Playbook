@@ -1,6 +1,6 @@
 # 🎓 毕业项目：完成一轮可复查的 GEO
 
-> [GEO 学习地图](../README.md) › 毕业项目
+> [GEO 实战手册](../README.md) › 毕业项目
 
 **选一个你有权限修改的真实页面，按 8 步走完一轮。做完你就有一份能给老板、客户或面试官看的完整 GEO 作品。**
 
@@ -21,7 +21,7 @@
 
 **不合格的提交**：只写“优化了权威性”；只留表现最好的一次回答；只有百分比没有计数；把概念图当实测截图；把模拟数据写成客户成绩。
 
-> 🙌 做完了？欢迎用 [Issue](https://github.com/Fangx-AI/geo-learning-map/issues/new/choose) 分享你的项目（可以脱敏），优秀作品会收录进案例库。
+> 🙌 做完了？欢迎用 [Issue](https://github.com/Fangx-AI/GEO-Playbook/issues/new/choose) 分享你的项目（可以脱敏），优秀作品会收录进案例库。
 
 ---
 
@@ -29,6 +29,6 @@
 
 ← [工具选择](tools.md) · [🏠 目录](../README.md)
 
-<sub>有帮助的话，回 [首页](../README.md) 点个 ⭐ Star；发现错误或过时信息，欢迎 [提 Issue](https://github.com/Fangx-AI/geo-learning-map/issues/new/choose)。</sub>
+<sub>有帮助的话，回 [首页](../README.md) 点个 ⭐ Star；发现错误或过时信息，欢迎 [提 Issue](https://github.com/Fangx-AI/GEO-Playbook/issues/new/choose)。</sub>
 
 </div>

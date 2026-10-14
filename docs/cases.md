@@ -1,6 +1,6 @@
 # 📈 真实案例精读：别人怎么做的，数字到底怎么算
 
-> [GEO 学习地图](../README.md) › 测量与研究 › 案例精读
+> [GEO 实战手册](../README.md) › 测量与研究 › 案例精读
 
 **4 个公开 GEO 案例：先看他们改了什么、报了什么数字，再学会一眼看穿口径，最后自己动手复现。**
 
@@ -300,6 +300,6 @@ Graphite 为 Webflow 测试两项改动：添加文章目录、把小标题改�
 
 ← [效果测量](measurement.md) · [🏠 目录](../README.md) · [研究速读](studies.md) →
 
-<sub>有帮助的话，回 [首页](../README.md) 点个 ⭐ Star；发现错误或过时信息，欢迎 [提 Issue](https://github.com/Fangx-AI/geo-learning-map/issues/new/choose)。</sub>
+<sub>有帮助的话，回 [首页](../README.md) 点个 ⭐ Star；发现错误或过时信息，欢迎 [提 Issue](https://github.com/Fangx-AI/GEO-Playbook/issues/new/choose)。</sub>
 
 </div>

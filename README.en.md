@@ -1,6 +1,6 @@
 <div align="center">
 
-# GEO Learning Map
+# GEO-Playbook (GEO 实战手册)
 
 ### Get found, described correctly, and cited by AI search (ChatGPT, Perplexity, Google AI, Doubao, DeepSeek, Yuanbao…)
 
@@ -29,7 +29,7 @@ No courses to sell, no hype. Every claim links to an official doc or a published
 - [`toolkit/prompts.md`](toolkit/prompts.md): 10 prompts (Chinese) for question mining, fact cards, rewriting, fact-checking AI citations, and diagnosing wrong answers.
 
 ```bash
-curl -O https://raw.githubusercontent.com/Fangx-AI/geo-learning-map/master/toolkit/geo-audit.sh
+curl -O https://raw.githubusercontent.com/Fangx-AI/GEO-Playbook/master/toolkit/geo-audit.sh
 bash geo-audit.sh https://your-site.com/important-page "a unique sentence from the page"
 ```
 
@@ -37,4 +37,4 @@ All sources verified on 2026-10-14. Contributions (especially cases with disclos
 
 If this helps you, a ⭐ star helps others find it.
 
-<sub>Text, templates and diagrams: [CC BY 4.0](LICENSE). Scripts: [MIT](scripts/LICENSE).</sub>
+<sub>GEO-Playbook (GEOPlaybook) · Generative Engine Optimization playbook. Text, templates and diagrams: [CC BY 4.0](LICENSE). Scripts: [MIT](scripts/LICENSE).</sub>

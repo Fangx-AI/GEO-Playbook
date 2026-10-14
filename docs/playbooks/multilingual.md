@@ -1,6 +1,6 @@
 # 🌏 多语言与出海 GEO
 
-> [GEO 学习地图](../../README.md) › 按项目实战 › 多语言
+> [GEO 实战手册](../../README.md) › 按项目实战 › 多语言
 
 **面向不同国家：哪些能翻译，哪些必须按市场重写？**
 
@@ -35,6 +35,6 @@
 
 ← [创作者实战](creator.md) · [🏠 目录](../../README.md) · [国际平台规则](../platforms/international.md) →
 
-<sub>有帮助的话，回 [首页](../../README.md) 点个 ⭐ Star；发现错误或过时信息，欢迎 [提 Issue](https://github.com/Fangx-AI/geo-learning-map/issues/new/choose)。</sub>
+<sub>有帮助的话，回 [首页](../../README.md) 点个 ⭐ Star；发现错误或过时信息，欢迎 [提 Issue](https://github.com/Fangx-AI/GEO-Playbook/issues/new/choose)。</sub>
 
 </div>

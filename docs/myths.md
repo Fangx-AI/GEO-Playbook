@@ -1,6 +1,6 @@
 # ❌ 12 个流行的 GEO 误区，官方文档和研究怎么说
 
-> [GEO 学习地图](../README.md) › 误区辟谣
+> [GEO 实战手册](../README.md) › 误区辟谣
 
 **花钱之前先读这一页。每条都附上官方原文或研究出处，你可以自己点开核对。** 核验日期 2026-10-14。
 
@@ -148,6 +148,6 @@
 
 ← [GEO 5 分钟入门](basics.md) · [🏠 目录](../README.md) · [改稿实战课](content-rewrite.md) →
 
-<sub>有帮助的话，回 [首页](../README.md) 点个 ⭐ Star；发现错误或过时信息，欢迎 [提 Issue](https://github.com/Fangx-AI/geo-learning-map/issues/new/choose)。</sub>
+<sub>有帮助的话，回 [首页](../README.md) 点个 ⭐ Star；发现错误或过时信息，欢迎 [提 Issue](https://github.com/Fangx-AI/GEO-Playbook/issues/new/choose)。</sub>
 
 </div>
