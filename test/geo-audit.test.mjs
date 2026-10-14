@@ -2,7 +2,7 @@
 import { test, before, after } from 'node:test';
 import assert from 'node:assert/strict';
 import { createServer } from 'node:http';
-import { audit, parseRobots, isAllowed, parseArgs, formatMarkdown } from '../cli/geo-audit.mjs';
+import { audit, parseRobots, isAllowed, parseArgs, formatMarkdown, visibleText } from '../cli/geo-audit.mjs';
 
 const BODY = '<p>' + '团队版每月 299 元，含 20 个席位，超出部分每席 20 元。'.repeat(12) + '</p>';
 const page = (head, body = BODY, lang = ' lang="zh-CN"') =>
@@ -12,6 +12,12 @@ let server; let base;
 let robots = 'User-agent: *\nAllow: /\nSitemap: http://example.invalid/sitemap.xml\n';
 const routes = {
   '/good': () => [200, {}, page('<link rel="canonical" href="/good">')],
+  '/short': () => [200, {}, page('<link rel="canonical" href="/short">', '<p>团队版每月 299 元，含 20 个席位。</p>')],
+  '/loading': () => [200, {}, '<html lang="zh"><head><title>价格</title></head><body><div id="app">加载中…</div><noscript>请启用 JavaScript</noscript><script src="/app.js"></script></body></html>'],
+  '/padded-shell': () => [200, {}, page('', '<nav>首页 产品介绍 价格方案 客户案例 帮助中心 关于我们 联系我们 加入我们</nav><div id="root">加载中…</div><footer>© 2026 某某科技有限公司 版权所有 京ICP备12345678号 京公网安备11010502012345号 地址：北京市海淀区某某路 1 号 联系电话 010-12345678</footer>')],
+  '/ssr-app': () => [200, {}, page('', '<div id="app"><p>团队版每月 299 元，含 20 个席位，超出部分每席 20 元。适合 5 到 50 人的团队。</p></div>')],
+  '/empty': () => [200, {}, '<html><head><title>价格</title></head><body><div id="app"></div></body></html>'],
+  '/invalid-entity': () => [200, {}, page('', BODY + '<p>&#x110000; &#99999999;</p>')],
   '/href-first': () => [200, {}, page('<link href="/href-first" rel="canonical">')],
   '/canon-home': () => [200, {}, page('<link rel="canonical" href="/">')],
   '/noindex': () => [200, {}, page('<meta\n  name="robots"\n  content="noindex, follow">')],
@@ -75,6 +81,43 @@ test('healthy page scores 100', async () => {
   const r = await audit(base + '/good', { lang: 'en', phrase: '团队版每月 299 元' });
   assert.equal(r.problems, 0, JSON.stringify(r.checks, null, 1));
   assert.equal(r.score, 100);
+});
+
+test('short readable pages are not penalized solely for character count', async () => {
+  for (const lang of ['en', 'zh']) {
+    const r = await audit(base + '/short', { lang, probe: false, phrase: '团队版每月 299 元' });
+    assert.equal(find(r, 'content', 'fail').length, 0);
+    assert.equal(r.score, 100);
+    assert.ok(find(r, 'content', 'info').length > 0, 'short text gets a verification reminder');
+  }
+});
+
+test('empty bodies still trigger a critical content failure', async () => {
+  const r = await audit(base + '/empty', { probe: false });
+  assert.ok(find(r, 'content', 'fail').some((c) => c.critical));
+  assert.ok(r.score <= 60);
+});
+
+test('a JS shell with only a loading message is still a critical failure', async () => {
+  const r = await audit(base + '/loading', { lang: 'zh', probe: false });
+  const fail = find(r, 'content', 'fail');
+  assert.ok(fail.some((c) => c.critical && /空壳页/.test(c.msg)));
+  assert.ok(r.score <= 60);
+});
+
+test('an empty SPA mount point padded with nav/footer text is still a shell', async () => {
+  const r = await audit(base + '/padded-shell', { lang: 'zh', probe: false });
+  assert.ok(find(r, 'content', 'fail').some((c) => c.critical && /空壳页/.test(c.msg)));
+  const ok = await audit(base + '/ssr-app', { lang: 'zh', probe: false });
+  assert.equal(find(ok, 'content', 'fail').length, 0, 'server-rendered content inside #app is fine');
+});
+
+test('invalid numeric HTML references cannot crash text extraction or an audit', async () => {
+  assert.equal(visibleText('<p>&#x110000; &#99999999; &#0; &#xD800;</p>'), '� � � �');
+  assert.equal(visibleText('<p>&#65; &#x1F600; &amp;</p>'), 'A 😀 &');
+  const r = await audit(base + '/invalid-entity');
+  assert.equal(find(r, 'access', 'fail').length, 0);
+  assert.ok(find(r, 'content', 'pass').length > 0);
 });
 
 test('canonical: attribute order and relative URLs', async () => {
@@ -175,6 +218,36 @@ test('argument parsing', () => {
   assert.equal(o.phrase, 'x y');
   assert.equal(o.failUnder, 80);
   assert.equal(o.probe, false);
+});
+
+test('invalid CLI option values are rejected rather than silently ignored', () => {
+  for (const flag of ['--phrase', '--report', '--lang', '--fail-under']) {
+    assert.throws(() => parseArgs(['a.com', flag]), /requires a value/);
+    assert.throws(() => parseArgs(['a.com', flag, '--json']), /requires a value/);
+  }
+  for (const value of ['eighty', 'NaN', 'Infinity', '-1', '101', '', ' ']) {
+    assert.throws(() => parseArgs(['a.com', '--fail-under', value]), /--fail-under/);
+  }
+  assert.throws(() => parseArgs(['a.com', '--lang', 'fr']), /--lang/);
+  assert.throws(() => parseArgs(['a.com', '--report', '']), /--report/);
+  for (const value of ['0', '80.5', '100']) {
+    assert.equal(parseArgs(['a.com', '--fail-under', value]).failUnder, Number(value));
+  }
+});
+
+test('CLI exits 2 with a useful error for an invalid CI threshold', async () => {
+  const { execFile } = await import('node:child_process');
+  const { promisify } = await import('node:util');
+  await assert.rejects(
+    promisify(execFile)(process.execPath, [new URL('../cli/geo-audit.mjs', import.meta.url).pathname,
+      base + '/good', '--no-probe', '--fail-under', 'eighty'], { timeout: 5000 }),
+    (error) => {
+      assert.equal(error.code, 2);
+      assert.match(error.stderr, /--fail-under/);
+      assert.equal(error.stdout, '', 'invalid options must not start an audit');
+      return true;
+    },
+  );
 });
 
 test('--report creates missing folders', async () => {

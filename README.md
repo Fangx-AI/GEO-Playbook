@@ -81,6 +81,8 @@ npx github:Fangx-AI/GEO-Playbook https://你的网站/重要页面 --phrase "页
 
 它会检查 7 类问题并打分：状态码与跳转、robots.txt 对 9 个 AI / 搜索爬虫的规则、防火墙是否在拦 AI 爬虫、noindex、canonical、正文是否真的在原始 HTML 里、sitemap 与结构化数据。只读取公开页面。
 
+分数是这些技术检查的汇总，不是 AI 推荐概率。原始 HTML 里正文不到 50 字，或 `#app`、`#root` 这类挂载点是空的、只有"加载中"（典型的 JS 空壳页，导航和页脚文字不算正文），算致命问题；50 到 200 字只提醒，不扣分；用 `--phrase` 找到了关键句的短页面也不算空壳。提取到文字不代表关键内容齐全，建议用 `--phrase` 核对价格、功能等重要事实。
+
 <details>
 <summary markdown="span"><b>👀 看看输出长什么样</b>（模拟页面，查出一个致命问题和几个小问题）</summary>
 
@@ -245,6 +247,8 @@ jobs:
 ```
 
 也可以直接调用：`npx github:Fangx-AI/GEO-Playbook 网址 --json` 输出 JSON，`--fail-under 80` 低于 80 分时退出码为 1。
+
+`--fail-under` 只接受 0–100 的数值；参数缺值、阈值无效或 `--lang` 不是 `zh` / `en` 时，退出码为 2，并在开始请求网页前报错，避免 CI 因配置拼写错误而静默放行。
 
 ## 🧠 GEO 核心原则速记
 
