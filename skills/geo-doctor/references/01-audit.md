@@ -6,10 +6,10 @@
 
 ### 有命令行和网络时（Claude Code、Codex、Kimi Code、TRAE 等）
 
-在 skill 目录下运行（需要 Node.js 18+）：
+在**用户的项目目录**下运行（需要 Node.js 18+），脚本用 skill 目录的绝对路径调用，这样报告会写进用户项目的 `geo/`，而不是 skill 的安装目录：
 
 ```bash
-node scripts/geo-audit.mjs https://用户网址 --phrase "页面上一句关键正文" --report geo/audit.md --lang zh
+node <skill 目录的绝对路径>/scripts/geo-audit.mjs https://用户网址 --phrase "页面上一句关键正文" --report geo/audit.md --lang zh
 ```
 
 - 一次可以查多个页面，用空格隔开：首页、产品页、价格页、帮助中心各挑一个。

@@ -13,4 +13,5 @@ materials remain subject to their own rights and licenses. Inclusion of a
 link does not relicense those materials or imply endorsement.
 
 Python source code in scripts/ is licensed separately under the MIT License;
-see scripts/LICENSE. Asset provenance and illustration standards: assets/README.md.
+see scripts/LICENSE. JavaScript source code in cli/ and the geo-doctor skill in
+skills/geo-doctor/ are licensed under the MIT License; see skills/geo-doctor/LICENSE. Asset provenance and illustration standards: assets/README.md.
