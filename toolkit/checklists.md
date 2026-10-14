@@ -16,7 +16,7 @@
 
 挑一个最重要的业务页面（产品页、价格页、门店页），逐项打勾。
 
-**能读到吗**（可用 `npx github:Fangx-AI/Geo-Doctor 网址` 自动检查，或用 [`geo-audit.sh`](geo-audit.sh) / [`geo-audit.ps1`](geo-audit.ps1)）
+**能读到吗**（可用 `npx github:Fangx-AI/geo-doctor 网址` 自动检查，或用 [`geo-audit.sh`](geo-audit.sh) / [`geo-audit.ps1`](geo-audit.ps1)）
 
 - [ ] 页面返回 200，且保存下来的 HTML 是正文，不是登录框、验证码或“页面不存在”
 - [ ] 跳转不超过 1 次，站内链接直接指向最终地址

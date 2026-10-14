@@ -1,14 +1,14 @@
 <div align="center">
 
-# 🩺 GEO 医生 · Geo-Doctor
+# 🩺 GEO 医生 · geo-doctor
 
 ### 一句话，让 AI 帮你做完一整套 GEO：<br>查清豆包、DeepSeek、元宝为什么不推荐你，改对资料，写好内容，告诉你发到哪，再测有没有用
 
 **开源的中文 GEO（生成式引擎优化）skill**，装进 Claude Code、Codex、Kimi、WorkBuddy 等能装技能的 AI 助手就能用。<br>
 不用服务器，不用网页，不保排名，只给证据。
 
-[![GitHub stars](https://img.shields.io/github/stars/Fangx-AI/Geo-Doctor?style=social)](https://github.com/Fangx-AI/Geo-Doctor/stargazers)
-[![test](https://github.com/Fangx-AI/Geo-Doctor/actions/workflows/test.yml/badge.svg)](https://github.com/Fangx-AI/Geo-Doctor/actions/workflows/test.yml)
+[![GitHub stars](https://img.shields.io/github/stars/Fangx-AI/geo-doctor?style=social)](https://github.com/Fangx-AI/geo-doctor/stargazers)
+[![test](https://github.com/Fangx-AI/geo-doctor/actions/workflows/test.yml/badge.svg)](https://github.com/Fangx-AI/geo-doctor/actions/workflows/test.yml)
 [![资料核验](https://img.shields.io/badge/资料核验-2026--10--14-2ea44f)](#evidence)
 [![License: MIT](https://img.shields.io/badge/skill-MIT-blue.svg)](skills/geo-doctor/SKILL.md)
 [![PRs Welcome](https://img.shields.io/badge/PRs-welcome-brightgreen.svg)](CONTRIBUTING.md)
@@ -52,24 +52,24 @@
 在 Claude Code、Codex、Kimi Code、WorkBuddy 等能安装技能的 AI 助手里，新开一个对话，发送：
 
 ```text
-帮我安装这个 skill：https://github.com/Fangx-AI/Geo-Doctor/tree/master/skills/geo-doctor
+帮我安装这个 skill：https://github.com/Fangx-AI/geo-doctor/tree/master/skills/geo-doctor
 ```
 
 装好后说：**"用 GEO 医生帮我看看 https://你的网站"**。
 
 > 豆包、DeepSeek 这类普通聊天 App 目前装不了技能（2026-10-14 在豆包 App 实测），但它们正是 GEO 医生要优化的对象：在能装技能的助手里诊断，采样时再去豆包里问。
 >
-> 各平台的对话安装还在逐一实测，结果会更新在[安装指南](docs/install.md)。AI 说"装不了"或打不开链接时，可以用下面的方式，或[提 issue](https://github.com/Fangx-AI/Geo-Doctor/issues/new/choose) 告诉我们是哪个平台。
+> 各平台的对话安装还在逐一实测，结果会更新在[安装指南](docs/install.md)。AI 说"装不了"或打不开链接时，可以用下面的方式，或[提 issue](https://github.com/Fangx-AI/geo-doctor/issues/new/choose) 告诉我们是哪个平台。
 
 <details>
 <summary markdown="span"><b>其他安装方式</b>（命令行、手动复制、上传压缩包）</summary>
 
 | 你用的工具 | 怎么装 |
 | --- | --- |
-| **Claude Code** | 输入 `/plugin marketplace add Fangx-AI/Geo-Doctor`，再输入 `/plugin install geo-doctor@geo-doctor` |
+| **Claude Code** | 输入 `/plugin marketplace add Fangx-AI/geo-doctor`，再输入 `/plugin install geo-doctor@geo-doctor` |
 | **Codex** | 请 `$skill-installer` 安装本仓库的 `skills/geo-doctor`，或把完整文件夹放到 `~/.agents/skills/geo-doctor/` |
 | **Kimi Code** | 把完整文件夹放到 `~/.kimi-code/skills/geo-doctor/`（设置了 `KIMI_CODE_HOME` 时放到 `$KIMI_CODE_HOME/skills/geo-doctor/`），新开会话后使用 |
-| **支持上传技能包的客户端** | 在 [Releases](https://github.com/Fangx-AI/Geo-Doctor/releases) 下载 `geo-doctor.zip`，在技能页面上传 |
+| **支持上传技能包的客户端** | 在 [Releases](https://github.com/Fangx-AI/geo-doctor/releases) 下载 `geo-doctor.zip`，在技能页面上传 |
 
 </details>
 
@@ -90,7 +90,7 @@
 装了 [Node.js](https://nodejs.org/zh-cn)（18 以上）就能直接跑，Windows / macOS / Linux 通用，不用下载任何东西：
 
 ```bash
-npx github:Fangx-AI/Geo-Doctor https://你的网站/重要页面 --phrase "页面里的一句关键正文"
+npx github:Fangx-AI/geo-doctor https://你的网站/重要页面 --phrase "页面里的一句关键正文"
 ```
 
 它会检查 7 类问题并打分：状态码与跳转、robots.txt 对 9 个 AI / 搜索爬虫的规则、防火墙是否在拦 AI 爬虫、noindex、canonical、正文是否真的在原始 HTML 里、sitemap 与结构化数据。只读取公开页面。
@@ -147,14 +147,14 @@ npx github:Fangx-AI/Geo-Doctor https://你的网站/重要页面 --phrase "页�
 macOS / Linux：
 
 ```bash
-curl -O https://raw.githubusercontent.com/Fangx-AI/Geo-Doctor/master/toolkit/geo-audit.sh
+curl -O https://raw.githubusercontent.com/Fangx-AI/geo-doctor/master/toolkit/geo-audit.sh
 bash geo-audit.sh https://你的网站/重要页面 "页面里的一句关键正文"
 ```
 
 Windows（PowerShell）：
 
 ```powershell
-curl.exe -O https://raw.githubusercontent.com/Fangx-AI/Geo-Doctor/master/toolkit/geo-audit.ps1
+curl.exe -O https://raw.githubusercontent.com/Fangx-AI/geo-doctor/master/toolkit/geo-audit.ps1
 powershell -ExecutionPolicy Bypass -File geo-audit.ps1 https://你的网站/重要页面 "页面里的一句关键正文"
 ```
 
@@ -251,7 +251,7 @@ jobs:
     if: github.event_name == 'workflow_dispatch' || github.event.deployment_status.state == 'success'
     runs-on: ubuntu-latest
     steps:
-      - uses: Fangx-AI/Geo-Doctor@master
+      - uses: Fangx-AI/geo-doctor@master
         with:
           urls: |
             https://example.com/
@@ -260,7 +260,7 @@ jobs:
           lang: zh
 ```
 
-也可以直接调用：`npx github:Fangx-AI/Geo-Doctor 网址 --json` 输出 JSON，`--fail-under 80` 低于 80 分时退出码为 1。
+也可以直接调用：`npx github:Fangx-AI/geo-doctor 网址 --json` 输出 JSON，`--fail-under 80` 低于 80 分时退出码为 1。
 
 `--fail-under` 只接受 0–100 的数值；参数缺值、阈值无效或 `--lang` 不是 `zh` / `en` 时，退出码为 2，并在开始请求网页前报错，避免 CI 因配置拼写错误而静默放行。
 
@@ -328,12 +328,12 @@ jobs:
 
 ## 🤝 参与贡献
 
-欢迎补充：**能公开分母和页面改动的中文平台案例**、新的官方文档、验证过的提示词、失败实验（没效果的实验同样有价值）。规则见 [CONTRIBUTING.md](CONTRIBUTING.md)，不熟悉 Git 可以直接 [提 Issue](https://github.com/Fangx-AI/Geo-Doctor/issues/new/choose)。
+欢迎补充：**能公开分母和页面改动的中文平台案例**、新的官方文档、验证过的提示词、失败实验（没效果的实验同样有价值）。规则见 [CONTRIBUTING.md](CONTRIBUTING.md)，不熟悉 Git 可以直接 [提 Issue](https://github.com/Fangx-AI/geo-doctor/issues/new/choose)。
 
 **如果这份手册帮到了你，点个 ⭐ Star 是对我们最大的支持，也能让更多人看到它。**
 
-[![Star History Chart](https://api.star-history.com/svg?repos=Fangx-AI/Geo-Doctor&type=Date)](https://star-history.com/#Fangx-AI/Geo-Doctor&Date)
+[![Star History Chart](https://api.star-history.com/svg?repos=Fangx-AI/geo-doctor&type=Date)](https://star-history.com/#Fangx-AI/geo-doctor&Date)
 
 ---
 
-<sub>Geo-Doctor（GEO 医生，原 GEO-Playbook）· GEO 实战手册 · AI 搜索优化 / GEO 优化中文指南。结构参考 [Maxime Labonne 的 LLM Course](https://github.com/mlabonne/llm-course)。原创文字、模板与图解采用 [CC BY 4.0](LICENSE)；脚本采用 [MIT](scripts/LICENSE)。外部文章、论文、代码、商标和图片保留各自权利。图片说明见 [assets/README.md](assets/README.md)。</sub>
+<sub>geo-doctor（GEO 医生，原 GEO-Playbook）· GEO 实战手册 · AI 搜索优化 / GEO 优化中文指南。结构参考 [Maxime Labonne 的 LLM Course](https://github.com/mlabonne/llm-course)。原创文字、模板与图解采用 [CC BY 4.0](LICENSE)；脚本采用 [MIT](scripts/LICENSE)。外部文章、论文、代码、商标和图片保留各自权利。图片说明见 [assets/README.md](assets/README.md)。</sub>

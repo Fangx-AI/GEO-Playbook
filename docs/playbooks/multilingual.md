@@ -35,6 +35,6 @@
 
 ← [创作者实战](creator.md) · [🏠 目录](../../README.md) · [国际平台规则](../platforms/international.md) →
 
-<sub>有帮助的话，回 [首页](../../README.md) 点个 ⭐ Star；发现错误或过时信息，欢迎 [提 Issue](https://github.com/Fangx-AI/Geo-Doctor/issues/new/choose)。</sub>
+<sub>有帮助的话，回 [首页](../../README.md) 点个 ⭐ Star；发现错误或过时信息，欢迎 [提 Issue](https://github.com/Fangx-AI/geo-doctor/issues/new/choose)。</sub>
 
 </div>

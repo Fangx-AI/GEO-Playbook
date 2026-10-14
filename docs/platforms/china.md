@@ -175,6 +175,6 @@ run_id,citation_id,answer_claim,cited_title,shown_url,final_url,hostname,origina
 
 ← [国际平台规则](international.md) · [🏠 目录](../../README.md) · [效果测量](../measurement.md) →
 
-<sub>有帮助的话，回 [首页](../../README.md) 点个 ⭐ Star；发现错误或过时信息，欢迎 [提 Issue](https://github.com/Fangx-AI/Geo-Doctor/issues/new/choose)。</sub>
+<sub>有帮助的话，回 [首页](../../README.md) 点个 ⭐ Star；发现错误或过时信息，欢迎 [提 Issue](https://github.com/Fangx-AI/geo-doctor/issues/new/choose)。</sub>
 
 </div>

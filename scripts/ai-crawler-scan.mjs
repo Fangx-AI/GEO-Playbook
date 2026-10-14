@@ -7,7 +7,7 @@ import { readFileSync, writeFileSync } from 'node:fs';
 import { pathToFileURL } from 'node:url';
 import { parseRobots, isAllowed } from '../cli/geo-audit.mjs';
 
-const UA = 'Mozilla/5.0 (compatible; Geo-Doctor-scan/1.0; +https://github.com/Fangx-AI/Geo-Doctor)';
+const UA = 'Mozilla/5.0 (compatible; geo-doctor-scan/1.0; +https://github.com/Fangx-AI/geo-doctor)';
 
 // Columns shown in the leaderboard, in order. kind: search = affects AI / web search answers; train = training only.
 export const BOTS = [
@@ -114,7 +114,7 @@ export function render(data) {
   L.push('');
   L.push('屏蔽训练爬虫（GPTBot、ClaudeBot、Google-Extended、CCBot）是网站的正当选择，不影响搜索可见度；表里单独列出，只作参考。');
   L.push('');
-  L.push('> 想查自己的网站？一行命令：`npx github:Fangx-AI/Geo-Doctor https://你的网址`');
+  L.push('> 想查自己的网站？一行命令：`npx github:Fangx-AI/geo-doctor https://你的网址`');
   L.push('');
 
   const cats = [...new Set(data.results.map((r) => r.category))];
@@ -144,7 +144,7 @@ export function render(data) {
   L.push('- ² robots.txt 跳转到了别的域名（例如境外请求被导向海外站），表中是跳转后那份规则。');
   L.push('- **用户触发的访问**：ChatGPT-User、Perplexity-User 这类"用户让 AI 打开某个网页"的请求，平台文档说明不一定遵守 robots.txt；表里按规则字面判断。');
   L.push(`- — 扫描时读取失败（超时、5xx 或连接被拒，共 ${errs.length} 个），不计入占比的分母。`);
-  L.push('- **名单**：[data/sites-cn.txt](../data/sites-cn.txt)，原始数据：[data/ai-crawler-scan.json](../data/ai-crawler-scan.json)。漏了谁、判断错了，欢迎提 [issue](https://github.com/Fangx-AI/Geo-Doctor/issues/new/choose) 或 PR。');
+  L.push('- **名单**：[data/sites-cn.txt](../data/sites-cn.txt)，原始数据：[data/ai-crawler-scan.json](../data/ai-crawler-scan.json)。漏了谁、判断错了，欢迎提 [issue](https://github.com/Fangx-AI/geo-doctor/issues/new/choose) 或 PR。');
   L.push('- robots.txt 随时会改，本表只代表扫描当天的状态。');
   L.push('');
   return L.join('\n');

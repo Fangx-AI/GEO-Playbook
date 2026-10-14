@@ -23,7 +23,7 @@
 
 屏蔽训练爬虫（GPTBot、ClaudeBot、Google-Extended、CCBot）是网站的正当选择，不影响搜索可见度；表里单独列出，只作参考。
 
-> 想查自己的网站？一行命令：`npx github:Fangx-AI/Geo-Doctor https://你的网址`
+> 想查自己的网站？一行命令：`npx github:Fangx-AI/geo-doctor https://你的网址`
 
 ## 搜索与门户
 
@@ -197,5 +197,5 @@
 - ² robots.txt 跳转到了别的域名（例如境外请求被导向海外站），表中是跳转后那份规则。
 - **用户触发的访问**：ChatGPT-User、Perplexity-User 这类"用户让 AI 打开某个网页"的请求，平台文档说明不一定遵守 robots.txt；表里按规则字面判断。
 - — 扫描时读取失败（超时、5xx 或连接被拒，共 3 个），不计入占比的分母。
-- **名单**：[data/sites-cn.txt](../data/sites-cn.txt)，原始数据：[data/ai-crawler-scan.json](../data/ai-crawler-scan.json)。漏了谁、判断错了，欢迎提 [issue](https://github.com/Fangx-AI/Geo-Doctor/issues/new/choose) 或 PR。
+- **名单**：[data/sites-cn.txt](../data/sites-cn.txt)，原始数据：[data/ai-crawler-scan.json](../data/ai-crawler-scan.json)。漏了谁、判断错了，欢迎提 [issue](https://github.com/Fangx-AI/geo-doctor/issues/new/choose) 或 PR。
 - robots.txt 随时会改，本表只代表扫描当天的状态。

@@ -26,7 +26,7 @@ const routes = {
   '/split': () => [200, {}, page('', BODY + '<p>高级版<b>每月 599 元</b></p>')],
   '/redirect': () => [301, { location: '/good' }, ''],
   '/missing': () => [404, {}, 'not found'],
-  '/waf': (req) => (/bot/i.test(req.headers['user-agent']) && !/Geo-Doctor/.test(req.headers['user-agent'])
+  '/waf': (req) => (/bot/i.test(req.headers['user-agent']) && !/geo-doctor/.test(req.headers['user-agent'])
     ? [403, {}, 'blocked'] : [200, {}, page('')]),
   '/bad-canon': () => [200, {}, page('<link rel="canonical" href="http://[">')],
   '/meta-only': () => [200, {}, page('<meta property="og:description" content="旗舰版每月 999 元">')],

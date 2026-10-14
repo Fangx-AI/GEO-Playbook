@@ -1,7 +1,7 @@
 {
   "name": "geo-doctor",
   "version": "1.0.0",
-  "description": "GEO audit CLI: can AI search engines (ChatGPT, Perplexity, Claude, Google AI, Doubao…) actually read your page? Part of Geo-Doctor (GEO 医生).",
+  "description": "GEO audit CLI: can AI search engines (ChatGPT, Perplexity, Claude, Google AI, Doubao…) actually read your page? Part of geo-doctor (GEO 医生).",
   "type": "module",
   "bin": {
     "geo-audit": "cli/geo-audit.mjs"
@@ -29,8 +29,8 @@
   ],
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/Fangx-AI/Geo-Doctor.git"
+    "url": "git+https://github.com/Fangx-AI/geo-doctor.git"
   },
-  "homepage": "https://github.com/Fangx-AI/Geo-Doctor",
+  "homepage": "https://github.com/Fangx-AI/geo-doctor",
   "license": "MIT"
 }

@@ -118,6 +118,6 @@ App 的商店页应展示真实界面与功能；插件也应使用准确标题�
 
 ← [小程序实战](mini-program.md) · [🏠 目录](../../README.md) · [本地商家实战](local-business.md) →
 
-<sub>有帮助的话，回 [首页](../../README.md) 点个 ⭐ Star；发现错误或过时信息，欢迎 [提 Issue](https://github.com/Fangx-AI/Geo-Doctor/issues/new/choose)。</sub>
+<sub>有帮助的话，回 [首页](../../README.md) 点个 ⭐ Star；发现错误或过时信息，欢迎 [提 Issue](https://github.com/Fangx-AI/geo-doctor/issues/new/choose)。</sub>
 
 </div>

@@ -4,7 +4,7 @@ description: GEO 医生：中文 GEO（生成式引擎优化）全流程助手�
 license: MIT
 metadata:
   version: "0.1.0"
-  homepage: https://github.com/Fangx-AI/Geo-Doctor
+  homepage: https://github.com/Fangx-AI/geo-doctor
 ---
 
 # GEO 医生
@@ -60,4 +60,4 @@ metadata:
 
 - [ai-sources-cn.md](references/ai-sources-cn.md)：国内各 AI 从哪些平台取信息（第 0、7 步必读）
 - [compliance.md](references/compliance.md)：合规红线
-- 完整手册：https://github.com/Fangx-AI/Geo-Doctor
+- 完整手册：https://github.com/Fangx-AI/geo-doctor

@@ -76,6 +76,6 @@
 
 ← [B2B 服务实战](b2b.md) · [🏠 目录](../../README.md) · [多语言实战](multilingual.md) →
 
-<sub>有帮助的话，回 [首页](../../README.md) 点个 ⭐ Star；发现错误或过时信息，欢迎 [提 Issue](https://github.com/Fangx-AI/Geo-Doctor/issues/new/choose)。</sub>
+<sub>有帮助的话，回 [首页](../../README.md) 点个 ⭐ Star；发现错误或过时信息，欢迎 [提 Issue](https://github.com/Fangx-AI/geo-doctor/issues/new/choose)。</sub>
 
 </div>
