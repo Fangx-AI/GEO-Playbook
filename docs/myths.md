@@ -117,7 +117,7 @@
 
 ✅ Google 明确区分正常页面和“返回 200 的错误页”（软 404）。另外，正文依赖 JavaScript 渲染时，原始 HTML 可能只是一个空的 `<div id="root">`。Google 能执行 JS，不代表所有 AI 爬虫都有同样能力。
 
-👉 **该做的**：保存原始 HTML，搜一句页面里独特的正文。用 [`geo-audit.sh`](../toolkit/geo-audit.sh) 一条命令检查。
+👉 **该做的**：保存原始 HTML，搜一句页面里独特的正文。用 [`geo-audit.sh`](../toolkit/geo-audit.sh)（Windows 用 [`geo-audit.ps1`](../toolkit/geo-audit.ps1)）一条命令检查。
 
 📎 [Google：HTTP 状态与软 404](https://developers.google.com/crawling/docs/troubleshooting/http-status-codes) · [JavaScript SEO 基础](https://developers.google.com/search/docs/crawling-indexing/javascript/javascript-seo-basics) · 🟢 官方
 

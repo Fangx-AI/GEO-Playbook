@@ -16,7 +16,7 @@ fi
 
 DIR="geo-audit-$(date +%Y%m%d-%H%M%S)"
 mkdir -p "$DIR"
-UA="Mozilla/5.0 (geo-learning-map audit)"
+UA="Mozilla/5.0 (GEO-Playbook audit)"
 PASS=0; WARN=0
 ok()   { echo "  ✅ $*"; PASS=$((PASS+1)); }
 warn() { echo "  ⚠️  $*"; WARN=$((WARN+1)); }

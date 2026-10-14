@@ -14,7 +14,7 @@
 2. Google 官方指南明示：Google Search **不使用 llms.txt**，也没有必需的特殊 schema 或“最佳切块长度”。
 3. Bing Webmaster Tools 的 AI Performance 和 Search Console 的生成式 AI 报表，已经能看到部分 AI 展示与引用数据。
 
-> 速查：五大平台的爬虫与控制对照表见本页末尾“[平台对照](#平台对照先确定你在控制哪件事)”；可直接改用的 robots 模板见 [`toolkit/robots-ai-bots.txt`](../../toolkit/robots-ai-bots.txt)。全部资料核验于 2026-10-14，规则以链接原文为准。
+> 速查：五大平台的爬虫与控制对照表见本页末尾“[平台对照](#compare)”；可直接改用的 robots 模板见 [`toolkit/robots-ai-bots.txt`](../../toolkit/robots-ai-bots.txt)。全部资料核验于 2026-10-14，规则以链接原文为准。
 
 ---
 
@@ -149,6 +149,8 @@
 - **🟢 官方原文：** 消费端可以使用网络来源和引用；提供特定 URL 时可直接取回页面内容。页面也说明不同体验的开关方式可能不同，联网能力仍受产品和账户条件约束。
 - **🛠 动手：** 分别测试“搜索并比较三种方案”和“阅读此指定 URL”，记录是否发生搜索、是否引用目标文章、引用内容是否吻合。
 - **⚠️ 不能推出：** 一次成功 fetch 不能证明该网页在开放搜索中的覆盖率；Claude API 的工具版本、域名过滤和调用额度不自动适用于 Claude 消费端。
+
+<a id="compare"></a>
 
 ## 平台对照：先确定你在控制哪件事
 

@@ -14,7 +14,7 @@
 2. 最常见的“自毁三件套”：`robots.txt` 误封、遗留的 `noindex`、`canonical` 指错页面。先查这三处。
 3. 把“高端、齐全、优惠”改成人数、设备、时段、价格口径和限制。AI 和用户能引用的只有具体事实。
 
-> 💡 只想先快速体检？用 [`toolkit/geo-audit.sh`](../../toolkit/geo-audit.sh) 一条命令跑完第二、三步（macOS / Linux）。下文命令是 Windows PowerShell 版。
+> 💡 只想先快速体检？用一键脚本跑完第二、三步：macOS / Linux 用 [`geo-audit.sh`](../../toolkit/geo-audit.sh)，Windows 用 [`geo-audit.ps1`](../../toolkit/geo-audit.ps1)。下文是逐条手动命令（PowerShell 版），适合想看懂每一步的人。
 
 ---
 
@@ -28,7 +28,7 @@
 | 只有登录后应用 | 把可公开的产品说明、帮助、价格、限制放到无需登录的地址 | 不公开用户文件、账户页和私人工作区 |
 | 能搜到但 AI 回答错误 | 找到错误句对应的引用来源，核对旧价格、旧版本和同名产品 | 不只在首页增加一句“我们是最好的” |
 
-> 🧪 **贯穿示例**：虚构的会议室预订网站。把命令里的 URL 换成你自己的公开页面。下面命令是 Windows PowerShell 版（用 `curl.exe` 避开别名歧义）；macOS / Linux 直接用 [`geo-audit.sh`](../../toolkit/geo-audit.sh)。
+> 🧪 **贯穿示例**：虚构的会议室预订网站。把命令里的 URL 换成你自己的公开页面。下面命令是 Windows PowerShell 版（用 `curl.exe` 避开别名歧义）；只想要结论可以直接跑一键脚本。
 
 ## 第二步：取得真实响应，留下修复前证据
 
