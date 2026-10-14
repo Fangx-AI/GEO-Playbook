@@ -181,10 +181,12 @@ test('--report creates missing folders', async () => {
   const { mkdtempSync, readFileSync, rmSync } = await import('node:fs');
   const { tmpdir } = await import('node:os');
   const { join } = await import('node:path');
-  const { execFileSync } = await import('node:child_process');
+  const { execFile } = await import('node:child_process');
+  const { promisify } = await import('node:util');
   const dir = mkdtempSync(join(tmpdir(), 'geo-'));
   try {
-    execFileSync(process.execPath, [new URL('../cli/geo-audit.mjs', import.meta.url).pathname, base + '/good', '--no-probe', '--report', 'geo/audit.md'], { cwd: dir });
-    assert.match(readFileSync(join(dir, 'geo/audit.md'), 'utf8'), /\|/);
+    // Async so this process can keep serving the fixture page while the CLI fetches it.
+    await promisify(execFile)(process.execPath, [new URL('../cli/geo-audit.mjs', import.meta.url).pathname, base + '/good', '--no-probe', '--lang', 'zh', '--report', 'geo/audit.md'], { cwd: dir });
+    assert.match(readFileSync(join(dir, 'geo/audit.md'), 'utf8'), /最终状态码 200/);
   } finally { rmSync(dir, { recursive: true, force: true }); }
 });
