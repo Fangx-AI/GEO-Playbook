@@ -58,19 +58,33 @@ else
         last_ua=1; next }
       { last_ua=0 }
       grp && /^[[:space:]]*disallow[[:space:]]*:[[:space:]]*\/[[:space:]]*$/ { hit=1 }
-      END { exit !hit }' "$DIR/robots.lower.txt"
+      grp && /^[[:space:]]*allow[[:space:]]*:[[:space:]]*\/./ { allow=1 }
+      END { if (hit && allow) print "partial"; exit !hit }' "$DIR/robots.lower.txt"
   }
   for BOT in Googlebot bingbot OAI-SearchBot PerplexityBot Claude-SearchBot GPTBot ClaudeBot Google-Extended; do
-    if blocked "$(echo "$BOT" | tr '[:upper:]' '[:lower:]')"; then
-      warn "$BOT 被整站 Disallow（如果是有意屏蔽训练用途可忽略）"
+    if R=$(blocked "$(echo "$BOT" | tr '[:upper:]' '[:lower:]')"); then
+      if [[ "$R" == "partial" ]]; then
+        warn "$BOT 分组有 Disallow: / 但也有 Allow 例外，请人工确认目标页是否被放行"
+      else
+        warn "$BOT 被整站 Disallow（如果是有意屏蔽训练用途可忽略）"
+      fi
     fi
   done
-  if blocked "*"; then
-    warn "通用分组 User-agent: * 整站 Disallow: /（常见于测试站配置误上生产）"
+  if R=$(blocked "*"); then
+    if [[ "$R" == "partial" ]]; then
+      warn "通用分组有 Disallow: / 但也有 Allow 例外，请人工确认目标页是否被放行"
+    else
+      warn "通用分组 User-agent: * 整站 Disallow: /（常见于测试站配置误上生产）"
+    fi
   else
     ok "通用分组 User-agent: * 没有整站封禁"
   fi
 fi
+
+# 把 HTML 压成一行（标签可能跨行书写），并去掉 script / style 内容，供下面的检查使用
+tr '\r\n\t' '   ' < "$DIR/page.html" > "$DIR/page.oneline.html"
+perl -pe 's/<script\b.*?<\/script>//gis; s/<style\b.*?<\/style>//gis; s/<!--.*?-->//gs' \
+  "$DIR/page.oneline.html" > "$DIR/page.clean.html"
 
 # 3. noindex
 echo
@@ -80,7 +94,7 @@ if grep -iqE '^x-robots-tag:.*noindex' "$DIR/headers.txt"; then
 else
   ok "响应头无 noindex"
 fi
-if grep -ioE '<meta[^>]+name=["'"'"']?(robots|googlebot)["'"'"']?[^>]*>' "$DIR/page.html" | grep -iq noindex; then
+if grep -ioE '<meta[^>]+name=["'"'"']?(robots|googlebot)["'"'"']?[^>]*>' "$DIR/page.clean.html" | grep -iq noindex; then
   warn "HTML 的 robots meta 含 noindex（检查 CMS 的“阻止搜索引擎”开关）"
 else
   ok "HTML 无 noindex meta"
@@ -89,7 +103,7 @@ fi
 # 4. canonical
 echo
 echo "④ 规范地址（canonical）"
-CANON=$(grep -ioE '<link[^>]+rel=["'"'"']?canonical["'"'"']?[^>]*>' "$DIR/page.html" | head -1 | grep -ioE 'href=["'"'"'][^"'"'"']+' | sed -E 's/^href=.//')
+CANON=$(grep -ioE '<link[^>]+rel=["'"'"']?canonical["'"'"']?[^>]*>' "$DIR/page.clean.html" | head -1 | grep -ioE 'href=["'"'"'][^"'"'"']+' | sed -E 's/^href=.//')
 if [[ -z "$CANON" ]]; then
   warn "原始 HTML 没有 canonical（不是错误，但重要页面建议加上）"
 elif [[ "${CANON%/}" == "${FINAL%/}" ]]; then
@@ -101,7 +115,7 @@ fi
 # 5. 正文是否在原始 HTML
 echo
 echo "⑤ 正文是否在原始 HTML 里（不依赖 JavaScript）"
-TEXT_BYTES=$(sed -E 's/<script[^>]*>.*<\/script>//g; s/<[^>]+>//g' "$DIR/page.html" | tr -s '[:space:]' | wc -c | tr -d ' ')
+TEXT_BYTES=$(sed -E 's/<[^>]+>//g' "$DIR/page.clean.html" | tr -s '[:space:]' | wc -c | tr -d ' ')
 if [[ "$TEXT_BYTES" -lt 500 ]]; then
   warn "可见文字很少（约 $TEXT_BYTES 字节），可能是 JS 渲染的空壳页，部分 AI 爬虫读不到"
 else
@@ -111,7 +125,7 @@ if [[ -n "$PHRASE" ]]; then
   if grep -qF "$PHRASE" "$DIR/page.html"; then ok "找到指定正文：「$PHRASE」"
   else warn "原始 HTML 里找不到「$PHRASE」：可能依赖 JS 渲染，或文字被拆进了多个标签"; fi
 fi
-TITLE=$(grep -ioE '<title[^>]*>[^<]*' "$DIR/page.html" | head -1 | sed -E 's/<title[^>]*>//')
+TITLE=$(grep -ioE '<title[^>]*>[^<]*' "$DIR/page.clean.html" | head -1 | sed -E 's/<title[^>]*>//')
 [[ -n "$TITLE" ]] && ok "标题：$TITLE" || warn "没有 <title>"
 
 echo
