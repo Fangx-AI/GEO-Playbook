@@ -14,7 +14,7 @@
 2. 最常见的“自毁三件套”：`robots.txt` 误封、遗留的 `noindex`、`canonical` 指错页面。先查这三处。
 3. 把“高端、齐全、优惠”改成人数、设备、时段、价格口径和限制。AI 和用户能引用的只有具体事实。
 
-> 💡 只想先快速体检？用一键脚本跑完第二、三步：macOS / Linux 用 [`geo-audit.sh`](../../toolkit/geo-audit.sh)，Windows 用 [`geo-audit.ps1`](../../toolkit/geo-audit.ps1)。下文是逐条手动命令（PowerShell 版），适合想看懂每一步的人。
+> 💡 只想先快速体检？`npx github:Fangx-AI/GEO-Playbook 你的网址` 一行跑完第二、三步（需要 Node.js 18+；没有 Node 可用 [`geo-audit.sh`](../../toolkit/geo-audit.sh) 或 [`geo-audit.ps1`](../../toolkit/geo-audit.ps1)）。下文是逐条手动命令（PowerShell 版），适合想看懂每一步的人。
 
 ---
 

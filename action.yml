@@ -1,0 +1,57 @@
+name: GEO Audit
+description: Check that AI search crawlers (ChatGPT, Perplexity, Claude, Google, Bing…) can read your pages. Fails the job when the score drops.
+author: GEO-Playbook
+branding:
+  icon: search
+  color: green
+inputs:
+  urls:
+    description: Pages to audit, separated by spaces, commas or new lines.
+    required: true
+  phrase:
+    description: Optional sentence that must be present in the raw HTML (a price, model number or other key fact).
+    required: false
+    default: ""
+  fail-under:
+    description: Fail the job when any page scores below this number (0-100). 0 never fails.
+    required: false
+    default: "0"
+  lang:
+    description: Report language, en or zh.
+    required: false
+    default: en
+  probe:
+    description: Also fetch with AI crawler user-agents to detect firewall / CDN blocking (true or false).
+    required: false
+    default: "true"
+outputs:
+  report:
+    description: Path to the Markdown report.
+    value: ${{ steps.audit.outputs.report }}
+runs:
+  using: composite
+  steps:
+    - uses: actions/setup-node@v4
+      with:
+        node-version: 20
+    - id: audit
+      shell: bash
+      env:
+        GEO_URLS: ${{ inputs.urls }}
+        GEO_PHRASE: ${{ inputs.phrase }}
+        GEO_FAIL_UNDER: ${{ inputs.fail-under }}
+        GEO_LANG: ${{ inputs.lang }}
+        GEO_PROBE: ${{ inputs.probe }}
+      run: |
+        report="$RUNNER_TEMP/geo-audit-report.md"
+        args=(--lang "$GEO_LANG" --report "$report" --fail-under "$GEO_FAIL_UNDER")
+        [[ -n "$GEO_PHRASE" ]] && args+=(--phrase "$GEO_PHRASE")
+        [[ "$GEO_PROBE" == "false" ]] && args+=(--no-probe)
+        read -r -a urls <<< "$(echo "$GEO_URLS" | tr ',\n' '  ')"
+        set +e
+        node "$GITHUB_ACTION_PATH/cli/geo-audit.mjs" "${urls[@]}" "${args[@]}"
+        code=$?
+        set -e
+        [[ -f "$report" ]] && cat "$report" >> "$GITHUB_STEP_SUMMARY"
+        echo "report=$report" >> "$GITHUB_OUTPUT"
+        exit $code

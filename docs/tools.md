@@ -23,7 +23,7 @@
 | [🧰 提示词库](../toolkit/prompts.md) | 10 个可直接复制的 GEO 工作提示词 |
 | [✅ 检查清单](../toolkit/checklists.md) | 15 分钟体检、发布前审核、每周观察 |
 | [🤖 robots 模板](../toolkit/robots-ai-bots.txt) | 按用途分组的 AI 爬虫配置 |
-| 🩺 一键体检脚本：[macOS / Linux](../toolkit/geo-audit.sh) · [Windows](../toolkit/geo-audit.ps1) | 检查状态码、跳转、robots、noindex、canonical、正文是否在原始 HTML |
+| 🩺 [geo-audit 命令行工具](../cli/geo-audit.mjs)（`npx github:Fangx-AI/GEO-Playbook 网址`）· 脚本版：[macOS / Linux](../toolkit/geo-audit.sh) · [Windows](../toolkit/geo-audit.ps1) | 检查状态码、跳转、robots、noindex、canonical、正文是否在原始 HTML |
 | [📋 模板](https://github.com/Fangx-AI/GEO-Playbook/tree/master/toolkit/templates) | 事实卡、问题集 |
 | [📊 观察表与模拟数据](https://github.com/Fangx-AI/GEO-Playbook/tree/master/examples) | 记录 AI 回答与引用，练习计算 |
 
