@@ -9,7 +9,8 @@
 // 只读取公开页面，不向任何第三方发送数据。
 // SPDX-License-Identifier: MIT
 
-import { writeFileSync } from 'node:fs';
+import { mkdirSync, writeFileSync } from 'node:fs';
+import { dirname } from 'node:path';
 import { pathToFileURL } from 'node:url';
 
 export const VERSION = '1.0.0';
@@ -523,7 +524,10 @@ export async function main(argv) {
     if (!o.json) console.log(formatText(r, lang) + (o.urls.length > 1 ? '\n' : ''));
   }
   if (o.json) console.log(JSON.stringify(o.urls.length === 1 ? results[0] : results, null, 2));
-  if (o.report) writeFileSync(o.report, formatMarkdown(results, lang));
+  if (o.report) {
+    mkdirSync(dirname(o.report), { recursive: true });
+    writeFileSync(o.report, formatMarkdown(results, lang));
+  }
   const min = Math.min(...results.map((r) => r.score));
   return Number.isFinite(o.failUnder) && min < o.failUnder ? 1 : 0;
 }

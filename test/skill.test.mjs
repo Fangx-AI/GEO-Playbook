@@ -50,3 +50,21 @@ test('bundled geo-audit script matches cli/geo-audit.mjs', () => {
   assert.equal(readFileSync('skills/geo-doctor/scripts/geo-audit.mjs', 'utf8'), readFileSync('cli/geo-audit.mjs', 'utf8'),
     'run: cp cli/geo-audit.mjs skills/geo-doctor/scripts/');
 });
+
+test('each skill ships its own license file for the standalone zip', () => {
+  for (const name of skills) {
+    const fm = frontmatter(readFileSync(join(ROOT, name, 'SKILL.md'), 'utf8'));
+    if (fm.license === 'MIT') assert.match(readFileSync(join(ROOT, name, 'LICENSE'), 'utf8'), /^MIT License/);
+  }
+});
+
+test('every fact-card entry carries an id, a source or address, and a status', () => {
+  const yaml = readFileSync('skills/geo-doctor/assets/fact-card.yaml', 'utf8');
+  const entries = yaml.split(/\n  - /).slice(1).map((e) => e.split(/\n(?=\S)/)[0]);
+  assert.ok(entries.length >= 20);
+  for (const e of entries) {
+    assert.match(e, /^编号: [A-Z]\d\d/, e);
+    assert.match(e, /\n {4}(来源|地址): /, e);
+    assert.match(e, /\n {4}状态: /, e);
+  }
+});
