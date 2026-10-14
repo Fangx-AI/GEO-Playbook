@@ -1,0 +1,39 @@
+name: ai-crawler-scan
+# Rebuilds docs/ai-crawler-leaderboard.md from the public robots.txt of the sites in data/sites-cn.txt.
+on:
+  workflow_dispatch:
+  schedule:
+    - cron: '0 2 1 * *'
+  push:
+    branches-ignore: [master]
+    paths: [data/sites-cn.txt, scripts/ai-crawler-scan.mjs, .github/workflows/ai-crawler-scan.yml]
+permissions:
+  contents: write
+concurrency:
+  group: ai-crawler-scan-${{ github.ref }}
+jobs:
+  scan:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 22
+      - run: node scripts/ai-crawler-scan.mjs
+        env:
+          SCAN_FROM: GitHub Actions（美国机房）
+      - run: cat docs/ai-crawler-leaderboard.md >> "$GITHUB_STEP_SUMMARY"
+      - uses: actions/upload-artifact@v4
+        with:
+          name: ai-crawler-scan
+          path: |
+            data/ai-crawler-scan.json
+            docs/ai-crawler-leaderboard.md
+      - name: Commit results
+        run: |
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git add data/ai-crawler-scan.json docs/ai-crawler-leaderboard.md
+          git diff --cached --quiet && exit 0
+          git commit -m "chore: refresh AI crawler leaderboard"
+          git push origin HEAD:${{ github.ref_name }}

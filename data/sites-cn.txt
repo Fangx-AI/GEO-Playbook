@@ -1,0 +1,99 @@
+# 中文网站 AI 爬虫封锁榜：扫描名单。格式：域名 | 名称 | 类别
+# 只读取公开的 robots.txt，每站 1 次请求。欢迎 PR 补充。
+www.baidu.com | 百度 | 搜索与门户
+www.sohu.com | 搜狐 | 搜索与门户
+www.163.com | 网易 | 搜索与门户
+www.sina.com.cn | 新浪 | 搜索与门户
+www.qq.com | 腾讯网 | 搜索与门户
+www.ifeng.com | 凤凰网 | 搜索与门户
+www.toutiao.com | 今日头条 | 资讯媒体
+www.thepaper.cn | 澎湃新闻 | 资讯媒体
+www.people.com.cn | 人民网 | 资讯媒体
+www.xinhuanet.com | 新华网 | 资讯媒体
+www.caixin.com | 财新 | 资讯媒体
+www.36kr.com | 36氪 | 资讯媒体
+www.huxiu.com | 虎嗅 | 资讯媒体
+www.ithome.com | IT之家 | 资讯媒体
+www.jiemian.com | 界面新闻 | 资讯媒体
+www.yicai.com | 第一财经 | 资讯媒体
+www.guancha.cn | 观察者网 | 资讯媒体
+www.zhihu.com | 知乎 | 社区内容
+www.douban.com | 豆瓣 | 社区内容
+www.xiaohongshu.com | 小红书 | 社区内容
+www.bilibili.com | 哔哩哔哩 | 社区内容
+weibo.com | 微博 | 社区内容
+tieba.baidu.com | 百度贴吧 | 社区内容
+www.jianshu.com | 简书 | 社区内容
+sspai.com | 少数派 | 社区内容
+www.douyin.com | 抖音 | 社区内容
+www.kuaishou.com | 快手 | 社区内容
+www.csdn.net | CSDN | 开发者
+juejin.cn | 稀土掘金 | 开发者
+www.cnblogs.com | 博客园 | 开发者
+segmentfault.com | 思否 | 开发者
+www.oschina.net | 开源中国 | 开发者
+gitee.com | Gitee | 开发者
+www.v2ex.com | V2EX | 开发者
+www.infoq.cn | InfoQ 中文 | 开发者
+www.runoob.com | 菜鸟教程 | 开发者
+www.taobao.com | 淘宝 | 电商
+www.tmall.com | 天猫 | 电商
+www.jd.com | 京东 | 电商
+www.pinduoduo.com | 拼多多 | 电商
+www.vip.com | 唯品会 | 电商
+www.suning.com | 苏宁易购 | 电商
+www.smzdm.com | 什么值得买 | 电商
+www.dangdang.com | 当当 | 电商
+www.meituan.com | 美团 | 本地生活
+www.dianping.com | 大众点评 | 本地生活
+www.ele.me | 饿了么 | 本地生活
+www.ctrip.com | 携程 | 本地生活
+www.qunar.com | 去哪儿 | 本地生活
+www.mafengwo.cn | 马蜂窝 | 本地生活
+www.ly.com | 同程旅行 | 本地生活
+www.58.com | 58同城 | 本地生活
+www.ke.com | 贝壳找房 | 本地生活
+www.autohome.com.cn | 汽车之家 | 垂直内容
+www.dongchedi.com | 懂车帝 | 垂直内容
+www.zol.com.cn | 中关村在线 | 垂直内容
+www.dxy.cn | 丁香园 | 垂直内容
+www.haodf.com | 好大夫在线 | 垂直内容
+www.xiachufang.com | 下厨房 | 垂直内容
+www.eastmoney.com | 东方财富 | 财经
+xueqiu.com | 雪球 | 财经
+www.hexun.com | 和讯 | 财经
+www.10jqka.com.cn | 同花顺 | 财经
+www.zhipin.com | BOSS直聘 | 招聘
+www.zhaopin.com | 智联招聘 | 招聘
+www.liepin.com | 猎聘 | 招聘
+www.mi.com | 小米 | 品牌官网
+www.huawei.com | 华为 | 品牌官网
+www.lenovo.com.cn | 联想 | 品牌官网
+www.byd.com | 比亚迪 | 品牌官网
+www.nio.com | 蔚来 | 品牌官网
+www.lixiang.com | 理想汽车 | 品牌官网
+www.xiaopeng.com | 小鹏汽车 | 品牌官网
+www.oppo.com | OPPO | 品牌官网
+www.vivo.com.cn | vivo | 品牌官网
+www.dji.com | 大疆 | 品牌官网
+www.haier.com | 海尔 | 品牌官网
+www.aliyun.com | 阿里云 | 云与 SaaS
+cloud.tencent.com | 腾讯云 | 云与 SaaS
+www.huaweicloud.com | 华为云 | 云与 SaaS
+www.volcengine.com | 火山引擎 | 云与 SaaS
+www.feishu.cn | 飞书 | 云与 SaaS
+www.dingtalk.com | 钉钉 | 云与 SaaS
+www.kdocs.cn | 金山文档 | 云与 SaaS
+www.yuque.com | 语雀 | 云与 SaaS
+www.youzan.com | 有赞 | 云与 SaaS
+www.mingdao.com | 明道云 | 云与 SaaS
+www.iqiyi.com | 爱奇艺 | 视频音乐
+v.qq.com | 腾讯视频 | 视频音乐
+www.youku.com | 优酷 | 视频音乐
+music.163.com | 网易云音乐 | 视频音乐
+www.ximalaya.com | 喜马拉雅 | 视频音乐
+www.xuetangx.com | 学堂在线 | 教育
+www.icourse163.org | 中国大学MOOC | 教育
+www.zuoyebang.com | 作业帮 | 教育
+www.youdao.com | 网易有道 | 教育
+www.cnki.net | 中国知网 | 教育
