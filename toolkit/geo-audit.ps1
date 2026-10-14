@@ -108,6 +108,8 @@ Write-Output ""
 Write-Output "④ 规范地址（canonical）"
 $canonTag = [regex]::Match($clean, '(?i)<link[^>]+rel=["'']?canonical["'']?[^>]*>').Value
 $canon = ([regex]::Match($canonTag, '(?i)href=["'']([^"'']+)')).Groups[1].Value
+# 相对地址（/pricing、pricing、//host/x）先补全成绝对地址再比较
+if ($canon) { try { $canon = ([Uri]::new([Uri]$final, $canon)).AbsoluteUri } catch { } }
 if (-not $canon) {
   Warn "原始 HTML 没有 canonical（不是错误，但重要页面建议加上）"
 } elseif ($canon.TrimEnd('/') -eq $final.TrimEnd('/')) {
