@@ -1,6 +1,6 @@
 # 🌍 国际平台规则：Google、Bing/Copilot、ChatGPT、Perplexity、Claude
 
-> [GEO 学习地图](../../README.md) › 平台规则 › 国际
+> [GEO 实战手册](../../README.md) › 平台规则 › 国际
 
 **每家平台的爬虫、控制开关和数据报表都不一样。这里只收官方原文，并告诉你每份文档能证明什么、不能证明什么。**
 
@@ -178,6 +178,6 @@
 
 ← [多语言实战](../playbooks/multilingual.md) · [🏠 目录](../../README.md) · [中文平台](china.md) →
 
-<sub>有帮助的话，回 [首页](../../README.md) 点个 ⭐ Star；发现错误或过时信息，欢迎 [提 Issue](https://github.com/Fangx-AI/geo-learning-map/issues/new/choose)。</sub>
+<sub>有帮助的话，回 [首页](../../README.md) 点个 ⭐ Star；发现错误或过时信息，欢迎 [提 Issue](https://github.com/Fangx-AI/GEO-Playbook/issues/new/choose)。</sub>
 
 </div>

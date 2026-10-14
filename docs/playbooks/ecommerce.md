@@ -1,6 +1,6 @@
 # 🛒 电商 GEO：让 AI 说对每一个 SKU
 
-> [GEO 学习地图](../../README.md) › 按项目实战 › 电商
+> [GEO 实战手册](../../README.md) › 按项目实战 › 电商
 
 **用户问“哪个规格适合我、现在能不能买”，AI 却拿错价格、错库存？从 3–10 个真实 SKU 开始对齐。**
 
@@ -71,6 +71,6 @@ checked_at,sku,field,page_value,feed_value,decision,owner,recheck
 
 ← [本地商家实战](local-business.md) · [🏠 目录](../../README.md) · [B2B 服务实战](b2b.md) →
 
-<sub>有帮助的话，回 [首页](../../README.md) 点个 ⭐ Star；发现错误或过时信息，欢迎 [提 Issue](https://github.com/Fangx-AI/geo-learning-map/issues/new/choose)。</sub>
+<sub>有帮助的话，回 [首页](../../README.md) 点个 ⭐ Star；发现错误或过时信息，欢迎 [提 Issue](https://github.com/Fangx-AI/GEO-Playbook/issues/new/choose)。</sub>
 
 </div>

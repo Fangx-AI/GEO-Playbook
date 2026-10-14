@@ -1,6 +1,6 @@
 # 🧩 独立产品 GEO 实战（SaaS / App / 桌面软件 / 插件）
 
-> [GEO 学习地图](../../README.md) › 按项目实战 › 独立产品
+> [GEO 实战手册](../../README.md) › 按项目实战 › 独立产品
 
 **AI 不知道你的产品适合谁，只推荐大品牌，或还在说旧版本？先统一事实，再做关键页面。**
 
@@ -118,6 +118,6 @@ App 的商店页应展示真实界面与功能；插件也应使用准确标题�
 
 ← [小程序实战](mini-program.md) · [🏠 目录](../../README.md) · [本地商家实战](local-business.md) →
 
-<sub>有帮助的话，回 [首页](../../README.md) 点个 ⭐ Star；发现错误或过时信息，欢迎 [提 Issue](https://github.com/Fangx-AI/geo-learning-map/issues/new/choose)。</sub>
+<sub>有帮助的话，回 [首页](../../README.md) 点个 ⭐ Star；发现错误或过时信息，欢迎 [提 Issue](https://github.com/Fangx-AI/GEO-Playbook/issues/new/choose)。</sub>
 
 </div>

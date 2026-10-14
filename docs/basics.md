@@ -1,6 +1,6 @@
 # ⚡ GEO 5 分钟入门：AI 是怎么决定提谁、引谁的
 
-> [GEO 学习地图](../README.md) › 入门
+> [GEO 实战手册](../README.md) › 入门
 
 **GEO（Generative Engine Optimization，生成式引擎优化）= 让 AI 搜索找得到你、说得对你、愿意引用你，并且让看到回答的人能顺利找到你。**
 
@@ -82,6 +82,6 @@ Google 官方的生成式搜索指南也明确：AI 功能使用的是已有的�
 
 [🏠 目录](../README.md) · [12 个 GEO 误区](myths.md) →
 
-<sub>有帮助的话，回 [首页](../README.md) 点个 ⭐ Star；发现错误或过时信息，欢迎 [提 Issue](https://github.com/Fangx-AI/geo-learning-map/issues/new/choose)。</sub>
+<sub>有帮助的话，回 [首页](../README.md) 点个 ⭐ Star；发现错误或过时信息，欢迎 [提 Issue](https://github.com/Fangx-AI/GEO-Playbook/issues/new/choose)。</sub>
 
 </div>

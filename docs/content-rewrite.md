@@ -1,6 +1,6 @@
 # ✍️ 改稿实战课：把一段广告文案改成 AI 会引用的页面
 
-> [GEO 学习地图](../README.md) › 核心技能 › 内容改稿
+> [GEO 实战手册](../README.md) › 核心技能 › 内容改稿
 
 **页面写满“领先、强大、可靠”，买家还是不知道适不适合、多少钱、怎么开始？用 16 道采购问题完整改一次。**
 
@@ -195,6 +195,6 @@ F08：没有已经确认的 SSO 支持范围，也没有竞品比较数据。
 
 ← [12 个 GEO 误区](myths.md) · [🏠 目录](../README.md) · [网站实战](playbooks/website.md) →
 
-<sub>有帮助的话，回 [首页](../README.md) 点个 ⭐ Star；发现错误或过时信息，欢迎 [提 Issue](https://github.com/Fangx-AI/geo-learning-map/issues/new/choose)。</sub>
+<sub>有帮助的话，回 [首页](../README.md) 点个 ⭐ Star；发现错误或过时信息，欢迎 [提 Issue](https://github.com/Fangx-AI/GEO-Playbook/issues/new/choose)。</sub>
 
 </div>

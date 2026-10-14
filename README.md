@@ -1,13 +1,13 @@
 <div align="center">
 
-# GEO 学习地图
+# GEO 实战手册 · GEO-Playbook
 
 ### 让豆包、DeepSeek、元宝、ChatGPT、Perplexity 找到你、说对你、引用你
 
 **中文 GEO（生成式引擎优化）实战地图：7 条行业路线 · 10 个提示词 · 1 个体检脚本 · 12 个误区辟谣**<br>
-不卖课，不吹涨幅。每条结论都附官方原文或研究出处，你可以自己点开核对。
+Get Cited by AI · 不卖课，不吹涨幅。每条结论都附官方原文或研究出处，你可以自己点开核对。
 
-[![GitHub stars](https://img.shields.io/github/stars/Fangx-AI/geo-learning-map?style=social)](https://github.com/Fangx-AI/geo-learning-map/stargazers)
+[![GitHub stars](https://img.shields.io/github/stars/Fangx-AI/GEO-Playbook?style=social)](https://github.com/Fangx-AI/GEO-Playbook/stargazers)
 [![资料核验](https://img.shields.io/badge/资料核验-2026--10--14-2ea44f)](#evidence)
 [![License: CC BY 4.0](https://img.shields.io/badge/License-CC%20BY%204.0-lightgrey.svg)](LICENSE)
 [![PRs Welcome](https://img.shields.io/badge/PRs-welcome-brightgreen.svg)](CONTRIBUTING.md)
@@ -50,7 +50,7 @@
 **② 检查 AI 能不能读到你的网站（5 分钟）**
 
 ```bash
-curl -O https://raw.githubusercontent.com/Fangx-AI/geo-learning-map/master/toolkit/geo-audit.sh
+curl -O https://raw.githubusercontent.com/Fangx-AI/GEO-Playbook/master/toolkit/geo-audit.sh
 bash geo-audit.sh https://你的网站/重要页面 "页面里的一句关键正文"
 ```
 
@@ -194,12 +194,12 @@ bash geo-audit.sh https://你的网站/重要页面 "页面里的一句关键正
 
 ## 🤝 参与贡献
 
-欢迎补充：**能公开分母和页面改动的中文平台案例**、新的官方文档、验证过的提示词、失败实验（没效果的实验同样有价值）。规则见 [CONTRIBUTING.md](CONTRIBUTING.md)，不熟悉 Git 可以直接 [提 Issue](https://github.com/Fangx-AI/geo-learning-map/issues/new/choose)。
+欢迎补充：**能公开分母和页面改动的中文平台案例**、新的官方文档、验证过的提示词、失败实验（没效果的实验同样有价值）。规则见 [CONTRIBUTING.md](CONTRIBUTING.md)，不熟悉 Git 可以直接 [提 Issue](https://github.com/Fangx-AI/GEO-Playbook/issues/new/choose)。
 
 **如果这份地图帮到了你，点个 ⭐ Star 是对我们最大的支持，也能让更多人看到它。**
 
-[![Star History Chart](https://api.star-history.com/svg?repos=Fangx-AI/geo-learning-map&type=Date)](https://star-history.com/#Fangx-AI/geo-learning-map&Date)
+[![Star History Chart](https://api.star-history.com/svg?repos=Fangx-AI/GEO-Playbook&type=Date)](https://star-history.com/#Fangx-AI/GEO-Playbook&Date)
 
 ---
 
-<sub>结构参考 [Maxime Labonne 的 LLM Course](https://github.com/mlabonne/llm-course)。原创文字、模板与图解采用 [CC BY 4.0](LICENSE)；脚本采用 [MIT](scripts/LICENSE)。外部文章、论文、代码、商标和图片保留各自权利。图片说明见 [assets/README.md](assets/README.md)。</sub>
+<sub>GEO-Playbook（GEOPlaybook）· GEO 实战手册 · AI 搜索优化 / GEO 优化中文指南。结构参考 [Maxime Labonne 的 LLM Course](https://github.com/mlabonne/llm-course)。原创文字、模板与图解采用 [CC BY 4.0](LICENSE)；脚本采用 [MIT](scripts/LICENSE)。外部文章、论文、代码、商标和图片保留各自权利。图片说明见 [assets/README.md](assets/README.md)。</sub>

@@ -1,6 +1,6 @@
 # 📍 本地生活商家 GEO 实战
 
-> [GEO 学习地图](../../README.md) › 按项目实战 › 本地商家
+> [GEO 实战手册](../../README.md) › 按项目实战 › 本地商家
 
 **顾客问 AI “附近哪家适合我”，你能不能被说对、被推荐、被导航到店？以一家社区咖啡店完整走一遍。**
 
@@ -128,6 +128,6 @@
 
 ← [独立产品实战](product.md) · [🏠 目录](../../README.md) · [电商实战](ecommerce.md) →
 
-<sub>有帮助的话，回 [首页](../../README.md) 点个 ⭐ Star；发现错误或过时信息，欢迎 [提 Issue](https://github.com/Fangx-AI/geo-learning-map/issues/new/choose)。</sub>
+<sub>有帮助的话，回 [首页](../../README.md) 点个 ⭐ Star；发现错误或过时信息，欢迎 [提 Issue](https://github.com/Fangx-AI/GEO-Playbook/issues/new/choose)。</sub>
 
 </div>

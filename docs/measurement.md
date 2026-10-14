@@ -1,6 +1,6 @@
 # 📏 测量：怎样知道 GEO 做完有没有用
 
-> [GEO 学习地图](../README.md) › 测量与研究 › 效果测量
+> [GEO 实战手册](../README.md) › 测量与研究 › 效果测量
 
 **偶尔被提到算有效吗？引用变多为什么没带来咨询？工具里的 visibility 到底怎么算？用 16 行数据跟算一次就懂。**
 
@@ -295,6 +295,6 @@ failure_rate=1/8 (12.5%)
 
 ← [中文平台](platforms/china.md) · [🏠 目录](../README.md) · [案例精读](cases.md) →
 
-<sub>有帮助的话，回 [首页](../README.md) 点个 ⭐ Star；发现错误或过时信息，欢迎 [提 Issue](https://github.com/Fangx-AI/geo-learning-map/issues/new/choose)。</sub>
+<sub>有帮助的话，回 [首页](../README.md) 点个 ⭐ Star；发现错误或过时信息，欢迎 [提 Issue](https://github.com/Fangx-AI/GEO-Playbook/issues/new/choose)。</sub>
 
 </div>
