@@ -46,7 +46,7 @@ const M = {
     redirects: (n, u) => `经过 ${n} 次跳转到 ${u}：站内链接和 sitemap 尽量直接用最终地址`,
     fetchFail: (e) => `请求失败：${e}（检查网络、证书或域名）`,
     robots404: '没有 robots.txt（404 表示不限制抓取）',
-    robotsOther: (c) => `robots.txt 返回 ${c}：5xx 时部分爬虫会暂停抓取整站，请人工确认`,
+    robotsOther: (c) => `robots.txt 返回 ${c}：按 RFC 9309，读不到 robots.txt 时爬虫会当作整站禁止抓取，先修好它`,
     searchOk: (n) => `${n} 个搜索类爬虫都可以抓取这个页面`,
     searchBlocked: (b) => `${b} 被 robots.txt 禁止抓取这个页面：它对应的搜索产品可能无法引用你`,
     trainBlocked: (b) => `训练用途的 ${b} 被禁止：不影响搜索可见性，如果是有意为之可忽略`,
@@ -66,6 +66,8 @@ const M = {
     phraseOk: (p) => `原始 HTML 里找到指定正文「${p}」`,
     phraseSplit: (p) => `「${p}」被标签拆开了，去掉标签后才能找到：多数爬虫能读，但尽量写成连续文字`,
     phraseMissing: (p) => `原始 HTML 里找不到「${p}」：可能依赖 JavaScript 渲染`,
+    phraseHidden: (p) => `「${p}」只出现在标签属性或 <head> 里（例如 meta description），正文里看不到`,
+    canonInvalid: (h) => `canonical 地址无法解析：${h}`,
     phraseInScript: (p) => `「${p}」只出现在 <script> 里（例如 JSON 数据），要运行 JavaScript 才会显示：不执行 JS 的爬虫看不到`,
     titleOk: (t) => `标题：${t}`,
     titleMissing: '没有 <title>',
@@ -108,7 +110,7 @@ const M = {
     redirects: (n, u) => `${n} redirect(s) to ${u}: link to the final URL internally and in sitemaps`,
     fetchFail: (e) => `Request failed: ${e} (check network, TLS or DNS)`,
     robots404: 'No robots.txt (404 means no crawl restrictions)',
-    robotsOther: (c) => `robots.txt returned ${c}: on 5xx some crawlers pause the whole site; check manually`,
+    robotsOther: (c) => `robots.txt returned ${c}: under RFC 9309 crawlers treat an unreachable robots.txt as "disallow everything"; fix it first`,
     searchOk: (n) => `All ${n} search crawlers may fetch this page`,
     searchBlocked: (b) => `${b} is disallowed from this page: its search product may not cite you`,
     trainBlocked: (b) => `Training token ${b} is disallowed: no effect on search visibility; ignore if intended`,
@@ -128,6 +130,8 @@ const M = {
     phraseOk: (p) => `Found "${p}" in the raw HTML`,
     phraseSplit: (p) => `"${p}" is split across tags and only matches after stripping them; most crawlers cope, but keep key facts in one run of text`,
     phraseMissing: (p) => `"${p}" is not in the raw HTML: it probably depends on JavaScript`,
+    phraseHidden: (p) => `"${p}" only appears in tag attributes or <head> (e.g. meta description), not in the visible body text`,
+    canonInvalid: (h) => `Canonical URL can't be parsed: ${h}`,
     phraseInScript: (p) => `"${p}" only appears inside <script> (e.g. JSON data) and needs JavaScript to show up: crawlers that don't run JS won't see it`,
     titleOk: (t) => `Title: ${t}`,
     titleMissing: 'No <title>',
@@ -194,6 +198,16 @@ export function parseRobots(text) {
   return { groups, sitemaps };
 }
 
+// RFC 9309 §2.2.2: compare paths in one encoding. Non-ASCII is percent-encoded,
+// escapes of unreserved characters are decoded, other escapes are upper-cased.
+export function normPath(s) {
+  return s.replace(/[^\x00-\x7f]+/gu, (m) => { try { return encodeURIComponent(m); } catch { return m; } })
+    .replace(/%[0-9a-f]{2}/gi, (m) => {
+      const c = String.fromCharCode(parseInt(m.slice(1), 16));
+      return /[A-Za-z0-9\-._~]/.test(c) ? c : m.toUpperCase();
+    });
+}
+
 function ruleMatches(pattern, path) {
   if (pattern === '') return false;
   let re = '';
@@ -212,10 +226,12 @@ export function isAllowed(robots, bot, path) {
   const named = robots.groups.filter((g) => g.agents.includes(token));
   if (named.length) rules = named.flatMap((g) => g.rules);
   else rules = robots.groups.filter((g) => g.agents.includes('*')).flatMap((g) => g.rules);
+  const target = normPath(path);
   let best = null;
   for (const r of rules) {
-    if (!ruleMatches(r.path, path)) continue;
-    const len = r.path.length;
+    const pattern = normPath(r.path);
+    if (!ruleMatches(pattern, target)) continue;
+    const len = pattern.length;
     if (!best || len > best.len || (len === best.len && r.allow && !best.allow)) best = { len, allow: r.allow };
   }
   return best ? best.allow : true;
@@ -307,19 +323,23 @@ export async function audit(url, opts = {}) {
 
   // robots.txt
   let robots = { groups: [], sitemaps: [] };
+  let robotsReadable = true;
   try {
     const r = await get(origin + '/robots.txt', BROWSER_UA);
     if (r.status >= 200 && r.status < 300) robots = parseRobots(r.body);
     else if (r.status >= 400 && r.status < 500) add('robots', 'pass', t.robots404, 0.5);
-    else add('robots', 'warn', t.robotsOther(r.status), 1);
+    else { robotsReadable = false; add('robots', 'fail', t.robotsOther(r.status), 3, true); }
   } catch (e) {
-    add('robots', 'warn', t.robotsOther(e.cause?.code || e.message), 1);
+    robotsReadable = false;
+    add('robots', 'fail', t.robotsOther(e.cause?.code || e.message), 3, true);
   }
-  const u = new URL(final); const path = u.pathname + u.search;
-  const blockedSearch = SEARCH_BOTS.filter((b) => !isAllowed(robots, b, path));
-  for (const b of blockedSearch) add('robots', 'fail', t.searchBlocked(b), 1.5, true);
-  if (!blockedSearch.length) add('robots', 'pass', t.searchOk(SEARCH_BOTS.length), 3);
-  for (const b of TRAINING_BOTS.filter((x) => !isAllowed(robots, x, path))) add('robots', 'info', t.trainBlocked(b), 0);
+  if (robotsReadable) {
+    const u = new URL(final); const path = u.pathname + u.search;
+    const blockedSearch = SEARCH_BOTS.filter((b) => !isAllowed(robots, b, path));
+    for (const b of blockedSearch) add('robots', 'fail', t.searchBlocked(b), 1.5, true);
+    if (!blockedSearch.length) add('robots', 'pass', t.searchOk(SEARCH_BOTS.length), 3);
+    for (const b of TRAINING_BOTS.filter((x) => !isAllowed(robots, x, path))) add('robots', 'info', t.trainBlocked(b), 0);
+  }
 
   // firewall / CDN probe
   if (opts.probe !== false && ok) {
@@ -354,10 +374,13 @@ export async function audit(url, opts = {}) {
   const canonHref = canonTag ? attr(canonTag, 'href') : null;
   if (!canonHref) add('canonical', 'warn', t.noCanon, 0.5);
   else {
-    const abs = new URL(canonHref, final).href;
-    const norm = (x) => x.replace(/#.*$/, '').replace(/\/$/, '');
-    const self = norm(abs) === norm(final);
-    add('canonical', self ? 'pass' : 'warn', self ? t.canonSelf(abs) : t.canonOther(abs), 1.5);
+    let abs = null;
+    try { abs = new URL(canonHref, final).href; } catch { add('canonical', 'warn', t.canonInvalid(canonHref), 1.5); }
+    if (abs) {
+      const norm = (x) => x.replace(/#.*$/, '').replace(/\/$/, '');
+      const self = norm(abs) === norm(final);
+      add('canonical', self ? 'pass' : 'warn', self ? t.canonSelf(abs) : t.canonOther(abs), 1.5);
+    }
   }
 
   // content
@@ -366,9 +389,9 @@ export async function audit(url, opts = {}) {
   add('content', chars >= 200 ? 'pass' : 'fail', chars >= 200 ? t.textOk(chars) : t.textThin(chars), 3, true);
   if (opts.phrase) {
     const squash = (s) => s.replace(/\s+/g, '');
-    const visible = clean.includes(opts.phrase) || text.includes(opts.phrase);
-    if (visible) add('content', 'pass', t.phraseOk(opts.phrase), 2);
+    if (text.includes(opts.phrase)) add('content', 'pass', t.phraseOk(opts.phrase), 2);
     else if (squash(text).includes(squash(opts.phrase))) add('content', 'warn', t.phraseSplit(opts.phrase), 2);
+    else if (clean.includes(opts.phrase) || decode(clean).includes(opts.phrase)) add('content', 'fail', t.phraseHidden(opts.phrase), 2);
     else if (html.includes(opts.phrase) || decode(html).includes(opts.phrase)) add('content', 'fail', t.phraseInScript(opts.phrase), 2);
     else add('content', 'fail', t.phraseMissing(opts.phrase), 2);
   }

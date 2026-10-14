@@ -22,13 +22,18 @@ const routes = {
   '/missing': () => [404, {}, 'not found'],
   '/waf': (req) => (/bot/i.test(req.headers['user-agent']) && !/GEO-Playbook/.test(req.headers['user-agent'])
     ? [403, {}, 'blocked'] : [200, {}, page('')]),
+  '/bad-canon': () => [200, {}, page('<link rel="canonical" href="http://[">')],
+  '/meta-only': () => [200, {}, page('<meta property="og:description" content="旗舰版每月 999 元">')],
   '/jsonld': () => [200, {}, page('<script type="application/ld+json">{"@context":"https://schema.org","@graph":[{"@type":"Product"},{"@type":"Offer"}]}</script>')],
 };
 
 before(async () => {
   server = createServer((req, res) => {
     const path = req.url.split('?')[0];
-    if (path === '/robots.txt') { res.writeHead(200, { 'content-type': 'text/plain' }); return res.end(robots); }
+    if (path === '/robots.txt') {
+      const [st, txt] = typeof robots === 'number' ? [robots, ''] : [200, robots];
+      res.writeHead(st, { 'content-type': 'text/plain' }); return res.end(txt);
+    }
     const r = routes[path];
     if (!r) { res.writeHead(404); return res.end(); }
     const [status, headers, body] = r(req);
@@ -57,6 +62,13 @@ test('robots: wildcards and $', () => {
   assert.equal(isAllowed(r, 'Bingbot', '/a.pdf?x=1'), true);
   assert.equal(isAllowed(r, 'Bingbot', '/search?q=1'), false);
   assert.equal(isAllowed(r, 'Bingbot', '/searching'), true);
+});
+
+test('robots: non-ASCII and percent-encoded paths compare in one encoding (RFC 9309)', () => {
+  const r = parseRobots('User-agent: *\nDisallow: /私有/\nDisallow: /%7Euser/\n');
+  assert.equal(isAllowed(r, 'Googlebot', new URL('https://x/私有/a').pathname), false);
+  assert.equal(isAllowed(r, 'Googlebot', '/~user/page'), false);
+  assert.equal(isAllowed(r, 'Googlebot', '/公开/a'), true);
 });
 
 test('healthy page scores 100', async () => {
@@ -116,6 +128,28 @@ test('robots blocking a search bot fails, training bot is info only', async () =
   } finally {
     robots = 'User-agent: *\nAllow: /\n';
   }
+});
+
+test('unreachable robots.txt (5xx) is a critical failure, not a pass', async () => {
+  robots = 503;
+  try {
+    const r = await audit(base + '/good', { lang: 'en', probe: false });
+    assert.match(find(r, 'robots', 'fail')[0].msg, /503/);
+    assert.equal(find(r, 'robots', 'pass').length, 0);
+    assert.ok(r.score <= 60);
+  } finally {
+    robots = 'User-agent: *\nAllow: /\n';
+  }
+});
+
+test('malformed canonical is a warning, not a crash', async () => {
+  const r = await audit(base + '/bad-canon', { lang: 'en', probe: false });
+  assert.match(find(r, 'canonical', 'warn')[0].msg, /can't be parsed/);
+});
+
+test('phrase only in a head attribute does not count as visible', async () => {
+  const r = await audit(base + '/meta-only', { lang: 'en', probe: false, phrase: '旗舰版每月 999 元' });
+  assert.match(find(r, 'content', 'fail')[0].msg, /attributes or <head>/);
 });
 
 test('firewall probe detects UA-based blocking', async () => {
