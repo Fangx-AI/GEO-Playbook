@@ -1,6 +1,6 @@
 name: GEO Audit
 description: Check that AI search crawlers (ChatGPT, Perplexity, Claude, Google, Bing…) can read your pages. Fails the job when the score drops.
-author: GEO-Playbook
+author: Geo-Doctor
 branding:
   icon: search
   color: green

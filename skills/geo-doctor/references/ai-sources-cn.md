@@ -42,7 +42,7 @@
 | 百家号 | 文心 | https://baijiahao.baidu.com/builder/author/info/manual |
 | 小红书专业号 / 千帆 | 研究显示 AI 引用很少（见下） | https://pro.xiaohongshu.com/qualification · https://ark.xiaohongshu.com/ |
 
-> 小红书提醒：QuestMobile 发现小红书在旅游目的地类问题中**不在任何 AI 的引用 TOP10** [36氪](https://eu.36kr.com/zh/p/3826839508210560)；而我们的 [AI 爬虫封锁榜](https://github.com/Fangx-AI/GEO-Playbook/blob/master/docs/ai-crawler-leaderboard.md) 显示，小红书的 robots.txt 挡住了 ChatGPT、Perplexity、Claude 的搜索爬虫。小红书对种草和成交有用，但不要把它当成 GEO 的主阵地。
+> 小红书提醒：QuestMobile 发现小红书在旅游目的地类问题中**不在任何 AI 的引用 TOP10** [36氪](https://eu.36kr.com/zh/p/3826839508210560)；而我们的 [AI 爬虫封锁榜](https://github.com/Fangx-AI/Geo-Doctor/blob/master/docs/ai-crawler-leaderboard.md) 显示，小红书的 robots.txt 挡住了 ChatGPT、Perplexity、Claude 的搜索爬虫。小红书对种草和成交有用，但不要把它当成 GEO 的主阵地。
 
 ## 常见但没有证据的说法
 

@@ -21,7 +21,7 @@
 
 **不合格的提交**：只写“优化了权威性”；只留表现最好的一次回答；只有百分比没有计数；把概念图当实测截图；把模拟数据写成客户成绩。
 
-> 🙌 做完了？欢迎用 [Issue](https://github.com/Fangx-AI/GEO-Playbook/issues/new/choose) 分享你的项目（可以脱敏），优秀作品会收录进案例库。
+> 🙌 做完了？欢迎用 [Issue](https://github.com/Fangx-AI/Geo-Doctor/issues/new/choose) 分享你的项目（可以脱敏），优秀作品会收录进案例库。
 
 ---
 
@@ -29,6 +29,6 @@
 
 ← [工具选择](tools.md) · [🏠 目录](../README.md)
 
-<sub>有帮助的话，回 [首页](../README.md) 点个 ⭐ Star；发现错误或过时信息，欢迎 [提 Issue](https://github.com/Fangx-AI/GEO-Playbook/issues/new/choose)。</sub>
+<sub>有帮助的话，回 [首页](../README.md) 点个 ⭐ Star；发现错误或过时信息，欢迎 [提 Issue](https://github.com/Fangx-AI/Geo-Doctor/issues/new/choose)。</sub>
 
 </div>

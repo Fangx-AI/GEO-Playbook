@@ -15,7 +15,7 @@ node <skill 目录的绝对路径>/scripts/geo-audit.mjs https://用户网址 --
 - 一次可以查多个页面，用空格隔开：首页、产品页、价格页、帮助中心各挑一个。
 - `--phrase` 选一句**用户最希望 AI 引用**的话，例如价格、核心功能、适用人群。
 - 联网受限时先记录实际限制；仅在当前环境明确要求授权且尚未获得授权时请求一次，不重复索要已获授权。
-- 找不到脚本时，可以用 `npx github:Fangx-AI/GEO-Playbook 网址 --report geo/audit.md` 代替。
+- 找不到脚本时，可以用 `npx github:Fangx-AI/Geo-Doctor 网址 --report geo/audit.md` 代替。
 
 ### 不能运行命令时
 

@@ -195,6 +195,6 @@ F08：没有已经确认的 SSO 支持范围，也没有竞品比较数据。
 
 ← [12 个 GEO 误区](myths.md) · [🏠 目录](../README.md) · [网站实战](playbooks/website.md) →
 
-<sub>有帮助的话，回 [首页](../README.md) 点个 ⭐ Star；发现错误或过时信息，欢迎 [提 Issue](https://github.com/Fangx-AI/GEO-Playbook/issues/new/choose)。</sub>
+<sub>有帮助的话，回 [首页](../README.md) 点个 ⭐ Star；发现错误或过时信息，欢迎 [提 Issue](https://github.com/Fangx-AI/Geo-Doctor/issues/new/choose)。</sub>
 
 </div>

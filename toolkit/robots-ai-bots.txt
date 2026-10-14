@@ -1,6 +1,6 @@
 # =====================================================================
 # AI 爬虫 robots.txt 模板 · GEO 实战手册
-# https://github.com/Fangx-AI/GEO-Playbook
+# https://github.com/Fangx-AI/Geo-Doctor
 #
 # 核验日期：2026-10-14。规则以各平台官方文档当前版本为准（链接见下）。
 #
