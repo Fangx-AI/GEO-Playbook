@@ -1,0 +1,5 @@
+query_id,family_id,category,query_text,brand_type,source,correct_answer_basis,fact_ids,notes
+Q01,F-choose,A 非品牌发现,（用户原话，不含品牌名）,non_brand,客服工单 #123,应推荐满足约束的选项；若推荐我们，需说明限制,F01;F02,
+Q02,F-price,B 品牌事实,（例：XX 25 人一个月多少钱？）,own_brand,销售记录,399 元/月（按标准月费口径）,F02,
+Q03,F-exclude,C 限制排除,（我们不适合的场景）,non_brand,人工构造,正确答案应排除我们,F01,至少占题集 20%
+Q04,F-fix,D 故障使用,（例：导入后搜不到内容先查什么？）,own_brand,帮助中心搜索词,应先检查文件类型与 OCR,F03,

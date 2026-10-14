@@ -1,0 +1,88 @@
+# =====================================================================
+# AI 爬虫 robots.txt 模板 · GEO 学习地图
+# https://github.com/Fangx-AI/geo-learning-map
+#
+# 核验日期：2026-10-14。规则以各平台官方文档当前版本为准（链接见下）。
+#
+# 核心原则：搜索、训练、用户触发是三件事，分开决定。
+#   ✅ 搜索机器人：决定你能否出现在该平台的 AI 搜索回答里，一般建议放行
+#   ⚖️ 训练机器人：决定内容是否可能用于训练模型，是商业决策，与搜索可见性无关
+#   👤 用户触发：用户让 AI 打开某个链接时的访问，部分平台说明可能不遵循 robots.txt
+#
+# 注意：
+#   1. robots.txt 只管“抓取”，不保护隐私数据。私密内容请用登录/权限控制。
+#   2. CDN / WAF（如 Cloudflare）拦截同样会挡住爬虫，改完 robots 还要查防火墙规则。
+#   3. 只改 User-Agent 字符串测试，不能证明真实爬虫可访问；请用官方 IP 列表核对日志。
+#   4. 把下面的 /private/ 等路径换成你自己的实际路径；不需要的段落直接删掉。
+# =====================================================================
+
+# ---------- 传统搜索（AI 搜索也建立在它们的索引上） ----------
+# Google Search 的 AI Overviews / AI Mode 使用 Googlebot 的索引
+# https://developers.google.com/search/docs/fundamentals/ai-optimization-guide
+User-agent: Googlebot
+Allow: /
+
+# Bing 索引，Microsoft Copilot 的 grounding 依赖它
+User-agent: bingbot
+Allow: /
+
+# 百度搜索
+User-agent: Baiduspider
+Allow: /
+
+# ---------- ✅ AI 搜索机器人：建议放行 ----------
+# ChatGPT 搜索  https://developers.openai.com/api/docs/bots
+User-agent: OAI-SearchBot
+Allow: /
+
+# Perplexity 搜索  https://docs.perplexity.ai/docs/resources/perplexity-crawlers
+User-agent: PerplexityBot
+Allow: /
+
+# Claude 搜索  https://support.claude.com/en/articles/8896518
+User-agent: Claude-SearchBot
+Allow: /
+
+# ---------- 👤 用户触发访问 ----------
+# 用户在对话里让 AI 读取你的链接。官方文档说明：
+#   ChatGPT-User 不是自动爬虫，其请求可能不适用 robots.txt；
+#   Perplexity-User 通常忽略 robots.txt；
+#   Claude-User 遵循 robots.txt。
+User-agent: ChatGPT-User
+Allow: /
+
+User-agent: Perplexity-User
+Allow: /
+
+User-agent: Claude-User
+Allow: /
+
+# ---------- ⚖️ 训练用途：按你的商业决定二选一 ----------
+# 屏蔽它们不会让你从对应平台的搜索结果中消失（搜索由上面的机器人负责）。
+# Google-Extended 是用途控制标记，不是独立爬虫；官方明确它不影响 Google Search 收录和排名。
+#   https://developers.google.com/crawling/docs/crawlers-fetchers/google-common-crawlers#google-extended
+#
+# 方案 A：允许训练（默认，无需写任何规则）
+# 方案 B：拒绝训练，取消下面几行的注释
+# User-agent: GPTBot
+# Disallow: /
+#
+# User-agent: ClaudeBot
+# Disallow: /
+#
+# User-agent: Google-Extended
+# Disallow: /
+
+# ---------- 所有爬虫的通用规则 ----------
+User-agent: *
+Disallow: /admin/
+Disallow: /cart/
+Disallow: /checkout/
+Disallow: /search?
+
+# 告诉爬虫你的 sitemap 在哪里（改成你的真实地址）
+Sitemap: https://example.com/sitemap.xml
+
+# ---------- 国产 AI 平台 ----------
+# 截至核验日，豆包、DeepSeek、元宝、Kimi、千问都没有公开“AI 搜索专用爬虫”的完整官方说明。
+# 不要照抄网上流传的名单。请在服务器日志里查看实际来访的 User-Agent 与 IP，再决定规则。
