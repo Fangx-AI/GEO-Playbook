@@ -15,6 +15,14 @@
 
 支持安装技能的 Agent 可先发送以下内容；如果当前产品只能读取网页或附件，它可能只能在本次会话使用这些材料。
 
+README 给用户的是最短的一句：
+
+```text
+帮我安装这个 skill：https://github.com/Fangx-AI/GEO-Playbook/tree/master/skills/geo-doctor
+```
+
+实测时用下面的完整版，方便记录安装结果：
+
 ```text
 请安装 GEO 医生：
 https://github.com/Fangx-AI/GEO-Playbook/tree/master/skills/geo-doctor
@@ -62,6 +70,8 @@ $skill-installer 请从 Fangx-AI/GEO-Playbook 安装 skills/geo-doctor，保留�
 ### 豆包
 
 记录具体是手机 App、网页、桌面端还是“豆包工作”及当前模式。先尝试对话安装，保存回复和实际安装证据。官方[自动任务模式说明](https://www.doubao.com/work/docs/zh-cn/articles/340417925583-auto-tasks)介绍了技能选择和本地工作环境能力；本项目在手机普通对话中是否能安装、跨会话保留或执行脚本，仍待实测。
+
+**实测 2026-10-14（豆包普通对话，具体客户端待补）**：发送 README 的一句话安装提示后，豆包回复"这个 skill 不是豆包平台的 skill，不能直接在豆包对话里安装运行"，并给出 Claude Code 的手动安装、`npx skills add` 和对话安装三种方式。回复里描述的功能（llms.txt 校验、E-E-A-T 诊断、P0/P1/P2 清单）本 skill 并没有，说明它很可能没有真正读取仓库内容。结论：豆包普通对话不能安装；"豆包工作"等模式仍待实测。
 
 若只能读附件，将结果记为“会话内使用”；继续按运行能力测试资料读取和内容生成，不虚构技能菜单，也不直接判整个豆包产品不支持技能。
 
