@@ -4,7 +4,7 @@
 
 ### 一句话，让 AI 帮你做完一整套 GEO：<br>查清豆包、DeepSeek、元宝为什么不推荐你，改对资料，写好内容，告诉你发到哪，再测有没有用
 
-**开源的中文 GEO（生成式引擎优化）skill**，装进 Claude Code、Codex、Kimi、WorkBuddy、豆包就能用。<br>
+**开源的中文 GEO（生成式引擎优化）skill**，装进 Claude Code、Codex、Kimi、WorkBuddy 等能装技能的 AI 助手就能用。<br>
 不用服务器，不用网页，不保排名，只给证据。
 
 [![GitHub stars](https://img.shields.io/github/stars/Fangx-AI/GEO-Playbook?style=social)](https://github.com/Fangx-AI/GEO-Playbook/stargazers)
@@ -49,7 +49,7 @@
 
 ## 📦 安装：复制一句话发给你的 AI
 
-在豆包、WorkBuddy、扣子、Kimi、Codex、Claude Code 等支持技能的 AI 里，新开一个对话，发送：
+在 Claude Code、Codex、Kimi Code、WorkBuddy 等能安装技能的 AI 助手里，新开一个对话，发送：
 
 ```text
 帮我安装这个 skill：https://github.com/Fangx-AI/GEO-Playbook/tree/master/skills/geo-doctor
@@ -57,6 +57,8 @@
 
 装好后说：**"用 GEO 医生帮我看看 https://你的网站"**。
 
+> 豆包、DeepSeek 这类普通聊天 App 目前装不了技能（2026-10-14 在豆包 App 实测），但它们正是 GEO 医生要优化的对象：在能装技能的助手里诊断，采样时再去豆包里问。
+>
 > 各平台的对话安装还在逐一实测，结果会更新在[安装指南](docs/install.md)。AI 说"装不了"或打不开链接时，可以用下面的方式，或[提 issue](https://github.com/Fangx-AI/GEO-Playbook/issues/new/choose) 告诉我们是哪个平台。
 
 <details>
