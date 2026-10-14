@@ -1,5 +1,7 @@
 name: skill-package
 # Builds geo-doctor.zip for platforms that install skills by upload (豆包, WorkBuddy, 扣子, TRAE).
+# Releases get the zip attached whether they come from a pushed v* tag, the GitHub web UI,
+# or a manual run with a tag name (to re-attach the zip to an existing release).
 on:
   push:
     branches: [master]
@@ -9,6 +11,11 @@ on:
     paths: [skills/**]
   release:
     types: [published]
+  workflow_dispatch:
+    inputs:
+      tag:
+        description: Release tag to attach geo-doctor.zip to, e.g. v0.1.0
+        required: true
 permissions:
   contents: write
 jobs:
@@ -16,17 +23,21 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v4
+        with:
+          ref: ${{ inputs.tag || github.ref }}
       - run: mkdir -p dist && cd skills && zip -qr ../dist/geo-doctor.zip geo-doctor
       - uses: actions/upload-artifact@v4
         with:
           name: geo-doctor
           path: dist/geo-doctor.zip
-      - if: startsWith(github.ref, 'refs/tags/v')
-        # Pushing a tag such as v0.1.0 publishes a release with the zip attached.
-        run: gh release create "$GITHUB_REF_NAME" dist/geo-doctor.zip --title "GEO 医生 $GITHUB_REF_NAME" --generate-notes
+      - if: inputs.tag || github.event_name == 'release' || startsWith(github.ref, 'refs/tags/v')
+        # Upload to the release if it already exists (web UI, or the other trigger won the race); otherwise create it.
+        run: |
+          if gh release view "$TAG" >/dev/null 2>&1; then
+            gh release upload "$TAG" dist/geo-doctor.zip --clobber
+          else
+            gh release create "$TAG" dist/geo-doctor.zip --title "GEO 医生 $TAG" --generate-notes || gh release upload "$TAG" dist/geo-doctor.zip --clobber
+          fi
         env:
           GH_TOKEN: ${{ github.token }}
-      - if: github.event_name == 'release'
-        run: gh release upload "${{ github.event.release.tag_name }}" dist/geo-doctor.zip --clobber
-        env:
-          GH_TOKEN: ${{ github.token }}
+          TAG: ${{ inputs.tag || github.event.release.tag_name || github.ref_name }}
