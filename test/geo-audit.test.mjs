@@ -2,7 +2,7 @@
 import { test, before, after } from 'node:test';
 import assert from 'node:assert/strict';
 import { createServer } from 'node:http';
-import { audit, parseRobots, isAllowed, parseArgs, formatMarkdown } from '../cli/geo-audit.mjs';
+import { audit, parseRobots, isAllowed, parseArgs, formatMarkdown, visibleText } from '../cli/geo-audit.mjs';
 
 const BODY = '<p>' + '团队版每月 299 元，含 20 个席位，超出部分每席 20 元。'.repeat(12) + '</p>';
 const page = (head, body = BODY, lang = ' lang="zh-CN"') =>
@@ -12,6 +12,9 @@ let server; let base;
 let robots = 'User-agent: *\nAllow: /\nSitemap: http://example.invalid/sitemap.xml\n';
 const routes = {
   '/good': () => [200, {}, page('<link rel="canonical" href="/good">')],
+  '/short': () => [200, {}, page('<link rel="canonical" href="/short">', '<p>团队版每月 299 元，含 20 个席位。</p>')],
+  '/empty': () => [200, {}, '<html><head><title>价格</title></head><body><div id="app"></div></body></html>'],
+  '/invalid-entity': () => [200, {}, page('', BODY + '<p>&#x110000; &#99999999;</p>')],
   '/href-first': () => [200, {}, page('<link href="/href-first" rel="canonical">')],
   '/canon-home': () => [200, {}, page('<link rel="canonical" href="/">')],
   '/noindex': () => [200, {}, page('<meta\n  name="robots"\n  content="noindex, follow">')],
@@ -77,6 +80,29 @@ test('healthy page scores 100', async () => {
   assert.equal(r.score, 100);
 });
 
+test('short readable pages are not penalized solely for character count', async () => {
+  for (const lang of ['en', 'zh']) {
+    const r = await audit(base + '/short', { lang, probe: false, phrase: '团队版每月 299 元' });
+    assert.equal(find(r, 'content', 'fail').length, 0);
+    assert.equal(r.score, 100);
+    assert.ok(find(r, 'content', 'info').length > 0, 'short text gets a verification reminder');
+  }
+});
+
+test('empty bodies still trigger a critical content failure', async () => {
+  const r = await audit(base + '/empty', { probe: false });
+  assert.ok(find(r, 'content', 'fail').some((c) => c.critical));
+  assert.ok(r.score <= 60);
+});
+
+test('invalid numeric HTML references cannot crash text extraction or an audit', async () => {
+  assert.equal(visibleText('<p>&#x110000; &#99999999; &#0; &#xD800;</p>'), '� � � �');
+  assert.equal(visibleText('<p>&#65; &#x1F600; &amp;</p>'), 'A 😀 &');
+  const r = await audit(base + '/invalid-entity');
+  assert.equal(find(r, 'access', 'fail').length, 0);
+  assert.ok(find(r, 'content', 'pass').length > 0);
+});
+
 test('canonical: attribute order and relative URLs', async () => {
   for (const p of ['/good', '/href-first']) {
     const r = await audit(base + p, { lang: 'en', probe: false });
@@ -94,10 +120,9 @@ test('noindex in multi-line meta and in header', async () => {
   assert.match(find(b, 'index', 'fail')[0].msg, /X-Robots-Tag/);
 });
 
-test('JS shell: thin text and phrase only inside a script', async () => {
+test('JS shell: a requested fact only inside a script still fails', async () => {
   const r = await audit(base + '/shell', { lang: 'en', probe: false, phrase: '团队版每月 299 元' });
   const fails = find(r, 'content', 'fail').map((c) => c.msg).join('\n');
-  assert.match(fails, /JS-rendered shell/);
   assert.match(fails, /only appears inside <script>/);
 });
 
@@ -175,6 +200,36 @@ test('argument parsing', () => {
   assert.equal(o.phrase, 'x y');
   assert.equal(o.failUnder, 80);
   assert.equal(o.probe, false);
+});
+
+test('invalid CLI option values are rejected rather than silently ignored', () => {
+  for (const flag of ['--phrase', '--report', '--lang', '--fail-under']) {
+    assert.throws(() => parseArgs(['a.com', flag]), /requires a value/);
+    assert.throws(() => parseArgs(['a.com', flag, '--json']), /requires a value/);
+  }
+  for (const value of ['eighty', 'NaN', 'Infinity', '-1', '101', '', ' ']) {
+    assert.throws(() => parseArgs(['a.com', '--fail-under', value]), /--fail-under/);
+  }
+  assert.throws(() => parseArgs(['a.com', '--lang', 'fr']), /--lang/);
+  assert.throws(() => parseArgs(['a.com', '--report', '']), /--report/);
+  for (const value of ['0', '80.5', '100']) {
+    assert.equal(parseArgs(['a.com', '--fail-under', value]).failUnder, Number(value));
+  }
+});
+
+test('CLI exits 2 with a useful error for an invalid CI threshold', async () => {
+  const { execFile } = await import('node:child_process');
+  const { promisify } = await import('node:util');
+  await assert.rejects(
+    promisify(execFile)(process.execPath, [new URL('../cli/geo-audit.mjs', import.meta.url).pathname,
+      base + '/good', '--no-probe', '--fail-under', 'eighty'], { timeout: 5000 }),
+    (error) => {
+      assert.equal(error.code, 2);
+      assert.match(error.stderr, /--fail-under/);
+      assert.equal(error.stdout, '', 'invalid options must not start an audit');
+      return true;
+    },
+  );
 });
 
 test('--report creates missing folders', async () => {

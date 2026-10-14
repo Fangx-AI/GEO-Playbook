@@ -63,7 +63,8 @@ const M = {
     canonSelf: (u) => `canonical 指向本页：${u}`,
     canonOther: (u) => `canonical 指向别处：${u}（产品页误指首页很常见）`,
     textOk: (n) => `原始 HTML 里有约 ${n} 字正文`,
-    textThin: (n) => `原始 HTML 只有约 ${n} 字正文：可能是 JS 渲染的空壳页，部分 AI 爬虫读不到`,
+    textEmpty: '原始 HTML 未提取到正文：检查页面是否为空、依赖 JavaScript 或需要登录',
+    textShort: '正文较短：字数本身不决定是否可被读取或引用，建议用 --phrase 核对关键事实；提取到文字不代表内容充分',
     phraseOk: (p) => `原始 HTML 里找到指定正文「${p}」`,
     phraseSplit: (p) => `「${p}」被标签拆开了，去掉标签后才能找到：多数爬虫能读，但尽量写成连续文字`,
     phraseMissing: (p) => `原始 HTML 里找不到「${p}」：可能依赖 JavaScript 渲染`,
@@ -92,7 +93,7 @@ const M = {
   --phrase "文字"     检查这句正文是否在原始 HTML 里（建议填价格、型号等关键句）
   --json              输出 JSON
   --report 文件.md    另存一份 Markdown 报告
-  --fail-under 分数   得分低于该值时退出码为 1（用于 CI）
+  --fail-under 分数   0–100；低于该值退出码为 1，参数无效为 2（用于 CI）
   --lang zh|en        输出语言（默认跟随系统）
   --no-probe          跳过“用 AI 爬虫 UA 访问”的防火墙检查
   -h, --help          显示帮助
@@ -127,7 +128,8 @@ const M = {
     canonSelf: (u) => `Canonical points to this page: ${u}`,
     canonOther: (u) => `Canonical points elsewhere: ${u} (product pages pointing at the homepage is common)`,
     textOk: (n) => `About ${n} characters of text in the raw HTML`,
-    textThin: (n) => `Only about ${n} characters of text in the raw HTML: likely a JS-rendered shell some AI crawlers cannot read`,
+    textEmpty: 'No body text extracted from the raw HTML: check for an empty page, JavaScript rendering or a login requirement',
+    textShort: 'Short body text: length alone does not determine readability or citations. Use --phrase to verify key facts; extracted text does not establish content completeness',
     phraseOk: (p) => `Found "${p}" in the raw HTML`,
     phraseSplit: (p) => `"${p}" is split across tags and only matches after stripping them; most crawlers cope, but keep key facts in one run of text`,
     phraseMissing: (p) => `"${p}" is not in the raw HTML: it probably depends on JavaScript`,
@@ -156,7 +158,7 @@ Options:
   --phrase "text"     check that this sentence is in the raw HTML (use a price, model, key fact)
   --json              print JSON
   --report file.md    also write a Markdown report
-  --fail-under N      exit 1 when the score is below N (for CI)
+  --fail-under N      0–100; exit 1 below N, exit 2 for invalid options (for CI)
   --lang zh|en        output language (default: system locale)
   --no-probe          skip the "fetch with AI crawler user-agents" firewall check
   -h, --help          show help
@@ -252,7 +254,13 @@ export function cleanHtml(html) {
 const ENTITIES = { amp: '&', lt: '<', gt: '>', quot: '"', apos: "'", nbsp: ' ' };
 function decode(s) {
   return s.replace(/&(#x[0-9a-f]+|#\d+|[a-z]+);/gi, (m, e) => {
-    if (e[0] === '#') return String.fromCodePoint(e[1].toLowerCase() === 'x' ? parseInt(e.slice(2), 16) : parseInt(e.slice(1), 10));
+    if (e[0] === '#') {
+      const cp = e[1].toLowerCase() === 'x' ? parseInt(e.slice(2), 16) : parseInt(e.slice(1), 10);
+      // HTML numeric-reference error recovery: replace invalid Unicode values.
+      // https://html.spec.whatwg.org/multipage/parsing.html#numeric-character-reference-end-state
+      if (!Number.isFinite(cp) || cp === 0 || cp > 0x10FFFF || (cp >= 0xD800 && cp <= 0xDFFF)) return '\uFFFD';
+      return String.fromCodePoint(cp);
+    }
     return ENTITIES[e.toLowerCase()] ?? m;
   });
 }
@@ -387,7 +395,9 @@ export async function audit(url, opts = {}) {
   // content
   const text = visibleText(clean);
   const chars = [...text].length;
-  add('content', chars >= 200 ? 'pass' : 'fail', chars >= 200 ? t.textOk(chars) : t.textThin(chars), 3, true);
+  // Report extraction, not a minimum word-count requirement or a rendering diagnosis.
+  add('content', chars > 0 ? 'pass' : 'fail', chars > 0 ? t.textOk(chars) : t.textEmpty, 3, true);
+  if (chars > 0 && chars < 200) add('content', 'info', t.textShort, 0);
   if (opts.phrase) {
     const squash = (s) => s.replace(/\s+/g, '');
     if (text.includes(opts.phrase)) add('content', 'pass', t.phraseOk(opts.phrase), 2);
@@ -489,13 +499,27 @@ export function formatMarkdown(results, lang) {
 
 export function parseArgs(argv) {
   const o = { urls: [], json: false, probe: true };
+  const valueFor = (flag, value) => {
+    if (value === undefined || !value.trim() || value.startsWith('--') || ['-h', '-v'].includes(value)) {
+      throw new Error(`${flag} requires a value`);
+    }
+    return value;
+  };
   for (let i = 0; i < argv.length; i++) {
     const a = argv[i];
-    if (a === '--phrase') o.phrase = argv[++i];
+    if (a === '--phrase') o.phrase = valueFor(a, argv[++i]);
     else if (a === '--json') o.json = true;
-    else if (a === '--report') o.report = argv[++i];
-    else if (a === '--fail-under') o.failUnder = Number(argv[++i]);
-    else if (a === '--lang') o.lang = argv[++i];
+    else if (a === '--report') o.report = valueFor(a, argv[++i]);
+    else if (a === '--fail-under') {
+      o.failUnder = Number(valueFor(a, argv[++i]));
+      if (!Number.isFinite(o.failUnder) || o.failUnder < 0 || o.failUnder > 100) {
+        throw new Error('--fail-under must be a finite number between 0 and 100');
+      }
+    }
+    else if (a === '--lang') {
+      o.lang = valueFor(a, argv[++i]);
+      if (!['zh', 'en'].includes(o.lang)) throw new Error('--lang must be zh or en');
+    }
     else if (a === '--no-probe') o.probe = false;
     else if (a === '-h' || a === '--help') o.help = true;
     else if (a === '-v' || a === '--version') o.version = true;
@@ -512,7 +536,9 @@ function detectLang() {
 }
 
 export async function main(argv) {
-  const o = parseArgs(argv);
+  let o;
+  try { o = parseArgs(argv); }
+  catch (e) { console.error(e.message); return 2; }
   const lang = o.lang === 'zh' || o.lang === 'en' ? o.lang : detectLang();
   if (o.version) { console.log(VERSION); return 0; }
   if (o.help || !o.urls.length || o.unknown) { console.log(M[lang].usage); return o.help ? 0 : 2; }
