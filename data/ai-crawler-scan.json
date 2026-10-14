@@ -1,5 +1,5 @@
 {
- "scannedAt": "2026-10-14T05:52:29.515Z",
+ "scannedAt": "2026-10-14T05:55:02.586Z",
  "from": "GitHub Actions（美国机房）",
  "bots": [
   {
@@ -436,24 +436,10 @@
    "domain": "www.guancha.cn",
    "name": "观察者网",
    "category": "资讯媒体",
-   "status": 200,
-   "robotsUrl": "https://www.guancha.cn/robots.txt",
-   "state": "ok",
-   "allowed": {
-    "Baiduspider": true,
-    "Googlebot": true,
-    "Bingbot": true,
-    "OAI-SearchBot": true,
-    "ChatGPT-User": true,
-    "PerplexityBot": true,
-    "Claude-SearchBot": true,
-    "GPTBot": true,
-    "ClaudeBot": true,
-    "Google-Extended": true,
-    "Bytespider": true,
-    "CCBot": true
-   },
-   "robots": "User-agent: *\nDisallow: /Search/\nDisallow: /Search/*\nDisallow: /df888/\nDisallow: /df888/*\n"
+   "status": null,
+   "error": "UND_ERR_CONNECT_TIMEOUT",
+   "state": "error",
+   "allowed": null
   },
   {
    "domain": "www.zhihu.com",
@@ -614,7 +600,7 @@
     "Bytespider": true,
     "CCBot": true
    },
-   "robots": "<!DOCTYPE HTML PUBLIC \"-//IETF//DTD HTML 2.0//EN\"><html><head><title>403 Forbidden</title></head><body><h1>403 Forbidden</h1><p>You don't have permission to access the URL on this server.</p><p>denied by UA ACL = blacklist</p><hr/>Powered by Tengine <br/>CDN Request Id: 9b6682a217919571226672815e</body></html>"
+   "robots": "<!DOCTYPE HTML PUBLIC \"-//IETF//DTD HTML 2.0//EN\"><html><head><title>403 Forbidden</title></head><body><h1>403 Forbidden</h1><p>You don't have permission to access the URL on this server.</p><p>denied by UA ACL = blacklist</p><hr/>Powered by Tengine <br/>CDN Request Id: 9b66829517919572755425114e</body></html>"
   },
   {
    "domain": "sspai.com",
@@ -666,10 +652,24 @@
    "domain": "www.kuaishou.com",
    "name": "快手",
    "category": "社区内容",
-   "status": null,
-   "error": "UND_ERR_CONNECT_TIMEOUT",
-   "state": "error",
-   "allowed": null
+   "status": 200,
+   "robotsUrl": "https://www.kuaishou.com/robots.txt",
+   "state": "ok",
+   "allowed": {
+    "Baiduspider": true,
+    "Googlebot": true,
+    "Bingbot": true,
+    "OAI-SearchBot": true,
+    "ChatGPT-User": true,
+    "PerplexityBot": true,
+    "Claude-SearchBot": false,
+    "GPTBot": true,
+    "ClaudeBot": false,
+    "Google-Extended": false,
+    "Bytespider": false,
+    "CCBot": false
+   },
+   "robots": "User-agent: Baiduspider\nAllow: /\n\nUser-agent: Baiduspider-video\nAllow: /\n    \nUser-agent: Googlebot\nAllow: /\n        \nUser-agent: YoudaoBot\nAllow: /\n        \nUser-agent: Sogou web spider\nAllow: /\n        \nUser-agent: Sogou inst spider\nAllow: /\n    \nUser-agent: 360Spider\nAllow: /\n    \nUser-agent: bingbot\nAllow: /\n\nUser-agent: PerplexityBot\nAllow: /\n\nUser-agent: Perplexity-User\nAllow: /\n\nUser-agent: GPTBot\nAllow: /\n\nUser-agent: ChatGPT-User\nAllow: /\n\nUser-agent: OAI-SearchBot\nAllow: /\n\nUser-agent: deepseekbot\nAllow: /\n    \nUser-agent: *\nDisallow: /\n\nSitemap: https://www.kuaishou.com/sitemap.xml\n    "
   },
   {
    "domain": "www.csdn.net",
@@ -974,24 +974,10 @@
    "domain": "www.vip.com",
    "name": "唯品会",
    "category": "电商",
-   "status": 200,
-   "robotsUrl": "https://www.vip.com/robots.txt",
-   "state": "ok",
-   "allowed": {
-    "Baiduspider": true,
-    "Googlebot": true,
-    "Bingbot": true,
-    "OAI-SearchBot": true,
-    "ChatGPT-User": true,
-    "PerplexityBot": true,
-    "Claude-SearchBot": true,
-    "GPTBot": true,
-    "ClaudeBot": true,
-    "Google-Extended": true,
-    "Bytespider": true,
-    "CCBot": true
-   },
-   "robots": "User-agent: *\r\nDisallow: /*?*\r\nDisallow: /act/\r\nDisallow: /activity.php*\r\nDisallow: /affiche.php*\r\nDisallow: /cate-*.html\r\nDisallow: /detail-148172-19504085.html\r\nDisallow: /show-314816.html\r\nDisallow: /show-320114.html\r\nDisallow: /show-320118.html\r\nDisallow: /show-320121.html\r\nDisallow: /show-320124.html\r\nDisallow: /show-320122.html\r\nDisallow: /show-320121.html\r\nDisallow: /show-320120.html\r\nDisallow: /show-320119.html\r\nDisallow: /show-320115.html\r\nDisallow: /show-320114.html\r\nDisallow: /show-322901.html\r\nDisallow: /show-322902.html\r\nDisallow: /show-322903.html\r\nDisallow: /show-322904.html\r\nDisallow: /show-322765.html\r\nDisallow: /show-322769.html\r\nDisallow: /show-323928.html\r\nDisallow: /show-323986.html\r\nDisallow: /show-323475.html\r\nDisallow: /show-323471.html\r\nDisallow: /show-323347.html\r\nDisallow: /show-323768.html\r\nDisallow: /show-323774.html\r\nDisallow: /show-323992.html\r\nDisallow: /show-323110.html\r\nDisallow: /show-317006.html\r\nDisallow: /show-317317.html\r\nDisallow: /show-317005.html\r\nDisallow: /detail-314816-*.html\r\nDisallow: /detail-320114-*.html\r\nDisallow: /detail-320118-*.html\r\nDisallow: /detail-320121-*.html\r\nDisallow: /detail-320124-*.html\r\nDisallow: /detail-320122-*.html\r\nDisallow: /detail-320121-*.html\r\nDisallow: /detail-320120-*.html\r\nDisallow: /detail-320119-*.html\r\nDisallow: /detail-320115-*.html\r\nDisallow: /detail-320114-*.html\r\nDisallow: /detail-322901-*.html\r\nDisallow: /detail-322902-*.html\r\nDisallow: /detail-322903-*.html\r\nDisallow: /detail-322904-*.html\r\nDisallow: /detail-322765-*.html\r\nDisallow: /detail-322769-*.html\r\nDisallow: /detail-323928-*.html\r\nDisallow: /detail-323986-*.html\r\nDisallow: /detail-323475-*.html\r\nDisallow: /detail-323471-*.html\r\nDisallow: /detail-323347-*.html\r\nDisallow: /detail-323768-*.html\r\nDisallow: /detail-323774-*.html\r\nDisallow: /detail-323992-*.html\r\nDisallow: /detail-323110-*.html\r\nDisallow: /detail-317006-*.html\r\nDisallow: /detail-317317-*.html\r\nDisallow: /detail-317005-*.html"
+   "status": null,
+   "error": "ETIMEDOUT",
+   "state": "error",
+   "allowed": null
   },
   {
    "domain": "www.suning.com",
@@ -1043,24 +1029,10 @@
    "domain": "www.dangdang.com",
    "name": "当当",
    "category": "电商",
-   "status": 200,
-   "robotsUrl": "http://www.dangdang.com/null.html",
-   "state": "none",
-   "allowed": {
-    "Baiduspider": true,
-    "Googlebot": true,
-    "Bingbot": true,
-    "OAI-SearchBot": true,
-    "ChatGPT-User": true,
-    "PerplexityBot": true,
-    "Claude-SearchBot": true,
-    "GPTBot": true,
-    "ClaudeBot": true,
-    "Google-Extended": true,
-    "Bytespider": true,
-    "CCBot": true
-   },
-   "robots": "<!DOCTYPE html PUBLIC \"-//W3C//DTD XHTML 1.0 Transitional//EN\" \"http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd\">\r\n<html xmlns=\"http://www.w3.org/1999/xhtml\">\r\n    <head>\r\n        <meta http-equiv=\"Content-Type\" content=\"text/html; charset=gb2312\" />\r\n        <title>�Բ�����Ҫ���ʵ�ҳ����ʱû���ҵ���</title>\r\n        <!--<link href=\"/static/style/notfound404.css?140805\" rel=\"stylesheet\" type=\"text/css\" />\r\n        <script type=\"text/javascript\" src=\"/Found/pagetop_2012.js?0419\"></script>\r\n        <script type=\"text/javascript\" src=\"/static/script/jquery-1.4.2.min.js\"></script>-->\r\n       \r\n        <script type=\"text/javascript\" src=\"http://img13.ddimg.cn/mix/js/jquery.js\"></script>\r\n\r\n        <style>\r\n            html{font-family:\"Microsoft YaHei\",\"Simsun\";font-size:12px;}\r\n            body,h1,h2,h3,h4,h5,h6,p,ol,ul,dl,dd,td,th,form,input,select,textarea{margin:0;padding:0;color:#333;}\r\n            a{text-decoration:none;outline:none;}\r\n            img{border:none;vertical-align:top;}\r\n            li{list-style:none;}\r\n            .clearfix:after {clear:both;content:\" \";display:block;font-size:0;height:0;visibility:hidden}\r\n            .clearfix {zoom:1}\r\n\r\n            .null_wrap{width:1200px;margin:0 auto;background:#fff;overflow:hidden;}\r\n            .null_pic{width:320px;height:227px;margin:0 auto;padding:25px 0 0 480px; background:url(http://img60.ddimg.cn/upload_img/00111/404/error_01.jpg) no-repeat 0 25px; overflow:hidden;}\r\n            .null_pic .title{font:14px/24px \"Microsoft YaHei\";color:#888;padding:40px 0 15px;}\r\n            .null_pic .btn{overflow:hidden;}\r\n            .null_pic .btn a,.null_pic .btn a:hover{float:left;height:38px;font:18px/36px \"Microsoft YaHei\";padding:0 20px;background:#ff2832;text-decoration:none;color:#fff;text-align:center;border-radius:3px;margin-right:20px;overflow:hidden;_display:inline;}\r\n            .null_pic .btn a:hover{background:#f00000;}\r\n\r\n            .my_ads { border:1px solid #dcdcdc; margin-bottom:15px;width:1198px; overflow:hidden;}\r\n            .ads_tab {line-height:40px;height:40px;padding-left:20px;}\r\n            .ads_tab li a,.ads_tab li a:hover{ color:#323232; padding:0 3px; font:18px/40px \"Microsoft YaHei\";height:40px;float:left;}\r\n            .show_list .arrow { position:absolute; width:34px; height:70px; background-image:url(http://img60.ddimg.cn/upload_img/00111/404/arrow_ad.png); top:50%; margin-top:-53px; opacity:0.8; filter:alpha(opacity=80);}\r\n            .show_list .arrow:hover { opacity:1; filter:alpha(opacity=100);}\r\n            .show_list .left {left:0;background-position:0 -112px;}\r\n            .show_list .right { right:0; background-position:-34px -112px;}\r\n            .show_list .unable, .show_list .unable:hover {opacity:0.3; filter:alpha(opacity=30); cursor:default;}\r\n            .my_ads .ads_box{clear:both;width:1198px; margin:0 auto; overflow:hidden;background: url(\"http://img63.ddimg.cn/upload_img/00111/gg/guanggao02.png\") no-repeat 1171px 291px;padding-bottom: 18px;}\r\n            .show_list { position:relative;width:1194px;padding:0 2px; overflow:hidden}\r\n            .show_box li .gpic { display:inline-block; width:150px; height:150px; margin:10px 0;}\r\n            .show_box li .sale { background-color:#ff2832; color:#fff; display:inline-block; padding:0 2px; margin:0 0 0 8px;}\r\n            .my_ads .show_box { width:10000px;overflow:hidden;padding:0 0 10px;}\r\n            .my_ads .show_box .hid{ display: none;}\r\n            .my_ads .show_box li {width:150px; border:none 0;height:280px;padding:0 24px 0 25px; text-align:center; float:left; color:#323232; line-height:16px;}\r\n            \r\n            .my_ads .show_box li:hover { background-color:#f9f9f9;}\r\n            .my_ads .show_box li a { color:#323232;}\r\n            .my_ads .show_box li a:hover { color:#ff2832;}\r\n            .my_ads .show_box li p { text-align:left; line-height:14px; width:150px; height:28px; overflow:hidden;}\r\n            .my_ads .show_box li p .price { font-size:16px; color:#ff2832; line-height:32px;}\r\n            .my_ads .show_box li .btn_add,.my_ads .show_box li .btn_add:hover{ width:150px; margin-top:6px; height:32px; display:block; background-color:#ff2832; color:#fff; text-align:center; border-radius:2px; font:14px/32px \"Microsoft Yahei\";}\r\n            .my_ads .show_box li .btn_add:hover { color:#fff; background-color:#d21f2b;}\r\n        </style>\r\n    </head>\r\n    <body>\r\n        <script>var accessbilityUrl = \"//static.dangdang.com/fed/accessbility/1.0.0/accessbility.min.js\";var accessbilitySwitch = \"1\";</script>\r\n<script type=\"text/javascript\" defer=\"\" async=\"\" src=\"//static.dangdang.com/js/header2012/pagetop_accessbility.min.js?v=20230626\" ></script><script type=\"text/javascript\">\r\n    </script>\r\n<link href=\"//static.dangdang.com/css/header2012/header_150803.css?20211105\" rel=\"stylesheet\" type=\"text/css\">\r\n<script charset=\"gb2312\" type=\"text/javascript\">var width = 1; narrow = 0;</script>\r\n<script src=\"//static.dangdang.com/js/header2012/pagetop2015_0827.js?20211105\" charset=\"gb2312\" type=\"text/javascript\"></script>\r\n<script src=\"//static.dangdang.com/js/header2012/dd.menu-aim.js?20211105\" charset=\"gb2312\" type=\"text/javascript\"></script>\r\n\r\n\r\n<div id=\"hd\">\r\n<div id=\"tools\">\n  <div class=\"tools\">\n    <div class=\"ddnewhead_operate\" dd_name=\"������\">\n      <div class=\"ddnewhead_area\">\n        <a href=\"javascript:void(0);\" id=\"area_one\" class=\"ddnewhead_area_a\" onmouseover=\"show_area_list();\"\n          onmouseout=\"hidden_area_list();\">������<span id=\"curent_area\"></span></a>\n        <ul class=\"ddnewhead_area_list\" style=\"display: none;\" id=\"area_list\" onmouseover=\"this.style.display='block';\"\n          onmouseout=\"this.style.display='none';\">\n          <li><a href=\"javascript:void(0);\" onclick=\"change_area('111','����')\" num=\"111\">����</a></li>\n          <li><a href=\"javascript:void(0);\" onclick=\"change_area('112','���')\" num=\"112\">���</a></li>\n          <li><a href=\"javascript:void(0);\" onclick=\"change_area('113','�ӱ�')\" num=\"113\">�ӱ�</a></li>\n          <li><a href=\"javascript:void(0);\" onclick=\"change_area('114','ɽ��')\" num=\"114\">ɽ��</a></li>\n          <li><a href=\"javascript:void(0);\" onclick=\"change_area('115','���ɹ�')\" num=\"115\">���ɹ�</a></li>\n          <li><a href=\"javascript:void(0);\" onclick=\"change_area('121','����')\" num=\"121\">����</a></li>\n          <li><a href=\"javascript:void(0);\" onclick=\"change_area('122','����')\" num=\"122\">����</a></li>\n          <li><a href=\"javascript:void(0);\" onclick=\"change_area('123','������')\" num=\"123\">������</a></li>\n          <li><a href=\"javascript:void(0);\" onclick=\"change_area('131','�Ϻ�')\" num=\"131\">�Ϻ�</a></li>\n          <li><a href=\"javascript:void(0);\" onclick=\"change_area('132','����')\" num=\"132\">����</a></li>\n          <li><a href=\"javascript:void(0);\" onclick=\"change_area('133','�㽭')\" num=\"133\">�㽭</a></li>\n          <li><a href=\"javascript:void(0);\" onclick=\"change_area('134','����')\" num=\"134\">����</a></li>\n          <li><a href=\"javascript:void(0);\" onclick=\"change_area('135','����')\" num=\"135\">����</a></li>\n          <li><a href=\"javascript:void(0);\" onclick=\"change_area('136','����')\" num=\"136\">����</a></li>\n          <li><a href=\"javascript:void(0);\" onclick=\"change_area('137','ɽ��')\" num=\"137\">ɽ��</a></li>\n          <li><a href=\"javascript:void(0);\" onclick=\"change_area('141','����')\" num=\"141\">����</a></li>\n          <li><a href=\"javascript:void(0);\" onclick=\"change_area('142','����')\" num=\"142\">����</a></li>\n          <li><a href=\"javascript:void(0);\" onclick=\"change_area('143','����')\" num=\"143\">����</a></li>\n          <li><a href=\"javascript:void(0);\" onclick=\"change_area('144','�㶫')\" num=\"144\">�㶫</a></li>\n          <li><a href=\"javascript:void(0);\" onclick=\"change_area('145','����')\" num=\"145\">����</a></li>\n          <li><a href=\"javascript:void(0);\" onclick=\"change_area('146','����')\" num=\"146\">����</a></li>\n          <li><a href=\"javascript:void(0);\" onclick=\"change_area('150','����')\" num=\"150\">����</a></li>\n          <li><a href=\"javascript:void(0);\" onclick=\"change_area('151','�Ĵ�')\" num=\"151\">�Ĵ�</a></li>\n          <li><a href=\"javascript:void(0);\" onclick=\"change_area('152','����')\" num=\"152\">����</a></li>\n          <li><a href=\"javascript:void(0);\" onclick=\"change_area('153','����')\" num=\"153\">����</a></li>\n          <li><a href=\"javascript:void(0);\" onclick=\"change_area('154','����')\" num=\"154\">����</a></li>\n          <li><a href=\"javascript:void(0);\" onclick=\"change_area('161','����')\" num=\"161\">����</a></li>\n          <li><a href=\"javascript:void(0);\" onclick=\"change_area('162','����')\" num=\"162\">����</a></li>\n          <li><a href=\"javascript:void(0);\" onclick=\"change_area('163','�ຣ')\" num=\"163\">�ຣ</a></li>\n          <li><a href=\"javascript:void(0);\" onclick=\"change_area('164','����')\" num=\"164\">����</a></li>\n          <li><a href=\"javascript:void(0);\" onclick=\"change_area('165','�½�')\" num=\"165\">�½�</a></li>\n          <li><a href=\"javascript:void(0);\" onclick=\"change_area('171','̨��')\" num=\"171\">̨��</a></li>\n          <li><a href=\"javascript:void(0);\" onclick=\"change_area('172','���')\" num=\"172\">���</a></li>\n          <li><a href=\"javascript:void(0);\" onclick=\"change_area('173','����')\" num=\"173\">����</a></li>\n          <li><a href=\"javascript:void(0);\" onclick=\"change_area('174','���㵺')\" num=\"174\">���㵺</a></li>\n        </ul>\n      </div>\n\n      <div style=\"float:right\">\n        <div class=\"ddnewhead_welcome\" display=\"none;\" style=\"float:left\">\n          <span id=\"nickname\"><span class=\"hi hi_none\">��ӭ���ٵ�������</span><a\n              href=\"https://login.dangdang.com/signin.aspx?returnurl=http%3A//www.dangdang.com/\"\n              class=\"login_link\">��¼</a><a href=\"https://login.dangdang.com/Register.aspx\">���ע��</a></span>\n          <div class=\"tel_pop\" style=\"display:none\" id=\"__ddnav_sjdd\"\n            onmouseover=\"showgaoji('a_phonechannel','__ddnav_sjdd');\"\n            onmouseout=\"hideotherchannel('a_phonechannel','__ddnav_sjdd');\">\n            <a target=\"_blank\" href=\"http://t.dangdang.com/20130220_ydmr\" class=\"title\"><i\n                class=\"icon_tel\"></i>�ֻ�����</a><i class=\"title_shadow\"></i>\n            <ul class=\"tel_pop_box\">\n              <li><a href=\"http://t.dangdang.com/20130220_ydmr\" dd_name=\"�ֻ���ά��\"><span>�����ֻ��ͻ���</span><img\n                    src=\"//img3.ddimg.cn/00363/doc/erweima2.png\"><span class=\"text\">���ֲ鶩��<br>��ʱ���Ż�</span></a></li>\n            </ul>\n          </div>\n        </div>\n\n        <div class=\"new_head_znx\" id=\"znx_content\" style=\"display:none;float:left;\"></div>\n\n        <ul class=\"ddnewhead_operate_nav\" style=\"float:left\">\n          <li><a target=\"_blank\" href=\"http://e.dangdang.com/ebook/listUserEbooks.do\" name=\"�ҵ����鷿\"\n              dd_name=\"�ҵ����鷿\">�ҵ����鷿</a></li>\n          <li class=\"my_dd\"><a class=\"menu_btn\" target=\"_blank\" href=\"http://myhome.dangdang.com/\" name=\"�ҵĵ���\"\n              dd_name=\"�ҵĵ���\" id=\"a_myddchannel\" onmouseover=\"showgaoji('a_myddchannel','__ddnav_mydd')\"\n              onmouseout=\"hideotherchannel('a_myddchannel','__ddnav_mydd');\">�ҵĵ���</a>\n            <ul class=\"ddnewhead_gcard_list\" id=\"__ddnav_mydd\" onmouseover=\"showgaoji('a_myddchannel','__ddnav_mydd')\"\n              onmouseout=\"hideotherchannel('a_myddchannel','__ddnav_mydd');\">\n              <li><a target=\"_blank\" href=\"http://myhome.dangdang.com/myOrder\" name=\"mydd_7\" dd_name=\"��_�ҵĶ���\">�ҵĶ���</a>\n              </li>\n              <li><a target=\"_blank\" href=\"http://shopping.dangdang.com/shoppingcart/shopping_cart.aspx\" name=\"mydd_8\"\n                  dd_name=\"��_���ﳵ\" rel=\"nofollow\">���ﳵ</a></li>\n              <li><a target=\"_blank\" href=\"http://myhome.dangdang.com/mypoint?ref=my-0-L\" name=\"mydd_4\" dd_name=\"����������\"\n                  rel=\"nofollow\">����������</a></li>\n              <li><a target=\"_blank\" href=\"http://myhome.dangdang.com/myFavorite\" name=\"mydd_1\" dd_name=\"�ҵ��ղ�\"\n                  rel=\"nofollow\">�ҵ��ղ�</a></li>\n              <li><a target=\"_blank\" href=\"http://noncash.dangdang.com/balance/\" name=\"mydd_5\" dd_name=\"�ҵ����\"\n                  rel=\"nofollow\">�ҵ����</a></li>\n              <li><a target=\"_blank\" href=\"http://comment.dangdang.com/comment\" name=\"mydd_4\" dd_name=\"�ҵ�����\"\n                  rel=\"nofollow\">�ҵ�����</a></li>\n              <li><a target=\"_blank\" href=\"http://newaccount.dangdang.com/payhistory/mycoupon.aspx\" name=\"mydd_2\"\n                  dd_name=\"��ȯ/��Ʒ��\" rel=\"nofollow\">��ȯ/��Ʒ��</a></li>\n            </ul>\n          </li>\n          <li class=\"pc_mina\"><a class=\"menu_btn\" target=\"_blank\" href=\"http://t.dangdang.com/pintuan_list\" name=\"����ƴ��\"\n              dd_name=\"����ƴ��\" id=\"a_minachannel\" onmouseover=\"showgaoji('a_minachannel','__ddnav_mina')\"\n              onmouseout=\"hideotherchannel('a_minachannel','__ddnav_mina');\">����ƴ��</a>\n            <ul class=\"ddnewhead_gcard_list\" id=\"__ddnav_mina\" onmouseover=\"showgaoji('a_minachannel','__ddnav_mina')\"\n              onmouseout=\"hideotherchannel('a_minachannel','__ddnav_mina');\">\n              <!--\n                    <li><a target=\"_blank\" href=\"http://t.dangdang.com/freetry_list\" name=\"mina_1\" dd_name=\"0Ԫ����\" rel=\"nofollow\">0Ԫ����</a></li>\n            -->\n              <li><a target=\"_blank\" href=\"http://t.dangdang.com/pintuan_list\" name=\"mina_2\" dd_name=\"����ƴ��\"\n                  rel=\"nofollow\">����ƴ��</a></li>\n              <!--\n                    <li><a target=\"_blank\" href=\"http://t.dangdang.com/kanjia_list\" name=\"mina_3\" dd_name=\"1Ԫ����\" rel=\"nofollow\">1Ԫ����</a></li>\n                    <li><a target=\"_blank\" href=\"http://t.dangdang.com/choujiang_list\" name=\"mina_4\" dd_name=\"1�ֳ齱\" rel=\"nofollow\">1�ֳ齱</a></li>\n            -->\n            </ul>\n          </li>\n          <li><a target=\"_blank\" href=\"http://e.dangdang.com/media/h5/pc/zhuangti/zhengwen2017/essay.html\" name=\"mydd_7\"\n              dd_name=\"С˵Ͷ��\">С˵Ͷ��</a></li>\n          <li><a class=\"menu_btn\" href=\"javascript:void(0);\" style=\"cursor:default;\" name=\"qycg\" dd_name=\"��ҵ�ɹ�\"\n              id=\"a_qycgchannel\" onmouseover=\"showgaoji('a_qycgchannel','__ddnav_qycg');\"\n              onmouseout=\"hideotherchannel('a_qycgchannel','__ddnav_qycg');\">��ҵ�ɹ�</a>\n            <ul class=\"ddnewhead_gcard_list\" id=\"__ddnav_qycg\" onmouseover=\"showgaoji('a_qycgchannel','__ddnav_qycg');\"\n              onmouseout=\"hideotherchannel('a_qycgchannel','__ddnav_qycg');\">\n              <li><a target=\"_blank\" href=\"http://giftcard.dangdang.com/giftcardCompany\" name=\"qycg_1\"\n                  dd_name=\"��ҵ/����\">��ҵ/����</a></li>\n              <li><a target=\"_blank\" href=\"http://giftcard.dangdang.com/\" name=\"qycg_2\" dd_name=\"��Ʒ���ɹ�\">��Ʒ���ɹ�</a></li>\n              <li><a target=\"_blank\" href=\"http://newaccount.dangdang.com/payhistory/mymoney.aspx\" name=\"gqycg_3\"\n                  dd_name=\"��Ʒ������\" rel=\"nofollow\">��Ʒ������</a></li>\n              <li><a target=\"_blank\" href=\"http://help.dangdang.com/details/page24\" name=\"qycg_4\"\n                  dd_name=\"��Ʒ��ʹ��\">��Ʒ��ʹ��</a></li>\n              <li><a target=\"_blank\" href=\"http://b2b.dangdang.com\" name=\"qycg_5\" dd_name=\"����/����\">����/����</a></li>\n              <li><a target=\"_blank\" href=\"http://giftcard.dangdang.com/goods?type=mall\" name=\"qycg_6\"\n                  dd_name=\"��Ʒ��ר��\">��Ʒ��ר��</a></li>\n            </ul>\n          </li>\n          <li class=\"hover \"><a class=\"menu_btn\" href=\"javascript:void(0);\" style=\"cursor:default;\" name=\"ddkf_0\"\n              dd_name=\"�ͻ�����\" id=\"a_bzzxchannel\" onmouseover=\"showgaoji('a_bzzxchannel','__ddnav_bzzx');\"\n              onmouseout=\"hideotherchannel('a_bzzxchannel','__ddnav_bzzx');\">�ͻ�����</a>\n            <ul class=\"ddnewhead_gcard_list\" id=\"__ddnav_bzzx\" onmouseover=\"showgaoji('a_bzzxchannel','__ddnav_bzzx');\"\n              onmouseout=\"hideotherchannel('a_bzzxchannel','__ddnav_bzzx');\">\n              <li><a target=\"_blank\" href=\"http://help.dangdang.com/index\" name=\"ddkf_2\" dd_name=\"��������\">��������</a></li>\n              <li><a target=\"_blank\" href=\"http://return.dangdang.com/reverseapplyselect.aspx\" name=\"ddkf_3\"\n                  dd_name=\"�����˻���\">�����˻���</a></li>\n              <li><a target=\"_blank\" href=\"http://order.dangdang.com/InvoiceApply/InvoiceOnlineReissue.aspx\"\n                  name=\"tsjy_2\" dd_name=\"������Ʊ\" rel=\"nofollow\">������Ʊ</a></li>\n              <li><a target=\"_blank\" href=\"http://help.dangdang.com/details/page206\" name=\"ddkf_4\"\n                  dd_name=\"��ϵ�ͷ�\">��ϵ�ͷ�</a>\n              </li>\n              <li><a target=\"_blank\" href=\"http://help.dangdang.com/details/page206\" name=\"tsjy_1\" dd_name=\"��ҪͶ��\"\n                  rel=\"nofollow\">��ҪͶ��</a></li>\n            </ul>\n          </li>\n        </ul>\n\n      </div>\n    </div>\n  </div>\n</div>\n<div id=\"header_end\"></div>\r\n<!--CreateDate  2025-12-11 00:00:01--><div style=\"position:relative;\" class=\"logo_line_out\" ddaccregion=\"mutual\">\n<div class=\"logo_line\" dd_name=\"������\">\n    <div class=\"logo\"><img src=\"http://img60.ddimg.cn/2022/12/13/2022121310164598761.png\" usemap=\"#logo_link\"/>\r\n                         <map name=\"logo_link\" id=\"logo_link\" dd_name=\"logo��\" ><area shape=\"rect\" coords=\"0,18,200,93\" href=\"http://www.dangdang.com\" title=\"����\" onfocus=\"this.blur();\" tabindex=\"-1\">\r\n                         <area shape=\"rect\" coords=\"200,18,320,93\" href=\"http://www.dangdang.com/\" title=\"����\" target=\"_blank\" onfocus=\"this.blur();\" tabindex=\"-1\"></map></div>\n    <div class=\"search\">\n        <form action=\"//search.dangdang.com\" name=\"searchform\"  id=\"form_search_new\" onsubmit=\"return searchsubmit();\"  method=\"GET\">\n            <label  for=\"key_S\" class=\"label_search\" id=\"label_key\" onclick=\"this.style.color='rgb(255, 255, 255)';\" style=\"visibility: visible; color: rgb(102, 102, 102);\" >������Ʒ</label>\n            <input type=\"text\" class=\"text gray\"  name=\"key\" ID=\"key_S\" autocomplete=\"off\" onclick=\"key_onclick(event);\" onfocus=\"key_onfocus(event);\"  onblur=\"key_onblur();\" onbeforepaste=\"onpaste_search();\"/><a href=\"javascript:void(0);\" onclick=\"clearkeys();\" class=\"del-keywords\" tabindex=\"-1\"></a><span class=\"select\"  onmouseover=\"allCategoryShow();\"  onmouseleave=\"allCategoryHide();\" onmouseout='if(\"\\v\"!=\"v\"){ allCategoryHide();}'><span id=\"Show_Category_Name\" dd_name=\"ȫ������\">ȫ������</span><span class=\"icon\"></span>\n                <div id=\"search_all_category\" class=\"select_pop\" style=\"height:0px;padding: 0px;border-width: 0px;\" dd_name=\"��������\">\n                    <a href=\"javascript:void(0);\" onclick=\"selectCategory('',this);\" ><span id=\"Show_Category_Name\" dd_name=\"ȫ������\" tabindex=\"-1\">ȫ������</span></a>\n                                        <a href=\"javascript:void(0);\" onclick=\"selectCategory('100000',this);\" dd_name=\"βƷ��\"><span>βƷ��</span></a>\n                                        <a href=\"javascript:void(0);\" onclick=\"selectCategory('01.00.00.00.00.00',this);\" dd_name=\"ͼ��\"><span>ͼ��</span></a>\n                                        <a href=\"javascript:void(0);\" onclick=\"selectCategory('98.00.00.00.00.00',this);\" dd_name=\"������\"><span>������</span></a>\n                                        <a href=\"javascript:void(0);\" onclick=\"selectCategory('03.00.00.00.00.00',this);\" dd_name=\"����\"><span>����</span></a>\n                                        <a href=\"javascript:void(0);\" onclick=\"selectCategory('05.00.00.00.00.00',this);\" dd_name=\"Ӱ��\"><span>Ӱ��</span></a>\n                                        <a href=\"javascript:void(0);\" onclick=\"selectCategory(4002074,this);\" dd_name=\"ʱ����ױ\"><span>ʱ����ױ</span></a>\n                                        <a href=\"javascript:void(0);\" onclick=\"selectCategory(4001940,this);\" dd_name=\"ĸӤ��Ʒ\"><span>ĸӤ��Ʒ</span></a>\n                                        <a href=\"javascript:void(0);\" onclick=\"selectCategory(4002061,this);\" dd_name=\"���\"><span>���</span></a>\n                                        <a href=\"javascript:void(0);\" onclick=\"selectCategory(4004866,this);\" dd_name=\"��Ӥ����\"><span>��Ӥ����</span></a>\n                                        <a href=\"javascript:void(0);\" onclick=\"s"
+   "status": null,
+   "error": "ETIMEDOUT",
+   "state": "error",
+   "allowed": null
   },
   {
    "domain": "www.meituan.com",
@@ -1113,7 +1085,7 @@
    "name": "饿了么",
    "category": "本地生活",
    "status": null,
-   "error": "ETIMEDOUT",
+   "error": "too many redirects",
    "state": "error",
    "allowed": null
   },
@@ -1259,10 +1231,24 @@
    "domain": "www.autohome.com.cn",
    "name": "汽车之家",
    "category": "垂直内容",
-   "status": null,
-   "error": "ETIMEDOUT",
-   "state": "error",
-   "allowed": null
+   "status": 200,
+   "robotsUrl": "https://www.autohome.com.cn/robots.txt",
+   "state": "ok",
+   "allowed": {
+    "Baiduspider": true,
+    "Googlebot": true,
+    "Bingbot": true,
+    "OAI-SearchBot": true,
+    "ChatGPT-User": true,
+    "PerplexityBot": true,
+    "Claude-SearchBot": true,
+    "GPTBot": true,
+    "ClaudeBot": true,
+    "Google-Extended": true,
+    "Bytespider": true,
+    "CCBot": true
+   },
+   "robots": "User-agent: *\r\nDisallow: /chezhan\r\nDisallow: /games"
   },
   {
    "domain": "www.dongchedi.com",
@@ -1452,10 +1438,24 @@
    "domain": "www.10jqka.com.cn",
    "name": "同花顺",
    "category": "财经",
-   "status": null,
-   "error": "UND_ERR_CONNECT_TIMEOUT",
-   "state": "error",
-   "allowed": null
+   "status": 200,
+   "robotsUrl": "https://www.10jqka.com.cn/robots.txt",
+   "state": "ok",
+   "allowed": {
+    "Baiduspider": true,
+    "Googlebot": true,
+    "Bingbot": true,
+    "OAI-SearchBot": true,
+    "ChatGPT-User": true,
+    "PerplexityBot": true,
+    "Claude-SearchBot": true,
+    "GPTBot": true,
+    "ClaudeBot": true,
+    "Google-Extended": true,
+    "Bytespider": true,
+    "CCBot": true
+   },
+   "robots": "User-agent: *\nDisallow: admin.php\nDisallow: /admin/\nDisallow: /images/\nDisallow: /includes/\nDisallow: /themes/\nDisallow: /blocks/\nDisallow: /modules/\nDisallow: /language/"
   },
   {
    "domain": "www.zhipin.com",
@@ -1507,10 +1507,24 @@
    "domain": "www.liepin.com",
    "name": "猎聘",
    "category": "招聘",
-   "status": null,
-   "error": "ETIMEDOUT",
-   "state": "error",
-   "allowed": null
+   "status": 200,
+   "robotsUrl": "https://www.liepin.com/robots.txt",
+   "state": "ok",
+   "allowed": {
+    "Baiduspider": true,
+    "Googlebot": true,
+    "Bingbot": true,
+    "OAI-SearchBot": true,
+    "ChatGPT-User": true,
+    "PerplexityBot": true,
+    "Claude-SearchBot": true,
+    "GPTBot": true,
+    "ClaudeBot": true,
+    "Google-Extended": true,
+    "Bytespider": true,
+    "CCBot": true
+   },
+   "robots": "User-agent: *\n\nDisallow: /user/\nDisallow: /event/*\nDisallow: /image/randomcode/\nDisallow: /*?*\nDisallow: /zhaopin/?pubTime=*\nDisallow: /hunter/*\nDisallow: /api/com.liepin.campus*"
   },
   {
    "domain": "www.mi.com",
@@ -1648,7 +1662,7 @@
     "Bytespider": true,
     "CCBot": true
    },
-   "robots": "<!DOCTYPE html>\n<html>\n\n<head lang=zh-CN>\n    <meta charset=UTF-8>\n    <meta name=viewport content=\"width=device-width, initial-scale=1.0\">\n    <meta http-equiv=X-UA-Compatible content=\"ie=edge\">\n    <style type=text/css>\n        @font-face {\n            font-family: 'Licium';\n            font-style: normal;\n            font-weight: 400;\n            src: url('https://s.ampmake.com/fed/cdn/li-fonts/1.0.3/LiciumFont2022-Regular.woff2'),\n                url('https://s.ampmake.com/fed/cdn/li-fonts/1.0.3/LiciumFont2022-Regular.woff'),\n                url('https://s.ampmake.com/fed/cdn/li-fonts/1.0.3/LiciumFont2022-Regular.ttf');\n        }\n\n        @font-face {\n            font-family: 'Licium';\n            font-style: normal;\n            font-weight: 600;\n            src: url('https://s.ampmake.com/fed/cdn/li-fonts/1.0.3/LiciumFont2022-Medium.woff2'),\n                url('https://s.ampmake.com/fed/cdn/li-fonts/1.0.3/LiciumFont2022-Medium.woff'),\n                url('https://s.ampmake.com/fed/cdn/li-fonts/1.0.3/LiciumFont2022-Medium.ttf');\n        }\n\n        html,\n\n        body {\n            font-family: 'Licium', sans-serif;\n            font-size: 16px;\n            background: #fff;\n            color: rgba(15, 15, 15, 1);\n            display: flex;\n            justify-content: center;\n            align-items: center;\n        }\n\n        .feedback_21adc164210ee18c77d90a5bf00b7aae {\n            justify-content: center;\n            display: flex;\n            flex-direction: row;\n            margin-top: 2rem;\n        }\n\n        .rt {\n            display: flex;\n            flex-direction: column;\n            margin-left: 3rem;\n        }\n\n        .rt .t1 {\n            font-size: 2.5rem;\n            font-weight: 600;\n        }\n\n        .rt .t2 {\n            font-size: 1.25rem;\n            font-weight: 400;\n            margin-top: 0.5rem;\n        }\n\n        .rt .btn {\n            display: inline-block;\n            padding: 0 1rem;\n            border-radius: .5rem;\n            text-decoration: none;\n            margin-top: 2rem;\n            width: min-content;\n            min-width: 6rem;\n            text-align: center;\n            color: #0F0F0F;\n            height: 2.5rem;\n            line-height: 2.5rem;\n            font-size: 0.875rem;\n            font-weight: 600;\n        }\n\n        .rt .btn.blue {\n            margin-top: 2%;\n            border: 1px solid var(--on-light-color-on-light-400, rgba(111, 113, 113, 0.22));\n            background: var(--on-dark-color-on-dark-900, #FFF);\n        }\n\n        .rt .btn.blue:hover {\n            background: rgba(142, 144, 144, 0.06);\n            border-color: rgba(91, 93, 93, 0.36);\n        }\n\n        .red {\n            color: #D73C3C;\n        }\n\n        .t3 {\n            font-size: 0.875rem;\n            line-height: 1.4rem;\n        }\n\n        .le {\n            width: 6.25rem;\n            height: 6.25rem;\n            font-size: 4rem;\n            line-height: 6.25rem;\n            font-weight: 700;\n            background-color: rgba(243, 94, 94, 0.12);\n            border-radius: 50%;\n            color: #D73C3C;\n            text-align: center;\n        }\n\n        .footer {\n            position: absolute;\n            bottom: 32px;\n            left: 0;\n            width: 100%;\n            color: #a8a8a8;\n            font-size: 10px;\n            text-align: center;\n        }\n\n        .waf2_content {\n            display: flex;\n            justify-content: center;\n            align-items: center;\n            margin-top: 5rem;\n            flex-direction: row;\n        }\n\n        #myiframe {\n            display: none;\n        }\n    </style>\n</head>\n\n<body>\n    <div class=waf2_content>\n        <div class=feedback_21adc164210ee18c77d90a5bf00b7aae>\n            <span class=le>!</span>\n            <div class=rt>\n                <span class=t1 id=feedback_title></span>\n                <span class=t2 id=feedback_tip1></span>\n                <span class=\"t2 red\" id=feedback_tip2></span>\n                <form action=\"https://security.lixiang.com/api/v2/waf-public/feedback\" method=\"get\" target=\"frameName\"\n                    onsubmit=\"return sumbit_sure()\">\n                    <div>\n                        <label class=\"t3 red\">Request ID:</label>\n                        <input type=\"text\" id=\"age\" name=\"requestid\" class=\"t3 red\" value=\"c70ecb8d68c54732efee069c1ed27dcb\"\n                            style=\"border:none; width:34ch;\" readonly=\"readonly\">\n                    </div>\n                    <div>\n                    <label class=\"t3 red\">Client IP:</label>\n                    <input type=\"text\" id=\"ip\" name=\"clientip\" class=\"t3 red\" value=\"172.174.221.228\"\n                        style=\"border:none;\" readonly=\"readonly\">\n                    </div>\n                    <div>\n                        <span class=\"t3 red\" id=now></span>\n                    </div>\n                    <div>\n                        <input type=\"submit\" class=\"btn blue\" id=feedback_btn value=\"误报反馈\">\n                    </div>\n                </form>\n                <iframe src=\"\" frameborder=\"0\" name=\"frameName\" id=\"myiframe\"></iframe>\n            </div>\n            <div class=\"footer\">\n                防护能力由理想汽车系统安全团队WAF 2.0提供. Copyright by Li-Auto 2023\n            </div>\n        </div>\n    </div>\n</body>\n<script type=text/javascript>\n        function sumbit_sure(){\n            var is_feedback=confirm(\"确定提交误报反馈?\");\n            if (is_feedback==true){\n                document.getElementById(\"feedback_btn\").style.display = 'none'\n                return true;\n            }else{\n                return false;\n            }\n        }\n\t    langCN = {\n            title: \"403错误\",\n            tip1: \"抱歉，当前页面无法正常访问！\",\n            tip2: \"由于您提交的信息对网站可能造成威胁，<br/>出于安全考虑，您的访问被拦截。\",\n            tip5: \"拦截时间: \",\n            btnTxt: \"误报反馈\"\n        }\n          , langEN = {\n            title: \"403 Error\",\n            tip1: \"Sorry, the page is not accessible!\",\n            tip2: \"Your access was blocked for security reasons.\",\n            tip5: \"Interception Time: \",\n            btnTxt: \"Feedback\"\n        }\n          , langHK = {\n            title: \"403錯誤\",\n            tip1: \"抱歉，當前頁面無法正常訪問！\",\n            tip2: \"由於您提交的信息對網站可能造成威脅，<br/>出於安全考慮，您的訪問被攔截。\",\n            tip5: \"攔截時間: \",\n            btnTxt: \"誤報反饋\"\n        }\n          , lang = langCN;\n        try {\n            var str = \"\";\n            window.btoa && window.atob && (str = GetQueryString(window.decodeURIComponent(window.atob(GetQueryString(location.search, \"v\"))), \"lang\"),\n            str || (str = navigator && navigator.language)),\n            str && (str = str.toLocaleLowerCase(),\n            [\"en\", \"en-gb\", \"en_gb\", \"en-us\", \"en_us\"].indexOf(str) > -1 ? lang = langEN : [\"zh-tw\", \"zh_tw\", \"zh-hk\", \"zh_hk\"].indexOf(str) > -1 && (lang = langHK))\n        } catch (e) {}\n        document.getElementById(\"feedback_title\").innerHTML = lang.title,\n        document.getElementById(\"feedback_tip1\").innerHTML = lang.tip1,\n        document.getElementById(\"feedback_tip2\").innerHTML = lang.tip2,\n        document.getElementById(\"feedback_btn\").value = lang.btnTxt;\n        function timestring() {\n            var d = new Date();\n            function p(d) {\n                return d < 10 ? \"0\" + d : d;\n            }\n            return (\n            d.getFullYear() +\n            \"-\" +\n            p(d.getMonth() + 1) +\n            \"-\" +\n            p(d.getDate()) +\n            \" \" +\n            p(d.getHours()) +\n            \":\" +\n            p(d.getMinutes())+\n            \":\"+\n            p(d.getSeconds())\n            );\n        }\n        document.getElementById(\"now\").innerText = lang.tip5 +timestring();\n    </script>\n</html>\n\n"
+   "robots": "<!DOCTYPE html>\n<html>\n\n<head lang=zh-CN>\n    <meta charset=UTF-8>\n    <meta name=viewport content=\"width=device-width, initial-scale=1.0\">\n    <meta http-equiv=X-UA-Compatible content=\"ie=edge\">\n    <style type=text/css>\n        @font-face {\n            font-family: 'Licium';\n            font-style: normal;\n            font-weight: 400;\n            src: url('https://s.ampmake.com/fed/cdn/li-fonts/1.0.3/LiciumFont2022-Regular.woff2'),\n                url('https://s.ampmake.com/fed/cdn/li-fonts/1.0.3/LiciumFont2022-Regular.woff'),\n                url('https://s.ampmake.com/fed/cdn/li-fonts/1.0.3/LiciumFont2022-Regular.ttf');\n        }\n\n        @font-face {\n            font-family: 'Licium';\n            font-style: normal;\n            font-weight: 600;\n            src: url('https://s.ampmake.com/fed/cdn/li-fonts/1.0.3/LiciumFont2022-Medium.woff2'),\n                url('https://s.ampmake.com/fed/cdn/li-fonts/1.0.3/LiciumFont2022-Medium.woff'),\n                url('https://s.ampmake.com/fed/cdn/li-fonts/1.0.3/LiciumFont2022-Medium.ttf');\n        }\n\n        html,\n\n        body {\n            font-family: 'Licium', sans-serif;\n            font-size: 16px;\n            background: #fff;\n            color: rgba(15, 15, 15, 1);\n            display: flex;\n            justify-content: center;\n            align-items: center;\n        }\n\n        .feedback_21adc164210ee18c77d90a5bf00b7aae {\n            justify-content: center;\n            display: flex;\n            flex-direction: row;\n            margin-top: 2rem;\n        }\n\n        .rt {\n            display: flex;\n            flex-direction: column;\n            margin-left: 3rem;\n        }\n\n        .rt .t1 {\n            font-size: 2.5rem;\n            font-weight: 600;\n        }\n\n        .rt .t2 {\n            font-size: 1.25rem;\n            font-weight: 400;\n            margin-top: 0.5rem;\n        }\n\n        .rt .btn {\n            display: inline-block;\n            padding: 0 1rem;\n            border-radius: .5rem;\n            text-decoration: none;\n            margin-top: 2rem;\n            width: min-content;\n            min-width: 6rem;\n            text-align: center;\n            color: #0F0F0F;\n            height: 2.5rem;\n            line-height: 2.5rem;\n            font-size: 0.875rem;\n            font-weight: 600;\n        }\n\n        .rt .btn.blue {\n            margin-top: 2%;\n            border: 1px solid var(--on-light-color-on-light-400, rgba(111, 113, 113, 0.22));\n            background: var(--on-dark-color-on-dark-900, #FFF);\n        }\n\n        .rt .btn.blue:hover {\n            background: rgba(142, 144, 144, 0.06);\n            border-color: rgba(91, 93, 93, 0.36);\n        }\n\n        .red {\n            color: #D73C3C;\n        }\n\n        .t3 {\n            font-size: 0.875rem;\n            line-height: 1.4rem;\n        }\n\n        .le {\n            width: 6.25rem;\n            height: 6.25rem;\n            font-size: 4rem;\n            line-height: 6.25rem;\n            font-weight: 700;\n            background-color: rgba(243, 94, 94, 0.12);\n            border-radius: 50%;\n            color: #D73C3C;\n            text-align: center;\n        }\n\n        .footer {\n            position: absolute;\n            bottom: 32px;\n            left: 0;\n            width: 100%;\n            color: #a8a8a8;\n            font-size: 10px;\n            text-align: center;\n        }\n\n        .waf2_content {\n            display: flex;\n            justify-content: center;\n            align-items: center;\n            margin-top: 5rem;\n            flex-direction: row;\n        }\n\n        #myiframe {\n            display: none;\n        }\n    </style>\n</head>\n\n<body>\n    <div class=waf2_content>\n        <div class=feedback_21adc164210ee18c77d90a5bf00b7aae>\n            <span class=le>!</span>\n            <div class=rt>\n                <span class=t1 id=feedback_title></span>\n                <span class=t2 id=feedback_tip1></span>\n                <span class=\"t2 red\" id=feedback_tip2></span>\n                <form action=\"https://security.lixiang.com/api/v2/waf-public/feedback\" method=\"get\" target=\"frameName\"\n                    onsubmit=\"return sumbit_sure()\">\n                    <div>\n                        <label class=\"t3 red\">Request ID:</label>\n                        <input type=\"text\" id=\"age\" name=\"requestid\" class=\"t3 red\" value=\"7118092af7787adff779ea759a8c8827\"\n                            style=\"border:none; width:34ch;\" readonly=\"readonly\">\n                    </div>\n                    <div>\n                    <label class=\"t3 red\">Client IP:</label>\n                    <input type=\"text\" id=\"ip\" name=\"clientip\" class=\"t3 red\" value=\"20.115.94.226\"\n                        style=\"border:none;\" readonly=\"readonly\">\n                    </div>\n                    <div>\n                        <span class=\"t3 red\" id=now></span>\n                    </div>\n                    <div>\n                        <input type=\"submit\" class=\"btn blue\" id=feedback_btn value=\"误报反馈\">\n                    </div>\n                </form>\n                <iframe src=\"\" frameborder=\"0\" name=\"frameName\" id=\"myiframe\"></iframe>\n            </div>\n            <div class=\"footer\">\n                防护能力由理想汽车系统安全团队WAF 2.0提供. Copyright by Li-Auto 2023\n            </div>\n        </div>\n    </div>\n</body>\n<script type=text/javascript>\n        function sumbit_sure(){\n            var is_feedback=confirm(\"确定提交误报反馈?\");\n            if (is_feedback==true){\n                document.getElementById(\"feedback_btn\").style.display = 'none'\n                return true;\n            }else{\n                return false;\n            }\n        }\n\t    langCN = {\n            title: \"403错误\",\n            tip1: \"抱歉，当前页面无法正常访问！\",\n            tip2: \"由于您提交的信息对网站可能造成威胁，<br/>出于安全考虑，您的访问被拦截。\",\n            tip5: \"拦截时间: \",\n            btnTxt: \"误报反馈\"\n        }\n          , langEN = {\n            title: \"403 Error\",\n            tip1: \"Sorry, the page is not accessible!\",\n            tip2: \"Your access was blocked for security reasons.\",\n            tip5: \"Interception Time: \",\n            btnTxt: \"Feedback\"\n        }\n          , langHK = {\n            title: \"403錯誤\",\n            tip1: \"抱歉，當前頁面無法正常訪問！\",\n            tip2: \"由於您提交的信息對網站可能造成威脅，<br/>出於安全考慮，您的訪問被攔截。\",\n            tip5: \"攔截時間: \",\n            btnTxt: \"誤報反饋\"\n        }\n          , lang = langCN;\n        try {\n            var str = \"\";\n            window.btoa && window.atob && (str = GetQueryString(window.decodeURIComponent(window.atob(GetQueryString(location.search, \"v\"))), \"lang\"),\n            str || (str = navigator && navigator.language)),\n            str && (str = str.toLocaleLowerCase(),\n            [\"en\", \"en-gb\", \"en_gb\", \"en-us\", \"en_us\"].indexOf(str) > -1 ? lang = langEN : [\"zh-tw\", \"zh_tw\", \"zh-hk\", \"zh_hk\"].indexOf(str) > -1 && (lang = langHK))\n        } catch (e) {}\n        document.getElementById(\"feedback_title\").innerHTML = lang.title,\n        document.getElementById(\"feedback_tip1\").innerHTML = lang.tip1,\n        document.getElementById(\"feedback_tip2\").innerHTML = lang.tip2,\n        document.getElementById(\"feedback_btn\").value = lang.btnTxt;\n        function timestring() {\n            var d = new Date();\n            function p(d) {\n                return d < 10 ? \"0\" + d : d;\n            }\n            return (\n            d.getFullYear() +\n            \"-\" +\n            p(d.getMonth() + 1) +\n            \"-\" +\n            p(d.getDate()) +\n            \" \" +\n            p(d.getHours()) +\n            \":\" +\n            p(d.getMinutes())+\n            \":\"+\n            p(d.getSeconds())\n            );\n        }\n        document.getElementById(\"now\").innerText = lang.tip5 +timestring();\n    </script>\n</html>\n\n"
   },
   {
    "domain": "www.xiaopeng.com",

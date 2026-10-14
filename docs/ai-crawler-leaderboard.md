@@ -2,7 +2,7 @@
 
 > [GEO 实战手册](../README.md) › AI 爬虫封锁榜 · 扫描日期 2026-10-14 · 可复现：`node scripts/ai-crawler-scan.mjs`
 
-**我们读取了 97 个知名中文网站公开的 robots.txt，看它们的首页允许哪些 AI 和搜索爬虫抓取。成功读取 91 个。**
+**我们读取了 97 个知名中文网站公开的 robots.txt，看它们的首页允许哪些 AI 和搜索爬虫抓取。成功读取 92 个。**
 
 | 发现 | 网站数 | 占比 |
 | --- | ---: | ---: |
@@ -10,8 +10,8 @@
 | 🚫 4 个 AI 搜索爬虫（ChatGPT 搜索、ChatGPT 用户访问、Perplexity、Claude 搜索）全部挡住 | 8 | 9% |
 | 🎯 只放行百度，AI 搜索爬虫全部挡住 | 7 | 8% |
 | 🚫 屏蔽 GPTBot（OpenAI 训练） | 15 | 16% |
-| 🚫 屏蔽 Bytespider（字节跳动） | 7 | 8% |
-| ✅ 对表中所有爬虫都不设限 | 76 | 84% |
+| 🚫 屏蔽 Bytespider（字节跳动） | 8 | 9% |
+| ✅ 对表中所有爬虫都不设限 | 76 | 83% |
 
 ### 重点发现
 
@@ -50,7 +50,7 @@
 | [IT之家](https://www.ithome.com/robots.txt) | ✅ | ✅ | ✅ | ✅ | ✅ | ✅ | ✅ | ✅ | ✅ | ✅ | ✅ | ✅ |
 | [界面新闻](https://www.jiemian.com/robots.txt) | ✅ | ✅ | ✅ | ✅ | ✅ | ✅ | ✅ | ✅ | ✅ | ✅ | ✅ | ✅ |
 | [第一财经](https://www.yicai.com/robots.txt) | ✅ | ✅ | ✅ | ✅ | ✅ | ✅ | ✅ | ✅ | ✅ | ✅ | ✅ | ✅ |
-| [观察者网](https://www.guancha.cn/robots.txt) | ✅ | ✅ | ✅ | ✅ | ✅ | ✅ | ✅ | ✅ | ✅ | ✅ | ✅ | ✅ |
+| [观察者网](https://www.guancha.cn/robots.txt) | — | — | — | — | — | — | — | — | — | — | — | — |
 
 ## 社区内容
 
@@ -65,7 +65,7 @@
 | [简书](https://www.jianshu.com/robots.txt) ¹ | ✅ | ✅ | ✅ | ✅ | ✅ | ✅ | ✅ | ✅ | ✅ | ✅ | ✅ | ✅ |
 | [少数派](https://sspai.com/robots.txt) | ✅ | ✅ | ✅ | ✅ | ✅ | ✅ | ✅ | ✅ | ✅ | ✅ | ✅ | ✅ |
 | [抖音](https://www.douyin.com/robots.txt) | ✅ | ✅ | ✅ | ✅ | ✅ | ✅ | ✅ | ✅ | ✅ | ✅ | ✅ | ✅ |
-| [快手](https://www.kuaishou.com/robots.txt) | — | — | — | — | — | — | — | — | — | — | — | — |
+| [快手](https://www.kuaishou.com/robots.txt) | ✅ | ✅ | ✅ | ✅ | ✅ | ✅ | 🚫 | ✅ | 🚫 | 🚫 | 🚫 | 🚫 |
 
 ## 开发者
 
@@ -89,10 +89,10 @@
 | [天猫](https://www.tmall.com/robots.txt) | ✅ | ✅ | ✅ | ✅ | ✅ | ✅ | ✅ | ✅ | ✅ | ✅ | ✅ | ✅ |
 | [京东](https://www.jd.com/robots.txt) ¹ ² | ✅ | ✅ | ✅ | ✅ | ✅ | ✅ | ✅ | ✅ | ✅ | ✅ | ✅ | ✅ |
 | [拼多多](https://www.pinduoduo.com/robots.txt) | ✅ | ✅ | ✅ | ✅ | ✅ | ✅ | ✅ | ✅ | ✅ | ✅ | ✅ | ✅ |
-| [唯品会](https://www.vip.com/robots.txt) | ✅ | ✅ | ✅ | ✅ | ✅ | ✅ | ✅ | ✅ | ✅ | ✅ | ✅ | ✅ |
+| [唯品会](https://www.vip.com/robots.txt) | — | — | — | — | — | — | — | — | — | — | — | — |
 | [苏宁易购](https://www.suning.com/robots.txt) ¹ | ✅ | ✅ | ✅ | ✅ | ✅ | ✅ | ✅ | ✅ | ✅ | ✅ | ✅ | ✅ |
 | [什么值得买](https://www.smzdm.com/robots.txt) | ✅ | ✅ | ✅ | ✅ | ✅ | ✅ | ✅ | ✅ | ✅ | ✅ | ✅ | ✅ |
-| [当当](https://www.dangdang.com/robots.txt) ¹ | ✅ | ✅ | ✅ | ✅ | ✅ | ✅ | ✅ | ✅ | ✅ | ✅ | ✅ | ✅ |
+| [当当](https://www.dangdang.com/robots.txt) | — | — | — | — | — | — | — | — | — | — | — | — |
 
 ## 本地生活
 
@@ -112,7 +112,7 @@
 
 | 网站 | 百度 | Google | Bing / Copilot | ChatGPT 搜索 | ChatGPT 用户访问 | Perplexity | Claude 搜索 | GPTBot（训练） | ClaudeBot（训练） | Google-Extended（训练） | Bytespider（字节） | CCBot（训练） |
 | --- | :-: | :-: | :-: | :-: | :-: | :-: | :-: | :-: | :-: | :-: | :-: | :-: |
-| [汽车之家](https://www.autohome.com.cn/robots.txt) | — | — | — | — | — | — | — | — | — | — | — | — |
+| [汽车之家](https://www.autohome.com.cn/robots.txt) | ✅ | ✅ | ✅ | ✅ | ✅ | ✅ | ✅ | ✅ | ✅ | ✅ | ✅ | ✅ |
 | [懂车帝](https://www.dongchedi.com/robots.txt) | ✅ | ✅ | ✅ | ✅ | ✅ | ✅ | ✅ | ✅ | ✅ | ✅ | ✅ | ✅ |
 | [中关村在线](https://www.zol.com.cn/robots.txt) | ✅ | ✅ | ✅ | ✅ | ✅ | ✅ | ✅ | ✅ | ✅ | ✅ | ✅ | ✅ |
 | [丁香园](https://www.dxy.cn/robots.txt) | ✅ | ✅ | ✅ | ✅ | ✅ | ✅ | ✅ | ✅ | ✅ | ✅ | ✅ | ✅ |
@@ -126,7 +126,7 @@
 | [东方财富](https://www.eastmoney.com/robots.txt) | ✅ | ✅ | ✅ | ✅ | ✅ | ✅ | ✅ | ✅ | ✅ | ✅ | ✅ | ✅ |
 | [雪球](https://xueqiu.com/robots.txt) | ✅ | ✅ | ✅ | ✅ | 🚫 | 🚫 | ✅ | 🚫 | 🚫 | 🚫 | ✅ | 🚫 |
 | [和讯](https://www.hexun.com/robots.txt) | ✅ | ✅ | ✅ | ✅ | ✅ | ✅ | ✅ | ✅ | ✅ | ✅ | ✅ | ✅ |
-| [同花顺](https://www.10jqka.com.cn/robots.txt) | — | — | — | — | — | — | — | — | — | — | — | — |
+| [同花顺](https://www.10jqka.com.cn/robots.txt) | ✅ | ✅ | ✅ | ✅ | ✅ | ✅ | ✅ | ✅ | ✅ | ✅ | ✅ | ✅ |
 
 ## 招聘
 
@@ -134,7 +134,7 @@
 | --- | :-: | :-: | :-: | :-: | :-: | :-: | :-: | :-: | :-: | :-: | :-: | :-: |
 | [BOSS直聘](https://www.zhipin.com/robots.txt) | ✅ | ✅ | ✅ | ✅ | ✅ | ✅ | ✅ | ✅ | ✅ | ✅ | ✅ | ✅ |
 | [智联招聘](https://www.zhaopin.com/robots.txt) | ✅ | ✅ | ✅ | ✅ | ✅ | ✅ | ✅ | ✅ | ✅ | ✅ | ✅ | ✅ |
-| [猎聘](https://www.liepin.com/robots.txt) | — | — | — | — | — | — | — | — | — | — | — | — |
+| [猎聘](https://www.liepin.com/robots.txt) | ✅ | ✅ | ✅ | ✅ | ✅ | ✅ | ✅ | ✅ | ✅ | ✅ | ✅ | ✅ |
 
 ## 品牌官网
 
@@ -196,6 +196,6 @@
 - ¹ 没有 robots.txt（返回 4xx 或 HTML 页面），按规范视为不限制。
 - ² robots.txt 跳转到了别的域名（例如境外请求被导向海外站），表中是跳转后那份规则。
 - **用户触发的访问**：ChatGPT-User、Perplexity-User 这类"用户让 AI 打开某个网页"的请求，平台文档说明不一定遵守 robots.txt；表里按规则字面判断。
-- — 扫描时读取失败（超时、5xx 或连接被拒，共 6 个），不计入占比的分母。
+- — 扫描时读取失败（超时、5xx 或连接被拒，共 5 个），不计入占比的分母。
 - **名单**：[data/sites-cn.txt](../data/sites-cn.txt)，原始数据：[data/ai-crawler-scan.json](../data/ai-crawler-scan.json)。漏了谁、判断错了，欢迎提 [issue](https://github.com/Fangx-AI/GEO-Playbook/issues/new/choose) 或 PR。
 - robots.txt 随时会改，本表只代表扫描当天的状态。
