@@ -68,7 +68,7 @@
 | --- | --- |
 | **Claude Code** | 输入 `/plugin marketplace add Fangx-AI/GEO-Playbook`，再输入 `/plugin install geo-doctor@geo-playbook` |
 | **Codex** | 请 `$skill-installer` 安装本仓库的 `skills/geo-doctor`，或把完整文件夹放到 `~/.agents/skills/geo-doctor/` |
-| **Kimi Code** | 把完整文件夹放到 `~/.kimi-code/skills/geo-doctor/`，新开会话后使用 |
+| **Kimi Code** | 把完整文件夹放到 `~/.kimi-code/skills/geo-doctor/`（设置了 `KIMI_CODE_HOME` 时放到 `$KIMI_CODE_HOME/skills/geo-doctor/`），新开会话后使用 |
 | **支持上传技能包的客户端** | 在 [Releases](https://github.com/Fangx-AI/GEO-Playbook/releases) 下载 `geo-doctor.zip`，在技能页面上传 |
 
 </details>
