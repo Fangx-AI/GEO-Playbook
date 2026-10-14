@@ -1,0 +1,58 @@
+<!doctype html><html><head><meta charset="utf-8"><style>
+*{box-sizing:border-box;margin:0;padding:0}
+body{width:2000px;background:#fff;font-family:"WenQuanYi Zen Hei",sans-serif;color:#1f2328;padding:64px 72px 56px}
+h1{font-size:64px;font-weight:700;letter-spacing:1px}
+.sub{font-size:28px;color:#57606a;margin-top:14px}
+.sec{font-size:30px;font-weight:700;color:#0969da;margin:46px 0 20px}
+.flow{display:flex;align-items:stretch;gap:0}
+.st{flex:1;border:2px solid #d0d7de;border-radius:14px;padding:20px 18px;background:#f6f8fa}
+.st .n{font-size:24px;color:#0969da;font-weight:700}
+.st .t{font-size:34px;font-weight:700;margin:6px 0 10px}
+.st .d{font-size:22px;color:#57606a;line-height:1.45}
+.ar{width:34px;display:flex;align-items:center;justify-content:center;color:#0969da;font-size:30px;font-weight:700}
+.cols{display:flex;gap:28px;margin-top:6px}
+.col{flex:1;border:2px solid #d0d7de;border-radius:14px;padding:26px 28px}
+.col h3{font-size:32px;margin-bottom:16px}
+.col li{font-size:25px;line-height:1.5;margin:0 0 12px 30px}
+.col li b{color:#cf222e}
+.ok b{color:#1a7f37!important}
+.funnel div{font-size:25px;padding:10px 16px;margin-bottom:10px;border-radius:8px;background:#ddf4ff;color:#0a3069}
+.foot{display:flex;justify-content:space-between;margin-top:40px;font-size:24px;color:#57606a;border-top:2px solid #d0d7de;padding-top:22px}
+.foot b{color:#1f2328}
+</style></head><body>
+<h1>GEO 速查卡：让 AI 找到你、说对你、引用你</h1>
+<div class="sub">用户问一句话，AI 背后要过 6 关。任何一关卡住，后面都不会发生。先定位，再动手。</div>
+<div class="sec">AI 回答背后的 6 关</div>
+<div class="flow">
+<div class="st"><div class="n">①</div><div class="t">抓取</div><div class="d">能不能读到页面<br>robots · WAF · JS 空壳</div></div><div class="ar">→</div>
+<div class="st"><div class="n">②</div><div class="t">索引</div><div class="d">有没有收进库<br>noindex · canonical</div></div><div class="ar">→</div>
+<div class="st"><div class="n">③</div><div class="t">检索</div><div class="d">这次被选中没<br>回答真实问题了吗</div></div><div class="ar">→</div>
+<div class="st"><div class="n">④</div><div class="t">生成</div><div class="d">说得对不对<br>各渠道事实一致吗</div></div><div class="ar">→</div>
+<div class="st"><div class="n">⑤</div><div class="t">引用</div><div class="d">标了谁的来源<br>来源支持这句话吗</div></div><div class="ar">→</div>
+<div class="st"><div class="n">⑥</div><div class="t">行动</div><div class="d">点没点、买没买<br>入口和转化通不通</div></div>
+</div>
+<div class="cols" style="margin-top:44px">
+<div class="col"><h3>🔧 技术：先排查这 4 个坑</h3><ul>
+<li><b>robots.txt</b> 误封搜索爬虫</li>
+<li>遗留的 <b>noindex</b>（meta 或响应头）</li>
+<li><b>canonical</b> 指向首页或别的页</li>
+<li>正文靠 <b>JS 渲染</b>，原始 HTML 是空壳</li>
+<li style="list-style:none;margin-left:0;color:#57606a;font-size:22px">搜索 / 训练 / 用户访问三类爬虫分开管：<br>屏蔽训练不会让你从 AI 搜索里消失</li>
+</ul></div>
+<div class="col ok"><h3>✍️ 内容：只写能被引用的事实</h3><ul>
+<li>从<b>用户原话</b>出发，尤其不带品牌名的问题</li>
+<li>一张<b>事实卡</b>管所有渠道，说法一致</li>
+<li>写人数、算式、条件，不写“领先、强大”</li>
+<li>写清<b>不适合谁</b>，限制紧贴能力写</li>
+<li style="list-style:none;margin-left:0;color:#57606a;font-size:22px">Google 官方：Search 不使用 llms.txt，<br>也没有必需的特殊 schema</li>
+</ul></div>
+<div class="col"><h3>📏 测量：5 层分开记</h3><div class="funnel">
+<div style="width:100%">提及：回答里说到你</div>
+<div style="width:92%">引用：来源里有你的网址</div>
+<div style="width:84%">准确：来源真的支持那句话</div>
+<div style="width:76%">访问：可识别的 AI 来源会话</div>
+<div style="width:68%">成交：咨询、预约、付款</div>
+</div><div style="font-size:22px;color:#57606a;margin-top:8px">2/7 → 4/7 是 +28.6 个百分点，不是 +28.6%</div></div>
+</div>
+<div class="foot"><span><b>GEO 学习地图</b> · 每条结论附官方原文或研究出处 · 核验于 2026-10-14</span><span><b>github.com/Fangx-AI/geo-learning-map</b></span></div>
+</body></html>

@@ -1,0 +1,18 @@
+name: 🛠 报告错误或过时信息
+description: 链接失效、平台规则更新、数字算错
+labels: ["fix"]
+body:
+  - type: input
+    id: where
+    attributes:
+      label: 在哪个页面
+      placeholder: docs/platforms/international.md
+    validations:
+      required: true
+  - type: textarea
+    id: issue
+    attributes:
+      label: 问题是什么，正确信息是什么
+      description: 请附上官方原文链接和你查看的日期
+    validations:
+      required: true

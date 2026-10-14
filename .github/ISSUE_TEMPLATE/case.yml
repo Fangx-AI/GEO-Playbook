@@ -1,0 +1,27 @@
+name: 📈 分享一个 GEO 案例（含失败案例）
+description: 你自己或公开资料中的 GEO 实施案例，没效果的也欢迎
+labels: ["case"]
+body:
+  - type: textarea
+    id: what
+    attributes:
+      label: 改了什么
+      description: 哪个平台、语言/地区、时间窗；具体改了哪些页面、内容或配置
+    validations:
+      required: true
+  - type: textarea
+    id: numbers
+    attributes:
+      label: 前后数字
+      description: 请给绝对数字和分母（例如 2/7 → 4/7），注明指标定义；有对照组请一起写
+    validations:
+      required: true
+  - type: textarea
+    id: evidence
+    attributes:
+      label: 哪些能公开核查
+      description: 链接、截图、原始记录；哪些只能自报
+  - type: textarea
+    id: limits
+    attributes:
+      label: 同期还有哪些变化、哪些地方没变好
