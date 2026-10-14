@@ -47,19 +47,29 @@
 
 <a id="install"></a>
 
-## 📦 安装
+## 📦 安装：复制一句话发给你的 AI
+
+在豆包、WorkBuddy、扣子、Kimi、Codex、Claude Code 等支持技能的 AI 里，新开一个对话，发送：
+
+```text
+帮我安装这个 skill：https://github.com/Fangx-AI/GEO-Playbook/tree/master/skills/geo-doctor
+```
+
+装好后说：**"用 GEO 医生帮我看看 https://你的网站"**。
+
+> 各平台的对话安装还在逐一实测，结果会更新在[安装指南](docs/install.md)。AI 说"装不了"或打不开链接时，可以用下面的方式，或[提 issue](https://github.com/Fangx-AI/GEO-Playbook/issues/new/choose) 告诉我们是哪个平台。
+
+<details>
+<summary markdown="span"><b>其他安装方式</b>（命令行、手动复制、上传压缩包）</summary>
 
 | 你用的工具 | 怎么装 |
 | --- | --- |
-| **Claude Code** | 在 Claude Code 里输入 `/plugin marketplace add Fangx-AI/GEO-Playbook`，再输入 `/plugin install geo-doctor@geo-playbook` |
-| **Codex** | 在对话中请 `$skill-installer` 安装本仓库的 `skills/geo-doctor`，或将完整文件夹放到 `~/.agents/skills/geo-doctor/` |
-| **Kimi Code** | 将完整文件夹放到 `~/.kimi-code/skills/geo-doctor/`，新开会话后使用；自定义 `KIMI_CODE_HOME` 时以其 skills 目录为准 |
-| **WorkBuddy** | 支持本地技能包导入；也可从对话中的技能查找/安装流程开始，记录实际结果 |
-| **豆包 / 扣子** | 先确认具体客户端和模式，按其能力通过对话或技能入口安装；不能把普通聊天上传附件视为安装成功 |
+| **Claude Code** | 输入 `/plugin marketplace add Fangx-AI/GEO-Playbook`，再输入 `/plugin install geo-doctor@geo-playbook` |
+| **Codex** | 请 `$skill-installer` 安装本仓库的 `skills/geo-doctor`，或把完整文件夹放到 `~/.agents/skills/geo-doctor/` |
+| **Kimi Code** | 把完整文件夹放到 `~/.kimi-code/skills/geo-doctor/`，新开会话后使用 |
+| **支持上传技能包的客户端** | 在 [Releases](https://github.com/Fangx-AI/GEO-Playbook/releases) 下载 `geo-doctor.zip`，在技能页面上传 |
 
-装好后，对 AI 说：**"用 GEO 医生帮我看看 https://你的网站"**。
-
-> 完整步骤、对话安装提示词、安装包获取方式及待实测记录见 [跨平台安装指南（草稿）](docs/install.md)。官方支持某种技能格式不等于本项目已经在该平台测通；必须验证触发及 `references/assets` 读取。遇到问题欢迎[提 issue](https://github.com/Fangx-AI/GEO-Playbook/issues/new/choose)。
+</details>
 
 ---
 

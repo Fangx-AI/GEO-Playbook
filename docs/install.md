@@ -15,6 +15,14 @@
 
 支持安装技能的 Agent 可先发送以下内容；如果当前产品只能读取网页或附件，它可能只能在本次会话使用这些材料。
 
+README 给用户的是最短的一句：
+
+```text
+帮我安装这个 skill：https://github.com/Fangx-AI/GEO-Playbook/tree/master/skills/geo-doctor
+```
+
+实测时用下面的完整版，方便记录安装结果：
+
 ```text
 请安装 GEO 医生：
 https://github.com/Fangx-AI/GEO-Playbook/tree/master/skills/geo-doctor
