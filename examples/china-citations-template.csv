@@ -1,0 +1,2 @@
+﻿run_id,citation_id,answer_claim,cited_title,shown_url,final_url,hostname,original_author,published_at,support_status,source_excerpt,source_location
+FORMAT_ONLY_NOT_A_RUN,EXAMPLE-01,格式示例（非平台回答）：导出后重新上传不能立即重建工作区,格式示例：Notion 官方导出说明,https://www.notion.com/help/export-your-content,https://www.notion.com/help/export-your-content,www.notion.com,Notion,,格式示例不计入实测,教学转述：导出文件重新上传不能立即重建工作区,Export your entire workspace 下方 Note

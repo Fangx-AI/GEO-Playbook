@@ -1,0 +1,17 @@
+data_kind,phase,question_id,run_id,status,brand_mentioned,own_domain_cited,supported_citation,answer_excerpt
+synthetic,before,Q01,1,ok,1,1,1,教学模拟：提及品牌并引用支持该判断的官网段落
+synthetic,before,Q01,2,ok,1,0,,教学模拟：提及品牌但未引用官网
+synthetic,before,Q02,1,ok,0,0,,教学模拟：回答了问题但没有提及品牌
+synthetic,before,Q02,2,ok,0,0,,教学模拟：拒绝推荐仍是有效回答
+synthetic,before,Q03,1,ok,1,1,0,教学模拟：引用官网但原文不支持回答中的功能断言
+synthetic,before,Q03,2,technical_error,,,,教学模拟：页面超时未取得回答
+synthetic,before,Q04,1,ok,0,0,,教学模拟：有效回答但没有触发联网
+synthetic,before,Q04,2,ok,1,0,,教学模拟：提及品牌并引用第三方文章
+synthetic,after,Q01,1,ok,1,1,1,教学模拟：提及品牌并准确引用官网
+synthetic,after,Q01,2,ok,1,1,1,教学模拟：另一时段准确引用官网
+synthetic,after,Q02,1,ok,1,1,1,教学模拟：引用官网且保留不适用条件
+synthetic,after,Q02,2,ok,0,0,,教学模拟：回答了问题但未提及品牌
+synthetic,after,Q03,1,ok,1,1,0,教学模拟：引用官网但仍把不支持的功能说成支持
+synthetic,after,Q03,2,ok,1,0,,教学模拟：提及品牌但只有第三方来源
+synthetic,after,Q04,1,ok,0,0,,教学模拟：回答正常但没有联网
+synthetic,after,Q04,2,technical_error,,,,教学模拟：服务错误未取得回答
