@@ -1,0 +1,26 @@
+name: skill-package
+# Builds geo-doctor.zip for platforms that install skills by upload (豆包, WorkBuddy, 扣子, TRAE).
+on:
+  push:
+    branches: [master]
+    paths: [skills/**]
+  pull_request:
+    paths: [skills/**]
+  release:
+    types: [published]
+permissions:
+  contents: write
+jobs:
+  package:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - run: mkdir -p dist && cd skills && zip -qr ../dist/geo-doctor.zip geo-doctor
+      - uses: actions/upload-artifact@v4
+        with:
+          name: geo-doctor
+          path: dist/geo-doctor.zip
+      - if: github.event_name == 'release'
+        run: gh release upload "${{ github.event.release.tag_name }}" dist/geo-doctor.zip --clobber
+        env:
+          GH_TOKEN: ${{ github.token }}
