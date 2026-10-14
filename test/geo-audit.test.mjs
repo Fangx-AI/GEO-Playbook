@@ -13,6 +13,7 @@ let robots = 'User-agent: *\nAllow: /\nSitemap: http://example.invalid/sitemap.x
 const routes = {
   '/good': () => [200, {}, page('<link rel="canonical" href="/good">')],
   '/short': () => [200, {}, page('<link rel="canonical" href="/short">', '<p>团队版每月 299 元，含 20 个席位。</p>')],
+  '/loading': () => [200, {}, '<html lang="zh"><head><title>价格</title></head><body><div id="app">加载中…</div><noscript>请启用 JavaScript</noscript><script src="/app.js"></script></body></html>'],
   '/empty': () => [200, {}, '<html><head><title>价格</title></head><body><div id="app"></div></body></html>'],
   '/invalid-entity': () => [200, {}, page('', BODY + '<p>&#x110000; &#99999999;</p>')],
   '/href-first': () => [200, {}, page('<link href="/href-first" rel="canonical">')],
@@ -95,6 +96,13 @@ test('empty bodies still trigger a critical content failure', async () => {
   assert.ok(r.score <= 60);
 });
 
+test('a JS shell with only a loading message is still a critical failure', async () => {
+  const r = await audit(base + '/loading', { lang: 'zh', probe: false });
+  const fail = find(r, 'content', 'fail');
+  assert.ok(fail.some((c) => c.critical && /空壳页/.test(c.msg)));
+  assert.ok(r.score <= 60);
+});
+
 test('invalid numeric HTML references cannot crash text extraction or an audit', async () => {
   assert.equal(visibleText('<p>&#x110000; &#99999999; &#0; &#xD800;</p>'), '� � � �');
   assert.equal(visibleText('<p>&#65; &#x1F600; &amp;</p>'), 'A 😀 &');
@@ -120,9 +128,10 @@ test('noindex in multi-line meta and in header', async () => {
   assert.match(find(b, 'index', 'fail')[0].msg, /X-Robots-Tag/);
 });
 
-test('JS shell: a requested fact only inside a script still fails', async () => {
+test('JS shell: thin text and phrase only inside a script', async () => {
   const r = await audit(base + '/shell', { lang: 'en', probe: false, phrase: '团队版每月 299 元' });
   const fails = find(r, 'content', 'fail').map((c) => c.msg).join('\n');
+  assert.match(fails, /JS-rendered shell/);
   assert.match(fails, /only appears inside <script>/);
 });
 

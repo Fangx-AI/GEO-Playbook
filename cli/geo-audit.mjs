@@ -64,6 +64,7 @@ const M = {
     canonOther: (u) => `canonical 指向别处：${u}（产品页误指首页很常见）`,
     textOk: (n) => `原始 HTML 里有约 ${n} 字正文`,
     textEmpty: '原始 HTML 未提取到正文：检查页面是否为空、依赖 JavaScript 或需要登录',
+    textThin: (n) => `原始 HTML 只有约 ${n} 字正文：很可能是 JS 渲染的空壳页（如只有"加载中"），多数 AI 爬虫读不到正文`,
     textShort: '正文较短：字数本身不决定是否可被读取或引用，建议用 --phrase 核对关键事实；提取到文字不代表内容充分',
     phraseOk: (p) => `原始 HTML 里找到指定正文「${p}」`,
     phraseSplit: (p) => `「${p}」被标签拆开了，去掉标签后才能找到：多数爬虫能读，但尽量写成连续文字`,
@@ -129,6 +130,7 @@ const M = {
     canonOther: (u) => `Canonical points elsewhere: ${u} (product pages pointing at the homepage is common)`,
     textOk: (n) => `About ${n} characters of text in the raw HTML`,
     textEmpty: 'No body text extracted from the raw HTML: check for an empty page, JavaScript rendering or a login requirement',
+    textThin: (n) => `Only about ${n} characters of text in the raw HTML: very likely a JS-rendered shell (e.g. just "Loading…") that most AI crawlers cannot read`,
     textShort: 'Short body text: length alone does not determine readability or citations. Use --phrase to verify key facts; extracted text does not establish content completeness',
     phraseOk: (p) => `Found "${p}" in the raw HTML`,
     phraseSplit: (p) => `"${p}" is split across tags and only matches after stripping them; most crawlers cope, but keep key facts in one run of text`,
@@ -395,9 +397,15 @@ export async function audit(url, opts = {}) {
   // content
   const text = visibleText(clean);
   const chars = [...text].length;
-  // Report extraction, not a minimum word-count requirement or a rendering diagnosis.
-  add('content', chars > 0 ? 'pass' : 'fail', chars > 0 ? t.textOk(chars) : t.textEmpty, 3, true);
-  if (chars > 0 && chars < 200) add('content', 'info', t.textShort, 0);
+  // Under SHELL_CHARS is almost always a JS shell ("加载中…", a nav bar), which is the failure
+  // that matters most for AI crawlers. Short but real pages only get a reminder; finding the
+  // requested --phrase in the visible text is proof enough that it is not a shell.
+  const SHELL_CHARS = 50;
+  const phraseVisible = Boolean(opts.phrase) && text.replace(/\s+/g, '').includes(opts.phrase.replace(/\s+/g, ''));
+  if (chars === 0) add('content', 'fail', t.textEmpty, 3, true);
+  else if (chars < SHELL_CHARS && !phraseVisible) add('content', 'fail', t.textThin(chars), 3, true);
+  else add('content', 'pass', t.textOk(chars), 3, true);
+  if (chars > 0 && chars < 200 && (chars >= SHELL_CHARS || phraseVisible)) add('content', 'info', t.textShort, 0);
   if (opts.phrase) {
     const squash = (s) => s.replace(/\s+/g, '');
     if (text.includes(opts.phrase)) add('content', 'pass', t.phraseOk(opts.phrase), 2);
