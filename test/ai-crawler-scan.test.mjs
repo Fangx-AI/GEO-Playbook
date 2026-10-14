@@ -26,6 +26,6 @@ test('render counts only readable sites in the denominator', () => {
   ];
   const md = render({ scannedAt: '2026-10-14T00:00:00Z', from: 'test', results });
   assert.match(md, /成功读取 2 个/);
-  assert.match(md, /只放行百度.*\| 1 \| 50% \|/);
+  assert.match(md, /百度能抓.*\| 1 \| 50% \|/);
   assert.match(md, /共 1 个/);
 });

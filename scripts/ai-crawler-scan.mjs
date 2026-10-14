@@ -4,6 +4,7 @@
 //   node scripts/ai-crawler-scan.mjs [data/sites-cn.txt]        scan, write data/ai-crawler-scan.json
 //   node scripts/ai-crawler-scan.mjs --render data/ai-crawler-scan.json   render docs/ai-crawler-leaderboard.md
 import { readFileSync, writeFileSync } from 'node:fs';
+import { pathToFileURL } from 'node:url';
 import { parseRobots, isAllowed } from '../cli/geo-audit.mjs';
 
 const UA = 'Mozilla/5.0 (compatible; GEO-Playbook-scan/1.0; +https://github.com/Fangx-AI/GEO-Playbook)';
@@ -97,7 +98,7 @@ export function render(data) {
   L.push('| --- | ---: | ---: |');
   L.push(`| 🚫 ChatGPT 搜索（OAI-SearchBot）抓不了首页 | ${blocks('OAI-SearchBot')} | ${pct(blocks('OAI-SearchBot'))}% |`);
   L.push(`| 🚫 4 个 AI 搜索爬虫（ChatGPT 搜索、ChatGPT 用户访问、Perplexity、Claude 搜索）全部挡住 | ${allAiSearchBlocked} | ${pct(allAiSearchBlocked)}% |`);
-  L.push(`| 🎯 只放行百度，AI 搜索爬虫全部挡住 | ${baiduOnly} | ${pct(baiduOnly)}% |`);
+  L.push(`| 🎯 百度能抓，但 4 个 AI 搜索爬虫全部挡住 | ${baiduOnly} | ${pct(baiduOnly)}% |`);
   L.push(`| 🚫 屏蔽 GPTBot（OpenAI 训练） | ${blocks('GPTBot')} | ${pct(blocks('GPTBot'))}% |`);
   L.push(`| 🚫 屏蔽 Bytespider（字节跳动） | ${blocks('Bytespider')} | ${pct(blocks('Bytespider'))}% |`);
   L.push(`| ✅ 对表中所有爬虫都不设限 | ${openAll} | ${pct(openAll)}% |`);
@@ -106,7 +107,7 @@ export function render(data) {
   L.push('### 重点发现');
   L.push('');
   L.push(`- **4 个 AI 搜索爬虫全部挡住的网站**：${names((r) => AI_SEARCH.every((t) => !r.allowed[t]))}。`);
-  L.push(`- **其中仍放行百度的**：${names((r) => r.allowed.Baiduspider && AI_SEARCH.every((t) => !r.allowed[t]))}。`);
+  L.push(`- **其中百度仍能抓取的**：${names((r) => r.allowed.Baiduspider && AI_SEARCH.every((t) => !r.allowed[t]))}。`);
   L.push('- 这些大多是内容平台。**如果你的 GEO 策略是"在知乎、小红书、微博上铺内容"，按 robots.txt 规则，ChatGPT 搜索、Perplexity、Claude 搜索都不应抓取这些页面**，它们更可能引用你自己官网或其他开放平台上的内容。国内 AI 产品各自怎么获取这些平台的内容，robots.txt 看不出来。');
   L.push('');
   L.push('**怎么读这张表**：很多中文网站的 robots.txt 是"白名单"写法，只列出百度、谷歌等老牌爬虫，最后一句 `User-agent: *` + `Disallow: /` 把其他所有爬虫挡在门外。这样写的时候，AI 搜索爬虫往往不是被"故意屏蔽"，而是**根本没被想到**。结果是：用户在 ChatGPT、Perplexity、Claude 里问到相关问题时，这些网站的页面很难被抓取和引用。');
@@ -149,7 +150,7 @@ export function render(data) {
   return L.join('\n');
 }
 
-const isMain = import.meta.url === `file://${process.argv[1]}`;
+const isMain = process.argv[1] && import.meta.url === pathToFileURL(process.argv[1]).href;
 if (isMain) {
   const args = process.argv.slice(2);
   if (args[0] === '--render') {
