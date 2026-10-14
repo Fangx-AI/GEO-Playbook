@@ -1,0 +1,26 @@
+# 每月检查一次文档里的外部链接。平台文档经常改地址，失效的链接会自动开一个 Issue。
+name: link-check
+on:
+  schedule:
+    - cron: "0 2 1 * *"
+  workflow_dispatch:
+permissions:
+  contents: read
+  issues: write
+jobs:
+  links:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - id: lychee
+        uses: lycheeverse/lychee-action@v2
+        with:
+          args: --no-progress --max-retries 2 --timeout 30 --accept 200,206,403,429 './**/*.md'
+          output: ./lychee/out.md
+          fail: false
+      - if: steps.lychee.outputs.exit_code != 0
+        uses: peter-evans/create-issue-from-file@v5
+        with:
+          title: 外部链接检查：发现失效链接
+          content-filepath: ./lychee/out.md
+          labels: links

@@ -1,0 +1,36 @@
+{
+  "name": "geo-playbook",
+  "version": "1.0.0",
+  "description": "GEO audit CLI: can AI search engines (ChatGPT, Perplexity, Claude, Google AI, Doubao…) actually read your page? Part of GEO-Playbook.",
+  "type": "module",
+  "bin": {
+    "geo-audit": "cli/geo-audit.mjs"
+  },
+  "files": [
+    "cli/geo-audit.mjs"
+  ],
+  "engines": {
+    "node": ">=18"
+  },
+  "scripts": {
+    "test": "node --test test/*.test.mjs"
+  },
+  "keywords": [
+    "geo",
+    "generative-engine-optimization",
+    "ai-search",
+    "seo",
+    "robots-txt",
+    "chatgpt",
+    "perplexity",
+    "llm-seo",
+    "audit",
+    "cli"
+  ],
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/Fangx-AI/GEO-Playbook.git"
+  },
+  "homepage": "https://github.com/Fangx-AI/GEO-Playbook",
+  "license": "MIT"
+}

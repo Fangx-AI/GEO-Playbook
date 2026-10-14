@@ -4,13 +4,14 @@
 
 ### 让豆包、DeepSeek、元宝、ChatGPT、Perplexity 找到你、说对你、引用你
 
-**中文 GEO（生成式引擎优化）实战手册：8 条行业路线 · 10 个提示词 · 1 个体检脚本 · 12 个误区辟谣**<br>
+**中文 GEO（生成式引擎优化）实战手册：8 条行业路线 · 10 个提示词 · 1 个 AI 爬虫体检工具 · 12 个误区辟谣**<br>
 Get Cited by AI · 不卖课，不吹涨幅。每条结论都附官方原文或研究出处，你可以自己点开核对。
 
 [![GitHub stars](https://img.shields.io/github/stars/Fangx-AI/GEO-Playbook?style=social)](https://github.com/Fangx-AI/GEO-Playbook/stargazers)
 [![资料核验](https://img.shields.io/badge/资料核验-2026--10--14-2ea44f)](#evidence)
 [![License: CC BY 4.0](https://img.shields.io/badge/License-CC%20BY%204.0-lightgrey.svg)](LICENSE)
 [![PRs Welcome](https://img.shields.io/badge/PRs-welcome-brightgreen.svg)](CONTRIBUTING.md)
+[![test](https://github.com/Fangx-AI/GEO-Playbook/actions/workflows/test.yml/badge.svg)](https://github.com/Fangx-AI/GEO-Playbook/actions/workflows/test.yml)
 
 [⚡ 15 分钟上手](#quickstart) · [🗺 按项目选路线](#routes) · [🧰 工具箱](#toolkit) · [❌ 误区辟谣](docs/myths.md) · [📈 案例数字](#cases) · [English](README.en.md)
 
@@ -47,9 +48,64 @@ Get Cited by AI · 不卖课，不吹涨幅。每条结论都附官方原文或�
 
 打开你的用户常用的 AI（豆包、DeepSeek、元宝、ChatGPT 都可以），问 3 个**不带你品牌名**的真实问题，比如“杭州西湖区周末能带电脑的安静咖啡店”。保存回答，打开它引用的来源，看看有没有你、说得对不对。
 
-**② 检查 AI 能不能读到你的网站（5 分钟）**
+**② 检查 AI 能不能读到你的网站（2 分钟）**
 
-macOS / Linux（终端）：
+装了 [Node.js](https://nodejs.org/zh-cn)（18 以上）就能直接跑，Windows / macOS / Linux 通用，不用下载任何东西：
+
+```bash
+npx github:Fangx-AI/GEO-Playbook https://你的网站/重要页面 --phrase "页面里的一句关键正文"
+```
+
+它会检查 7 类问题并打分：状态码与跳转、robots.txt 对 9 个 AI / 搜索爬虫的规则、防火墙是否在拦 AI 爬虫、noindex、canonical、正文是否真的在原始 HTML 里、sitemap 与结构化数据。只读取公开页面。
+
+<details>
+<summary markdown="span"><b>👀 看看输出长什么样</b>（模拟页面，查出一个致命问题和几个小问题）</summary>
+
+```text
+🩺 GEO 体检：https://example.com/p/pricing.html
+
+① 访问与跳转
+  ✅ 最终状态码 200
+  ✅ 无跳转
+
+② robots.txt 与 AI 爬虫
+  ✅ 9 个搜索类爬虫都可以抓取这个页面
+  ℹ️  训练用途的 GPTBot 被禁止：不影响搜索可见性，如果是有意为之可忽略
+
+③ 防火墙 / CDN
+  ✅ 用 AI 爬虫的 UA 访问，与浏览器结果一致
+  ℹ️  注：这里只模拟 UA，真实爬虫还要按官方 IP 核对服务器日志
+
+④ 索引控制
+  ✅ 响应头无 noindex
+  ❌ robots meta 含 noindex：检查 CMS 的“阻止搜索引擎”开关
+
+⑤ 规范地址
+  ⚠️  canonical 指向别处：https://example.com/（产品页误指首页很常见）
+
+⑥ 正文与页面信息
+  ✅ 原始 HTML 里有约 399 字正文
+  ✅ 原始 HTML 里找到指定正文「团队版每月 299 元」
+  ✅ 标题：价格 - 示例文档工具
+  ⚠️  没有 meta description：搜索结果和部分 AI 摘要会自己截一段
+  ✅ H1：价格
+  ⚠️  <html> 没有 lang 属性：多语言站点尤其要加
+
+⑦ 发现与结构化数据
+  ⚠️  没找到 sitemap（robots.txt 未声明，/sitemap.xml 也不存在）
+  ℹ️  没有 JSON-LD：不是必需项，官方没有“AI 专用 schema”，只在符合页面类型时添加
+
+得分：60/100  ·  9 项通过 · 4 项注意 · 1 项问题
+```
+
+这个页面在浏览器里看一切正常，但 noindex 会让它不进搜索索引，canonical 又把它指向了首页。这类问题肉眼看不出来，所以先跑一遍。
+
+</details>
+
+<details>
+<summary markdown="span"><b>没装 Node.js？</b>用 bash / PowerShell 脚本（检查项少一些）</summary>
+
+macOS / Linux：
 
 ```bash
 curl -O https://raw.githubusercontent.com/Fangx-AI/GEO-Playbook/master/toolkit/geo-audit.sh
@@ -62,39 +118,6 @@ Windows（PowerShell）：
 curl.exe -O https://raw.githubusercontent.com/Fangx-AI/GEO-Playbook/master/toolkit/geo-audit.ps1
 powershell -ExecutionPolicy Bypass -File geo-audit.ps1 https://你的网站/重要页面 "页面里的一句关键正文"
 ```
-
-脚本只读取公开页面，检查状态码、跳转、robots.txt 对各家 AI 爬虫的规则、noindex、canonical，以及正文是否真的在原始 HTML 里。
-
-<details>
-<summary markdown="span"><b>👀 看看输出长什么样</b>（模拟页面，一次查出 3 个常见坑）</summary>
-
-```text
-🩺 GEO 体检：https://example.com/p/pricing.html
-
-① 访问与跳转
-  ✅ 最终状态码 200
-  ✅ 无跳转
-
-② robots.txt（https://example.com/robots.txt）
-  ⚠️  GPTBot 被整站 Disallow（如果是有意屏蔽训练用途可忽略）
-  ✅ 通用分组 User-agent: * 没有整站封禁
-
-③ 索引控制（noindex）
-  ✅ 响应头无 noindex
-  ⚠️  HTML 的 robots meta 含 noindex（检查 CMS 的“阻止搜索引擎”开关）
-
-④ 规范地址（canonical）
-  ⚠️  canonical 指向别处：https://example.com/（产品页误指首页很常见）
-
-⑤ 正文是否在原始 HTML 里（不依赖 JavaScript）
-  ✅ 原始 HTML 有约 909 字节文字
-  ✅ 找到指定正文：「团队版每月 299 元」
-  ✅ 标题：价格 - 示例文档工具
-
-—— 结果：7 项通过，3 项需要关注。原始文件在 ./geo-audit-20261014-101500/
-```
-
-这个页面在浏览器里看一切正常，但 noindex 会让它不进搜索索引，canonical 又把它指向了首页。这类问题肉眼看不出来，所以先跑脚本。
 
 </details>
 
@@ -165,12 +188,40 @@ powershell -ExecutionPolicy Bypass -File geo-audit.ps1 https://你的网站/重�
 
 | 工具 | 解决什么问题 |
 | --- | --- |
-| 🩺 一键体检脚本：[macOS / Linux](toolkit/geo-audit.sh) · [Windows](toolkit/geo-audit.ps1) | AI 爬虫能不能读到你的页面？一条命令检查 5 类常见技术问题 |
+| [🩺 geo-audit 命令行工具](cli/geo-audit.mjs) | AI 爬虫能不能读到你的页面？`npx` 一行运行，7 类检查 + 0–100 分 + Markdown 报告。也有 [bash](toolkit/geo-audit.sh) / [PowerShell](toolkit/geo-audit.ps1) 版 |
+| [⚙️ GitHub Action](#ci) | 每次发布自动体检，分数掉了就让 CI 变红 |
 | [🤖 AI 爬虫 robots 模板](toolkit/robots-ai-bots.txt) | 按“搜索 / 训练 / 用户触发”分组，放行哪个、屏蔽哪个一目了然 |
 | [💬 10 个 GEO 提示词](toolkit/prompts.md) | 挖用户问题 → 整理事实卡 → 改稿 → 审稿 → 写 FAQ → 核查引用 → 诊断错误 |
 | [✅ 3 张检查清单](toolkit/checklists.md) | 15 分钟体检 · 发布前审核 · 每周观察 |
 | [📋 事实卡模板](toolkit/templates/fact-card.yaml) · [题集模板](toolkit/templates/question-set.csv) | 所有渠道的唯一数据源；可重复测量的固定问题 |
 | [📊 观察记录表 + 汇总脚本](docs/measurement.md) | 记录 AI 回答与引用，自动算出提及率、引用率、准确率 |
+
+<a id="ci"></a>
+
+### ⚙️ 给开发者：在 CI 里自动体检
+
+上线前最常见的事故是测试站的 `noindex` 或 `Disallow: /` 被带到生产环境。把下面这段放进 `.github/workflows/geo.yml`，每次部署后自动检查，分数低于阈值就报错，报告会显示在 Actions 的运行摘要里：
+
+```yaml
+name: geo-audit
+on:
+  deployment_status:
+  workflow_dispatch:
+jobs:
+  geo:
+    if: github.event_name == 'workflow_dispatch' || github.event.deployment_status.state == 'success'
+    runs-on: ubuntu-latest
+    steps:
+      - uses: Fangx-AI/GEO-Playbook@master
+        with:
+          urls: |
+            https://example.com/
+            https://example.com/pricing
+          fail-under: 80
+          lang: zh
+```
+
+也可以直接调用：`npx github:Fangx-AI/GEO-Playbook 网址 --json` 输出 JSON，`--fail-under 80` 低于 80 分时退出码为 1。
 
 ## 🧠 GEO 核心原则速记
 
