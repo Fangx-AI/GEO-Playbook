@@ -1,43 +1,71 @@
 <div align="center">
 
-# GEO 实战手册 · GEO-Playbook
+# 🩺 GEO 医生 · GEO-Playbook
 
-### AI 搜索看得见你吗？一行命令查出 ChatGPT、豆包、DeepSeek 为什么不提你
+### 一句话，让 AI 帮你做完一整套 GEO：<br>查清豆包、DeepSeek、元宝为什么不推荐你，改对资料，写好内容，告诉你发到哪，再测有没有用
 
-```bash
-npx github:Fangx-AI/GEO-Playbook https://你的网站
-```
-
-**开源 GEO（生成式引擎优化）工具 + 实战手册**：体检 AI 能不能读到你 → 按问题清单修 → 用固定问题集复测<br>
-不卖课，不吹涨幅，不保证排名。每条结论都附官方原文或可复现的数据。
+**开源的中文 GEO（生成式引擎优化）skill**，装进 Claude Code、Codex、Kimi、WorkBuddy、豆包就能用。<br>
+不用服务器，不用网页，不保排名，只给证据。
 
 [![GitHub stars](https://img.shields.io/github/stars/Fangx-AI/GEO-Playbook?style=social)](https://github.com/Fangx-AI/GEO-Playbook/stargazers)
 [![test](https://github.com/Fangx-AI/GEO-Playbook/actions/workflows/test.yml/badge.svg)](https://github.com/Fangx-AI/GEO-Playbook/actions/workflows/test.yml)
 [![资料核验](https://img.shields.io/badge/资料核验-2026--10--14-2ea44f)](#evidence)
-[![License: CC BY 4.0](https://img.shields.io/badge/License-CC%20BY%204.0-lightgrey.svg)](LICENSE)
+[![License: MIT](https://img.shields.io/badge/skill-MIT-blue.svg)](skills/geo-doctor/SKILL.md)
 [![PRs Welcome](https://img.shields.io/badge/PRs-welcome-brightgreen.svg)](CONTRIBUTING.md)
 
-[🩺 体检你的网站](#quickstart) · [🚧 AI 爬虫封锁榜](docs/ai-crawler-leaderboard.md) · [🗺 按项目选路线](#routes) · [🧰 工具箱](#toolkit) · [❌ 误区辟谣](docs/myths.md) · [English](README.en.md)
+[📦 安装](#install) · [🩺 它会做什么](#what) · [🧰 网站体检命令](#quickstart) · [🚧 AI 爬虫封锁榜](docs/ai-crawler-leaderboard.md) · [📚 实战手册](#routes)
 
 </div>
 
 ---
 
-> 🚧 **[中文网站 AI 爬虫封锁榜](docs/ai-crawler-leaderboard.md)**：我们读取了 97 个知名中文网站的 robots.txt。**知乎、小红书、微博、贝壳、马蜂窝都把 ChatGPT 搜索、Perplexity、Claude 搜索挡在门外**，微博还点名屏蔽了 DeepSeek、Kimi、豆包。在这些平台上铺内容做 GEO，海外 AI 按规则是读不到的。[看完整榜单和方法 →](docs/ai-crawler-leaderboard.md)
+用户越来越多地直接问 AI："20 人团队用什么知识库？""有没有不用联网的记账 App？"
 
-用户不再翻十页搜索结果，而是直接问 AI：“附近哪家咖啡店能办公？”“20 人团队用什么知识库？”
+**AI 的回答里没有你，或者把你的价格、功能说错了，你就在悄悄失去用户。** GEO 服务商报价几千到几万，效果却说不清。GEO 医生把整套方法装进你已经在用的 AI 助手里，你只要说一句"帮我做 GEO"。
 
-**AI 的回答里没有你，或者把你的价格、营业时间、功能说错了，你就在悄悄失去客户。** 原因往往很无聊：一行 robots 规则、一个忘删的 `noindex`、一个拦机器人的防火墙。这个项目帮你先查出来，再教你修对、测准。
+<a id="what"></a>
 
-<div align="center">
+## 🩺 它会做什么
 
-![GEO 速查卡：AI 回答背后的 6 关、最常见的 3 个技术坑、写内容的 3 条原则、测量的 5 层漏斗](assets/geo-cheatsheet.png)
+像看病一样，八步走完，每一步都有交付物：
 
-</div>
+| 步 | 你说 | GEO 医生做什么 | 你拿到 |
+| --- | --- | --- | --- |
+| 0 问诊 | "帮我做 GEO" | 问清产品、想被哪个 AI 推荐，联网调研你的行业 | 病历 |
+| 1 体检 | "AI 能读到我的网站吗" | 查 robots、AI 爬虫、noindex、正文能不能被读到 | 问题清单和修法 |
+| 2 事实卡 | "帮我整理产品资料" | 从官网、价格页、文档里整理事实，找出各渠道说法不一致的地方 | 唯一事实源 |
+| 3 问题集 | "用户会怎么问 AI" | 用真实用户的原话，写 20 到 30 道题，挑 10 道核心题 | 问题清单 |
+| 4 采样 | "AI 现在怎么说我" | 告诉你去目标 AI 里问哪 10 道题，你把回答贴回来 | 回答存档 |
+| 5 诊断 | "为什么不推荐我" | 算提及率、正确率，找出 AI 引用了谁、同行赢在哪 | 按优先级排的处方 |
+| 6 写内容 | "帮我写" | 只针对缺口写，只用事实卡里的事实，自带夸大和违规检查 | 文章、FAQ、对比页、口播稿 |
+| 7 发布指导 | "发到哪、怎么发" | 按"你想被哪个 AI 推荐"选平台，给出入口、写法和节奏 | 发布计划表 |
+| 8 复查 | "两周了，有用吗" | 同一批题再测，前后对比，写明样本数 | 复查报告 |
+
+目前支持**软件、App、网站、小程序和线上产品**。本地门店版本在路上。
+
+> 为什么"采样"要你自己去问？因为你在 App 里看到的回答，才是你的用户看到的。AI 每次回答都不一样，所以每题问 2 次，看出现率而不是单次排名。只想提高豆包，就只问豆包，一轮 15 到 20 分钟。
+
+<a id="install"></a>
+
+## 📦 安装
+
+| 你用的工具 | 怎么装 |
+| --- | --- |
+| **Claude Code** | 在 Claude Code 里输入 `/plugin marketplace add Fangx-AI/GEO-Playbook`，再输入 `/plugin install geo-doctor@geo-playbook` |
+| **Codex / Kimi Code / TRAE 等命令行工具** | `npx skills add Fangx-AI/GEO-Playbook`，或把 [`skills/geo-doctor`](skills/geo-doctor) 文件夹复制到工具的 skills 目录（Codex：`~/.agents/skills/`；Kimi Code：`~/.kimi-code/skills/`） |
+| **WorkBuddy / 豆包 / 扣子** | 在 [Releases](https://github.com/Fangx-AI/GEO-Playbook/releases) 下载 `geo-doctor.zip`，在技能页面选择"上传技能" |
+
+装好后，对 AI 说：**"用 GEO 医生帮我看看 https://你的网站"**。
+
+> 国内访问 GitHub 慢的话，可以下载 zip 后本地上传。各平台的安装方式还在逐一实测，遇到问题欢迎[提 issue](https://github.com/Fangx-AI/GEO-Playbook/issues/new/choose)。
+
+---
+
+> 🚧 **[中文网站 AI 爬虫封锁榜](docs/ai-crawler-leaderboard.md)**：我们读取了 97 个知名中文网站的 robots.txt。**知乎、小红书、微博、贝壳、马蜂窝都把 ChatGPT 搜索、Perplexity、Claude 搜索挡在门外**，微博还点名屏蔽了 DeepSeek、Kimi、豆包。[看完整榜单和方法 →](docs/ai-crawler-leaderboard.md)
 
 <a id="quickstart"></a>
 
-## ⚡ 15 分钟上手：今天就能做的三件事
+## 🧰 不装 skill 也能用：15 分钟上手
 
 **① 看看 AI 现在怎么说你（5 分钟）**
 

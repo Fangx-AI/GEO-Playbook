@@ -1,0 +1,533 @@
+#!/usr/bin/env node
+// geo-audit · GEO-Playbook
+// Can AI search engines actually read your page? One command, no dependencies.
+// AI 搜索能不能读到你的页面？一条命令，零依赖。
+//
+//   npx github:Fangx-AI/GEO-Playbook https://example.com/pricing
+//
+// Only fetches public pages. Nothing is sent anywhere else.
+// 只读取公开页面，不向任何第三方发送数据。
+// SPDX-License-Identifier: MIT
+
+import { writeFileSync } from 'node:fs';
+import { pathToFileURL } from 'node:url';
+
+export const VERSION = '1.0.0';
+const DOCS = 'https://github.com/Fangx-AI/GEO-Playbook/blob/master/';
+const BROWSER_UA = 'Mozilla/5.0 (compatible; GEO-Playbook-audit/1.0; +https://github.com/Fangx-AI/GEO-Playbook)';
+
+// Crawlers that decide whether you can appear in AI / web search answers.
+// 决定你能否出现在 AI 搜索 / 网页搜索回答里的爬虫。
+export const SEARCH_BOTS = [
+  'Googlebot', 'Bingbot', 'OAI-SearchBot', 'ChatGPT-User', 'PerplexityBot',
+  'Perplexity-User', 'Claude-SearchBot', 'Claude-User', 'Baiduspider',
+];
+// Training-only tokens: blocking them does not remove you from search. Reported as info.
+// 训练用途：屏蔽它们不会让你从搜索里消失，只作提示。
+export const TRAINING_BOTS = ['GPTBot', 'ClaudeBot', 'Google-Extended', 'CCBot', 'Bytespider'];
+// User-agent strings used only to detect firewall / CDN rules that block by UA.
+// 仅用于检测按 UA 拦截的防火墙 / CDN 规则。
+const PROBE_UAS = {
+  'OAI-SearchBot': 'Mozilla/5.0 AppleWebKit/537.36 (KHTML, like Gecko); compatible; OAI-SearchBot/1.0; +https://openai.com/searchbot',
+  'PerplexityBot': 'Mozilla/5.0 AppleWebKit/537.36 (KHTML, like Gecko; compatible; PerplexityBot/1.0; +https://perplexity.ai/perplexitybot)',
+  'Claude-SearchBot': 'Mozilla/5.0 AppleWebKit/537.36 (KHTML, like Gecko; compatible; Claude-SearchBot/1.0; +https://www.anthropic.com)',
+};
+
+// ---------------------------------------------------------------- messages
+
+const M = {
+  zh: {
+    title: 'GEO 体检', score: '得分', sep: '：',
+    pass: '通过', warn: '注意', fail: '问题', info: '提示',
+    sections: { access: '① 访问与跳转', robots: '② robots.txt 与 AI 爬虫', firewall: '③ 防火墙 / CDN', index: '④ 索引控制', canonical: '⑤ 规范地址', content: '⑥ 正文与页面信息', discovery: '⑦ 发现与结构化数据' },
+    status: (c) => `最终状态码 ${c}`,
+    statusBad: (c) => `最终状态码 ${c}：4xx/5xx 时 AI 读不到正文`,
+    noRedirect: '无跳转',
+    redirects: (n, u) => `经过 ${n} 次跳转到 ${u}：站内链接和 sitemap 尽量直接用最终地址`,
+    fetchFail: (e) => `请求失败：${e}（检查网络、证书或域名）`,
+    robots404: '没有 robots.txt（404 表示不限制抓取）',
+    robotsOther: (c) => `robots.txt 返回 ${c}：按 RFC 9309，读不到 robots.txt 时爬虫会当作整站禁止抓取，先修好它`,
+    searchOk: (n) => `${n} 个搜索类爬虫都可以抓取这个页面`,
+    searchBlocked: (b) => `${b} 被 robots.txt 禁止抓取这个页面：它对应的搜索产品可能无法引用你`,
+    trainBlocked: (b) => `训练用途的 ${b} 被禁止：不影响搜索可见性，如果是有意为之可忽略`,
+    probeOk: '用 AI 爬虫的 UA 访问，与浏览器结果一致',
+    probeBlocked: (b, c) => `用 ${b} 的 UA 访问返回 ${c}，浏览器 UA 正常：防火墙或 CDN 可能在拦 AI 爬虫`,
+    probeDiff: (b) => `用 ${b} 的 UA 访问，正文明显比浏览器少：可能被替换成验证页`,
+    probeNote: '注：这里只模拟 UA，真实爬虫还要按官方 IP 核对服务器日志',
+    headerNoindex: '响应头 X-Robots-Tag 含 noindex：页面不会进入搜索索引',
+    headerOk: '响应头无 noindex',
+    metaNoindex: 'robots meta 含 noindex：检查 CMS 的“阻止搜索引擎”开关',
+    metaOk: 'HTML 无 noindex meta',
+    noCanon: '没有 canonical：不是错误，但重要页面建议加上',
+    canonSelf: (u) => `canonical 指向本页：${u}`,
+    canonOther: (u) => `canonical 指向别处：${u}（产品页误指首页很常见）`,
+    textOk: (n) => `原始 HTML 里有约 ${n} 字正文`,
+    textThin: (n) => `原始 HTML 只有约 ${n} 字正文：可能是 JS 渲染的空壳页，部分 AI 爬虫读不到`,
+    phraseOk: (p) => `原始 HTML 里找到指定正文「${p}」`,
+    phraseSplit: (p) => `「${p}」被标签拆开了，去掉标签后才能找到：多数爬虫能读，但尽量写成连续文字`,
+    phraseMissing: (p) => `原始 HTML 里找不到「${p}」：可能依赖 JavaScript 渲染`,
+    phraseHidden: (p) => `「${p}」只出现在标签属性或 <head> 里（例如 meta description），正文里看不到`,
+    canonInvalid: (h) => `canonical 地址无法解析：${h}`,
+    phraseInScript: (p) => `「${p}」只出现在 <script> 里（例如 JSON 数据），要运行 JavaScript 才会显示：不执行 JS 的爬虫看不到`,
+    titleOk: (t) => `标题：${t}`,
+    titleMissing: '没有 <title>',
+    descOk: '有 meta description',
+    descMissing: '没有 meta description：搜索结果和部分 AI 摘要会自己截一段',
+    h1Ok: (t) => `H1：${t}`,
+    h1Missing: '没有 H1：给页面一个说清主题的主标题',
+    langOk: (l) => `声明了语言 lang="${l}"`,
+    langMissing: '<html> 没有 lang 属性：多语言站点尤其要加',
+    sitemapOk: (u) => `找到 sitemap：${u}`,
+    sitemapMissing: '没找到 sitemap（robots.txt 未声明，/sitemap.xml 也不存在）',
+    jsonldOk: (t) => `结构化数据 JSON-LD：${t}`,
+    jsonldBad: 'JSON-LD 存在但解析失败：检查 JSON 语法',
+    jsonldNone: '没有 JSON-LD：不是必需项，官方没有“AI 专用 schema”，只在符合页面类型时添加',
+    summary: (p, w, f) => `${p} 项通过 · ${w} 项注意 · ${f} 项问题`,
+    next: '下一步：逐项修复后再跑一次。详细排查步骤见',
+    remind: '提醒：能被读到 ≠ 已被收录或引用，后者要用固定题集观察。',
+    usage: `用法：geo-audit <网址...> [选项]
+
+选项：
+  --phrase "文字"     检查这句正文是否在原始 HTML 里（建议填价格、型号等关键句）
+  --json              输出 JSON
+  --report 文件.md    另存一份 Markdown 报告
+  --fail-under 分数   得分低于该值时退出码为 1（用于 CI）
+  --lang zh|en        输出语言（默认跟随系统）
+  --no-probe          跳过“用 AI 爬虫 UA 访问”的防火墙检查
+  -h, --help          显示帮助
+  -v, --version       显示版本
+
+例子：
+  npx github:Fangx-AI/GEO-Playbook https://example.com/pricing --phrase "团队版每月 299 元"`,
+  },
+  en: {
+    title: 'GEO audit', score: 'Score', sep: ': ',
+    pass: 'pass', warn: 'warn', fail: 'fail', info: 'info',
+    sections: { access: '① Access & redirects', robots: '② robots.txt & AI crawlers', firewall: '③ Firewall / CDN', index: '④ Indexing', canonical: '⑤ Canonical', content: '⑥ Content & page info', discovery: '⑦ Discovery & structured data' },
+    status: (c) => `Final status ${c}`,
+    statusBad: (c) => `Final status ${c}: on 4xx/5xx AI crawlers get no content`,
+    noRedirect: 'No redirects',
+    redirects: (n, u) => `${n} redirect(s) to ${u}: link to the final URL internally and in sitemaps`,
+    fetchFail: (e) => `Request failed: ${e} (check network, TLS or DNS)`,
+    robots404: 'No robots.txt (404 means no crawl restrictions)',
+    robotsOther: (c) => `robots.txt returned ${c}: under RFC 9309 crawlers treat an unreachable robots.txt as "disallow everything"; fix it first`,
+    searchOk: (n) => `All ${n} search crawlers may fetch this page`,
+    searchBlocked: (b) => `${b} is disallowed from this page: its search product may not cite you`,
+    trainBlocked: (b) => `Training token ${b} is disallowed: no effect on search visibility; ignore if intended`,
+    probeOk: 'Requests with AI crawler user-agents look the same as a browser',
+    probeBlocked: (b, c) => `With the ${b} user-agent the page returns ${c} while a browser gets 2xx: a firewall or CDN may be blocking AI crawlers`,
+    probeDiff: (b) => `With the ${b} user-agent the page has far less text than for a browser: possibly a challenge page`,
+    probeNote: 'Note: this only spoofs the user-agent; verify real crawlers by their published IPs in your logs',
+    headerNoindex: 'X-Robots-Tag header contains noindex: the page will not be indexed',
+    headerOk: 'No noindex header',
+    metaNoindex: 'robots meta tag contains noindex: check your CMS "discourage search engines" setting',
+    metaOk: 'No noindex meta tag',
+    noCanon: 'No canonical link: not an error, but recommended on key pages',
+    canonSelf: (u) => `Canonical points to this page: ${u}`,
+    canonOther: (u) => `Canonical points elsewhere: ${u} (product pages pointing at the homepage is common)`,
+    textOk: (n) => `About ${n} characters of text in the raw HTML`,
+    textThin: (n) => `Only about ${n} characters of text in the raw HTML: likely a JS-rendered shell some AI crawlers cannot read`,
+    phraseOk: (p) => `Found "${p}" in the raw HTML`,
+    phraseSplit: (p) => `"${p}" is split across tags and only matches after stripping them; most crawlers cope, but keep key facts in one run of text`,
+    phraseMissing: (p) => `"${p}" is not in the raw HTML: it probably depends on JavaScript`,
+    phraseHidden: (p) => `"${p}" only appears in tag attributes or <head> (e.g. meta description), not in the visible body text`,
+    canonInvalid: (h) => `Canonical URL can't be parsed: ${h}`,
+    phraseInScript: (p) => `"${p}" only appears inside <script> (e.g. JSON data) and needs JavaScript to show up: crawlers that don't run JS won't see it`,
+    titleOk: (t) => `Title: ${t}`,
+    titleMissing: 'No <title>',
+    descOk: 'Has a meta description',
+    descMissing: 'No meta description: search results and some AI summaries will pick their own snippet',
+    h1Ok: (t) => `H1: ${t}`,
+    h1Missing: 'No H1: give the page one heading that states its topic',
+    langOk: (l) => `Declares lang="${l}"`,
+    langMissing: '<html> has no lang attribute: important for multilingual sites',
+    sitemapOk: (u) => `Sitemap found: ${u}`,
+    sitemapMissing: 'No sitemap found (none declared in robots.txt and /sitemap.xml is missing)',
+    jsonldOk: (t) => `JSON-LD structured data: ${t}`,
+    jsonldBad: 'JSON-LD present but fails to parse: check the JSON syntax',
+    jsonldNone: 'No JSON-LD: optional; there is no special "AI schema", add it only where it fits the page type',
+    summary: (p, w, f) => `${p} passed · ${w} warnings · ${f} problems`,
+    next: 'Next: fix and run again. Step-by-step troubleshooting:',
+    remind: 'Reminder: readable ≠ indexed or cited. Track that with a fixed question set.',
+    usage: `Usage: geo-audit <url...> [options]
+
+Options:
+  --phrase "text"     check that this sentence is in the raw HTML (use a price, model, key fact)
+  --json              print JSON
+  --report file.md    also write a Markdown report
+  --fail-under N      exit 1 when the score is below N (for CI)
+  --lang zh|en        output language (default: system locale)
+  --no-probe          skip the "fetch with AI crawler user-agents" firewall check
+  -h, --help          show help
+  -v, --version       show version
+
+Example:
+  npx github:Fangx-AI/GEO-Playbook https://example.com/pricing --phrase "Team plan $29/month"`,
+  },
+};
+
+const DOC_LINKS = {
+  access: 'docs/playbooks/website.md', robots: 'toolkit/robots-ai-bots.txt', firewall: 'docs/playbooks/website.md',
+  index: 'docs/playbooks/website.md', canonical: 'docs/playbooks/website.md', content: 'docs/content-rewrite.md',
+  discovery: 'docs/myths.md',
+};
+
+// ---------------------------------------------------------------- robots.txt (RFC 9309)
+
+export function parseRobots(text) {
+  const groups = []; const sitemaps = [];
+  let cur = null; let lastWasUa = false;
+  for (const raw of text.replace(/^﻿/, '').split(/\r?\n|\r/)) {
+    const line = raw.replace(/#.*/, '').trim();
+    if (!line) continue;
+    const m = line.match(/^([A-Za-z-]+)\s*:\s*(.*)$/);
+    if (!m) continue;
+    const key = m[1].toLowerCase(); const val = m[2].trim();
+    if (key === 'user-agent') {
+      if (!lastWasUa) { cur = { agents: [], rules: [] }; groups.push(cur); }
+      cur.agents.push(val.toLowerCase()); lastWasUa = true;
+    } else if (key === 'allow' || key === 'disallow') {
+      lastWasUa = false;
+      if (cur) cur.rules.push({ allow: key === 'allow', path: val });
+    } else if (key === 'sitemap') {
+      sitemaps.push(val);
+    } else {
+      lastWasUa = false;
+    }
+  }
+  return { groups, sitemaps };
+}
+
+// RFC 9309 §2.2.2: compare paths in one encoding. Non-ASCII is percent-encoded,
+// escapes of unreserved characters are decoded, other escapes are upper-cased.
+export function normPath(s) {
+  return s.replace(/[^\x00-\x7f]+/gu, (m) => { try { return encodeURIComponent(m); } catch { return m; } })
+    .replace(/%[0-9a-f]{2}/gi, (m) => {
+      const c = String.fromCharCode(parseInt(m.slice(1), 16));
+      return /[A-Za-z0-9\-._~]/.test(c) ? c : m.toUpperCase();
+    });
+}
+
+function ruleMatches(pattern, path) {
+  if (pattern === '') return false;
+  let re = '';
+  for (const ch of pattern) {
+    if (ch === '*') re += '.*';
+    else if (ch === '$') re += '$';
+    else re += ch.replace(/[.+?^{}()|[\]\\]/g, '\\$&');
+  }
+  return new RegExp('^' + re).test(path);
+}
+
+// Returns true when `bot` may fetch `path` (path includes the query string).
+export function isAllowed(robots, bot, path) {
+  const token = bot.toLowerCase();
+  let rules = [];
+  const named = robots.groups.filter((g) => g.agents.includes(token));
+  if (named.length) rules = named.flatMap((g) => g.rules);
+  else rules = robots.groups.filter((g) => g.agents.includes('*')).flatMap((g) => g.rules);
+  const target = normPath(path);
+  let best = null;
+  for (const r of rules) {
+    const pattern = normPath(r.path);
+    if (!ruleMatches(pattern, target)) continue;
+    const len = pattern.length;
+    if (!best || len > best.len || (len === best.len && r.allow && !best.allow)) best = { len, allow: r.allow };
+  }
+  return best ? best.allow : true;
+}
+
+// ---------------------------------------------------------------- HTML helpers
+
+export function cleanHtml(html) {
+  return html
+    .replace(/<script\b[\s\S]*?<\/script>/gi, ' ')
+    .replace(/<style\b[\s\S]*?<\/style>/gi, ' ')
+    .replace(/<noscript\b[\s\S]*?<\/noscript>/gi, ' ')
+    .replace(/<!--[\s\S]*?-->/g, ' ')
+    .replace(/<template\b[\s\S]*?<\/template>/gi, ' ');
+}
+
+const ENTITIES = { amp: '&', lt: '<', gt: '>', quot: '"', apos: "'", nbsp: ' ' };
+function decode(s) {
+  return s.replace(/&(#x[0-9a-f]+|#\d+|[a-z]+);/gi, (m, e) => {
+    if (e[0] === '#') return String.fromCodePoint(e[1].toLowerCase() === 'x' ? parseInt(e.slice(2), 16) : parseInt(e.slice(1), 10));
+    return ENTITIES[e.toLowerCase()] ?? m;
+  });
+}
+
+export function visibleText(cleaned) {
+  const body = (cleaned.match(/<body\b[\s\S]*$/i) || [cleaned])[0];
+  return decode(body.replace(/<[^>]+>/g, ' ')).replace(/\s+/g, ' ').trim();
+}
+
+function tags(html, name) {
+  return html.match(new RegExp(`<${name}\\b[^>]*>`, 'gi')) || [];
+}
+function attr(tag, name) {
+  const m = tag.match(new RegExp(`\\s${name}\\s*=\\s*("([^"]*)"|'([^']*)'|([^\\s>]+))`, 'i'));
+  return m ? decode(m[2] ?? m[3] ?? m[4] ?? '') : null;
+}
+function inner(html, name) {
+  const m = html.match(new RegExp(`<${name}\\b[^>]*>([\\s\\S]*?)<\\/${name}>`, 'i'));
+  return m ? decode(m[1].replace(/<[^>]+>/g, ' ')).replace(/\s+/g, ' ').trim() : null;
+}
+function hasToken(value, token) {
+  return (value || '').toLowerCase().split(/[\s,]+/).some((t) => t === token);
+}
+
+// ---------------------------------------------------------------- fetching
+
+async function get(url, ua, { follow = true, timeout = 20000 } = {}) {
+  let current = url; const chain = [];
+  for (let i = 0; i <= 10; i++) {
+    const res = await fetch(current, {
+      redirect: 'manual', signal: AbortSignal.timeout(timeout),
+      headers: { 'user-agent': ua, accept: 'text/html,application/xhtml+xml,*/*;q=0.8' },
+    });
+    const loc = res.headers.get('location');
+    if (follow && res.status >= 300 && res.status < 400 && loc) {
+      chain.push(current); current = new URL(loc, current).href;
+      await res.body?.cancel();
+      continue;
+    }
+    const body = await res.text();
+    return { status: res.status, headers: res.headers, body, url: current, redirects: chain.length };
+  }
+  throw new Error('too many redirects');
+}
+
+// ---------------------------------------------------------------- audit
+
+const WEIGHT = { fail: 0, warn: 0.5, pass: 1 };
+
+export async function audit(url, opts = {}) {
+  const lang = opts.lang || 'en';
+  const t = M[lang];
+  const checks = [];
+  // critical = a failure here alone can keep the page out of AI answers; it caps the score at 60.
+  const add = (section, status, msg, weight = 1, critical = false) => checks.push({ section, status, msg, weight, critical });
+
+  let page;
+  try {
+    page = await get(url, BROWSER_UA);
+  } catch (e) {
+    add('access', 'fail', t.fetchFail(e.cause?.code || e.message), 10, true);
+    return finish(url, url, checks, t);
+  }
+  const final = page.url;
+  const origin = new URL(final).origin;
+  const ok = page.status >= 200 && page.status < 300;
+  add('access', ok ? 'pass' : 'fail', ok ? t.status(page.status) : t.statusBad(page.status), 3, true);
+  add('access', page.redirects ? 'warn' : 'pass', page.redirects ? t.redirects(page.redirects, final) : t.noRedirect, 0.5);
+
+  // robots.txt
+  let robots = { groups: [], sitemaps: [] };
+  let robotsReadable = true;
+  try {
+    const r = await get(origin + '/robots.txt', BROWSER_UA);
+    if (r.status >= 200 && r.status < 300) robots = parseRobots(r.body);
+    else if (r.status >= 400 && r.status < 500) add('robots', 'pass', t.robots404, 0.5);
+    else { robotsReadable = false; add('robots', 'fail', t.robotsOther(r.status), 3, true); }
+  } catch (e) {
+    robotsReadable = false;
+    add('robots', 'fail', t.robotsOther(e.cause?.code || e.message), 3, true);
+  }
+  if (robotsReadable) {
+    const u = new URL(final); const path = u.pathname + u.search;
+    const blockedSearch = SEARCH_BOTS.filter((b) => !isAllowed(robots, b, path));
+    for (const b of blockedSearch) add('robots', 'fail', t.searchBlocked(b), 1.5, true);
+    if (!blockedSearch.length) add('robots', 'pass', t.searchOk(SEARCH_BOTS.length), 3);
+    for (const b of TRAINING_BOTS.filter((x) => !isAllowed(robots, x, path))) add('robots', 'info', t.trainBlocked(b), 0);
+  }
+
+  // firewall / CDN probe
+  if (opts.probe !== false && ok) {
+    const baseLen = visibleText(cleanHtml(page.body)).length;
+    let problem = false;
+    for (const [bot, ua] of Object.entries(PROBE_UAS)) {
+      try {
+        const p = await get(final, ua);
+        if (p.status >= 400) { add('firewall', 'fail', t.probeBlocked(bot, p.status), 2, true); problem = true; break; }
+        const len = visibleText(cleanHtml(p.body)).length;
+        if (baseLen > 500 && len < baseLen * 0.3) { add('firewall', 'warn', t.probeDiff(bot), 2); problem = true; break; }
+      } catch (e) {
+        add('firewall', 'fail', t.probeBlocked(bot, e.cause?.code || e.message), 2); problem = true; break;
+      }
+    }
+    if (!problem) add('firewall', 'pass', t.probeOk, 2);
+    add('firewall', 'info', t.probeNote, 0);
+  }
+
+  const html = page.body; const clean = cleanHtml(html);
+
+  // indexing
+  const xrt = page.headers.get('x-robots-tag') || '';
+  const headerNoindex = xrt.split(',').some((part) => /(^|:|\s)(noindex|none)\b/i.test(part.trim()));
+  add('index', headerNoindex ? 'fail' : 'pass', headerNoindex ? t.headerNoindex : t.headerOk, 2, true);
+  const metaNoindex = tags(clean, 'meta').some((m) => /^(robots|googlebot|bingbot)$/i.test(attr(m, 'name') || '')
+    && (hasToken(attr(m, 'content'), 'noindex') || hasToken(attr(m, 'content'), 'none')));
+  add('index', metaNoindex ? 'fail' : 'pass', metaNoindex ? t.metaNoindex : t.metaOk, 2, true);
+
+  // canonical
+  const canonTag = tags(clean, 'link').find((l) => hasToken(attr(l, 'rel'), 'canonical'));
+  const canonHref = canonTag ? attr(canonTag, 'href') : null;
+  if (!canonHref) add('canonical', 'warn', t.noCanon, 0.5);
+  else {
+    let abs = null;
+    try { abs = new URL(canonHref, final).href; } catch { add('canonical', 'warn', t.canonInvalid(canonHref), 1.5); }
+    if (abs) {
+      const norm = (x) => x.replace(/#.*$/, '').replace(/\/$/, '');
+      const self = norm(abs) === norm(final);
+      add('canonical', self ? 'pass' : 'warn', self ? t.canonSelf(abs) : t.canonOther(abs), 1.5);
+    }
+  }
+
+  // content
+  const text = visibleText(clean);
+  const chars = [...text].length;
+  add('content', chars >= 200 ? 'pass' : 'fail', chars >= 200 ? t.textOk(chars) : t.textThin(chars), 3, true);
+  if (opts.phrase) {
+    const squash = (s) => s.replace(/\s+/g, '');
+    if (text.includes(opts.phrase)) add('content', 'pass', t.phraseOk(opts.phrase), 2);
+    else if (squash(text).includes(squash(opts.phrase))) add('content', 'warn', t.phraseSplit(opts.phrase), 2);
+    else if (clean.includes(opts.phrase) || decode(clean).includes(opts.phrase)) add('content', 'fail', t.phraseHidden(opts.phrase), 2);
+    else if (html.includes(opts.phrase) || decode(html).includes(opts.phrase)) add('content', 'fail', t.phraseInScript(opts.phrase), 2);
+    else add('content', 'fail', t.phraseMissing(opts.phrase), 2);
+  }
+  const title = inner(clean, 'title');
+  add('content', title ? 'pass' : 'warn', title ? t.titleOk(title) : t.titleMissing, 1);
+  const desc = tags(clean, 'meta').find((m) => (attr(m, 'name') || '').toLowerCase() === 'description');
+  add('content', desc && attr(desc, 'content') ? 'pass' : 'warn', desc && attr(desc, 'content') ? t.descOk : t.descMissing, 0.5);
+  const h1 = inner(clean, 'h1');
+  add('content', h1 ? 'pass' : 'warn', h1 ? t.h1Ok(h1) : t.h1Missing, 0.5);
+  const htmlTag = tags(html, 'html')[0];
+  const langAttr = htmlTag ? attr(htmlTag, 'lang') : null;
+  add('content', langAttr ? 'pass' : 'warn', langAttr ? t.langOk(langAttr) : t.langMissing, 0.5);
+
+  // discovery
+  let sitemap = robots.sitemaps[0] || null;
+  if (!sitemap) {
+    try {
+      const s = await get(origin + '/sitemap.xml', BROWSER_UA);
+      if (s.status >= 200 && s.status < 300 && /<(urlset|sitemapindex)\b/i.test(s.body)) sitemap = origin + '/sitemap.xml';
+    } catch { /* treated as missing */ }
+  }
+  add('discovery', sitemap ? 'pass' : 'warn', sitemap ? t.sitemapOk(sitemap) : t.sitemapMissing, 1);
+  const blocks = [...html.matchAll(/<script\b[^>]*type\s*=\s*["']?application\/ld\+json["']?[^>]*>([\s\S]*?)<\/script>/gi)].map((m) => m[1]);
+  if (!blocks.length) add('discovery', 'info', t.jsonldNone, 0);
+  else {
+    const types = []; let bad = false;
+    for (const b of blocks) {
+      try {
+        const walk = (n) => {
+          if (Array.isArray(n)) return n.forEach(walk);
+          if (n && typeof n === 'object') {
+            if (n['@type']) types.push([].concat(n['@type']).join('/'));
+            if (n['@graph']) walk(n['@graph']);
+          }
+        };
+        walk(JSON.parse(b));
+      } catch { bad = true; }
+    }
+    if (bad) add('discovery', 'warn', t.jsonldBad, 0.5);
+    else add('discovery', 'pass', t.jsonldOk([...new Set(types)].join(', ') || '—'), 0);
+  }
+
+  return finish(url, final, checks, t);
+}
+
+function finish(url, final, checks, t) {
+  const scored = checks.filter((c) => c.weight > 0 && c.status !== 'info');
+  const total = scored.reduce((s, c) => s + c.weight, 0);
+  const got = scored.reduce((s, c) => s + c.weight * WEIGHT[c.status], 0);
+  let score = total ? Math.round((got / total) * 100) : 0;
+  if (checks.some((c) => c.critical && c.status === 'fail')) score = Math.min(score, 60);
+  const count = (s) => checks.filter((c) => c.status === s).length;
+  return { url, finalUrl: final, score, passed: count('pass'), warnings: count('warn'), problems: count('fail'), checks };
+}
+
+// ---------------------------------------------------------------- output
+
+const ICON = { pass: '✅', warn: '⚠️ ', fail: '❌', info: 'ℹ️ ' };
+const tty = process.stdout.isTTY && !process.env.NO_COLOR;
+const color = (code, s) => (tty ? `\x1b[${code}m${s}\x1b[0m` : s);
+
+export function formatText(r, lang) {
+  const t = M[lang]; const out = [];
+  out.push(color('1', `🩺 ${t.title}${t.sep}${r.url}`));
+  let section = null;
+  for (const c of r.checks) {
+    if (c.section !== section) { section = c.section; out.push('', color('1', t.sections[section])); }
+    out.push(`  ${ICON[c.status]} ${c.msg}`);
+  }
+  const sc = r.score >= 90 ? '32' : r.score >= 70 ? '33' : '31';
+  out.push('', color('1', `${t.score}${t.sep}`) + color(`1;${sc}`, `${r.score}/100`) + `  ·  ${t.summary(r.passed, r.warnings, r.problems)}`);
+  if (r.problems || r.warnings) out.push(`${t.next} ${DOCS}docs/playbooks/website.md`);
+  out.push(color('2', t.remind));
+  return out.join('\n');
+}
+
+export function formatMarkdown(results, lang) {
+  const t = M[lang]; const out = [`# 🩺 ${t.title}`, ''];
+  out.push(`| URL | ${t.score} | ✅ | ⚠️ | ❌ |`, '| --- | --- | --- | --- | --- |');
+  for (const r of results) out.push(`| ${r.url} | **${r.score}** | ${r.passed} | ${r.warnings} | ${r.problems} |`);
+  for (const r of results) {
+    out.push('', `## ${r.url}`, '');
+    let section = null;
+    for (const c of r.checks) {
+      if (c.section !== section) { section = c.section; out.push('', `**${t.sections[section]}** · [docs](${DOCS}${DOC_LINKS[section]})`, ''); }
+      out.push(`- ${ICON[c.status].trim()} ${c.msg}`);
+    }
+  }
+  out.push('', `<sub>${t.remind} · [GEO-Playbook](https://github.com/Fangx-AI/GEO-Playbook)</sub>`, '');
+  return out.join('\n');
+}
+
+// ---------------------------------------------------------------- CLI
+
+export function parseArgs(argv) {
+  const o = { urls: [], json: false, probe: true };
+  for (let i = 0; i < argv.length; i++) {
+    const a = argv[i];
+    if (a === '--phrase') o.phrase = argv[++i];
+    else if (a === '--json') o.json = true;
+    else if (a === '--report') o.report = argv[++i];
+    else if (a === '--fail-under') o.failUnder = Number(argv[++i]);
+    else if (a === '--lang') o.lang = argv[++i];
+    else if (a === '--no-probe') o.probe = false;
+    else if (a === '-h' || a === '--help') o.help = true;
+    else if (a === '-v' || a === '--version') o.version = true;
+    else if (a.startsWith('-')) o.unknown = a;
+    else o.urls.push(...a.split(/[\s,]+/).filter(Boolean));
+  }
+  return o;
+}
+
+function detectLang() {
+  const env = process.env.LC_ALL || process.env.LC_MESSAGES || process.env.LANG || '';
+  const loc = env || Intl.DateTimeFormat().resolvedOptions().locale || '';
+  return /^zh/i.test(loc) ? 'zh' : 'en';
+}
+
+export async function main(argv) {
+  const o = parseArgs(argv);
+  const lang = o.lang === 'zh' || o.lang === 'en' ? o.lang : detectLang();
+  if (o.version) { console.log(VERSION); return 0; }
+  if (o.help || !o.urls.length || o.unknown) { console.log(M[lang].usage); return o.help ? 0 : 2; }
+  const results = [];
+  for (let url of o.urls) {
+    if (!/^https?:\/\//i.test(url)) url = 'https://' + url;
+    const r = await audit(url, { phrase: o.phrase, probe: o.probe, lang });
+    results.push(r);
+    if (!o.json) console.log(formatText(r, lang) + (o.urls.length > 1 ? '\n' : ''));
+  }
+  if (o.json) console.log(JSON.stringify(o.urls.length === 1 ? results[0] : results, null, 2));
+  if (o.report) writeFileSync(o.report, formatMarkdown(results, lang));
+  const min = Math.min(...results.map((r) => r.score));
+  return Number.isFinite(o.failUnder) && min < o.failUnder ? 1 : 0;
+}
+
+if (import.meta.url === pathToFileURL(process.argv[1] || '').href || process.argv[1]?.endsWith('geo-audit')) {
+  main(process.argv.slice(2)).then((code) => { process.exitCode = code; }, (e) => { console.error(e); process.exitCode = 2; });
+}

@@ -1,0 +1,9 @@
+{
+  "name": "geo-doctor",
+  "description": "GEO 医生：中文 GEO（生成式引擎优化）全流程 skill",
+  "version": "0.1.0",
+  "author": { "name": "Fangx-AI" },
+  "homepage": "https://github.com/Fangx-AI/GEO-Playbook",
+  "repository": "https://github.com/Fangx-AI/GEO-Playbook",
+  "license": "MIT"
+}
