@@ -1,6 +1,6 @@
 ---
 name: geo-doctor
-description: GEO 医生：中文 GEO（生成式引擎优化）全流程助手，让软件、产品、网站、小程序被豆包、DeepSeek、元宝、千问、文心、Kimi 等 AI 找到、说对、推荐和引用。用户提到 GEO、AI 搜索优化、让豆包/DeepSeek/元宝推荐我、AI 不提我或说错我的信息、AI 爬虫、robots、事实卡、AI 可见度、发什么内容/发到哪个平台能被 AI 引用时使用。流程：体检 → 事实卡 → 问题集 → 采样 → 诊断 → 写内容 → 发布指导 → 复查。GEO doctor for Chinese AI search visibility.
+description: GEO 医生：中文 GEO（生成式引擎优化）全流程助手。用户说“帮我做 GEO”，或提到 AI 搜索优化、让豆包/DeepSeek/元宝推荐我、AI 不提我或说错我的信息、AI 爬虫、robots、事实卡、AI 可见度、发什么内容/发到哪个平台能被 AI 引用时使用。帮助软件、产品、网站、小程序改善在豆包、DeepSeek、元宝、千问、文心、Kimi 等 AI 中的可见度和事实准确性，不保证推荐。流程：问诊 → 体检 → 事实卡 → 问题集 → 采样 → 诊断 → 写内容 → 发布指导 → 复查。GEO doctor for Chinese AI search visibility.
 license: MIT
 metadata:
   version: "0.1.0"
@@ -19,7 +19,14 @@ metadata:
 
 ## 看诊流程
 
-先读对应的说明文件再动手，不要凭记忆。所有产出写进用户当前项目的 `geo/` 目录。目录里已有的文件不要覆盖，从缺的那一步接着做。
+先读对应的说明文件再动手，不要凭记忆。所有产出写进用户当前项目的 `geo/` 目录。先检查已有进度，补缺或追加，不覆盖旧原文；复查使用新批次。
+
+### 运行环境与资源
+
+- 以本 `SKILL.md` 所在目录为技能根目录，读取对应的 `references/`、`assets/` 和 `scripts/`，不要把它们当成用户项目里的路径。第 2–4 步分别使用 [fact-card.yaml](assets/fact-card.yaml)、[questions.csv](assets/questions.csv)、[runs.csv](assets/runs.csv)。
+- 缺少参考文件或模板时，说明具体缺哪个文件，请用户补充完整技能包；不要假装读过或凭空补出模板。只收到链接或粘贴文本，不代表已持久安装。
+- 根据实际工具能力选择执行方式，不按平台名称假定能联网、运行命令或写文件。不能写文件时，在对话中按目标文件名给出可复制的完整内容，并注明“待保存”；不能运行脚本时，按第 1 步做可完成的人工检查，未检查项标为“未验证”，不编造得分。
+- 没有联网能力时使用用户提供的材料，缺出处的事实标为“未知”；不要为了继续流程重复索要无关账号登录。
 
 | 步 | 做什么 | 说明文件 | 产出 |
 | --- | --- | --- | --- |
@@ -27,7 +34,7 @@ metadata:
 | 1 | **体检**：AI 爬虫能不能读到网站 | [01-audit.md](references/01-audit.md) | `geo/audit.md` |
 | 2 | **事实卡**：所有渠道统一的唯一事实源 | [02-fact-card.md](references/02-fact-card.md) | `geo/fact-card.yaml` |
 | 3 | **问题集**：用户会怎么问 AI | [03-questions.md](references/03-questions.md) | `geo/questions.csv` |
-| 4 | **采样**：用户在目标 AI 里问，把回答贴回来 | [04-sampling.md](references/04-sampling.md) | `geo/runs/` |
+| 4 | **采样**：用户在目标 AI 里问，把回答贴回来 | [04-sampling.md](references/04-sampling.md) | `geo/runs/<批次>/`、`geo/runs.csv` |
 | 5 | **诊断**：哪题没提你、哪里说错、引用了谁 | [05-diagnosis.md](references/05-diagnosis.md) | `geo/diagnosis.md` |
 | 6 | **开方·写内容**：只针对缺口，只用事实卡 | [06-writing.md](references/06-writing.md) | `geo/drafts/` |
 | 7 | **开方·发布指导**：发到哪、怎么发、多久发 | [07-publishing.md](references/07-publishing.md) | `geo/publish-plan.md` |
