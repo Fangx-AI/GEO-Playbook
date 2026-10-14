@@ -3,6 +3,7 @@ name: skill-package
 on:
   push:
     branches: [master]
+    tags: ['v*']
     paths: [skills/**]
   pull_request:
     paths: [skills/**]
@@ -20,6 +21,11 @@ jobs:
         with:
           name: geo-doctor
           path: dist/geo-doctor.zip
+      - if: startsWith(github.ref, 'refs/tags/v')
+        # Pushing a tag such as v0.1.0 publishes a release with the zip attached.
+        run: gh release create "$GITHUB_REF_NAME" dist/geo-doctor.zip --title "GEO 医生 $GITHUB_REF_NAME" --generate-notes
+        env:
+          GH_TOKEN: ${{ github.token }}
       - if: github.event_name == 'release'
         run: gh release upload "${{ github.event.release.tag_name }}" dist/geo-doctor.zip --clobber
         env:
