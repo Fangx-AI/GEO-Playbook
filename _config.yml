@@ -1,0 +1,31 @@
+# GitHub Pages 站点配置：在 Settings → Pages 选择 “Deploy from a branch → master / (root)” 即可上线。
+# 站点让每一章都有独立网址，便于搜索引擎和 AI 搜索收录。
+title: GEO 实战手册 · GEO-Playbook
+description: 让豆包、DeepSeek、元宝、ChatGPT、Perplexity 找到你、说对你、引用你。中文 GEO（生成式引擎优化）实战手册：行业路线、提示词、检查清单、体检脚本。
+tagline: 让 AI 搜索找到你、说对你、引用你
+lang: zh-CN
+url: https://fangx-ai.github.io
+baseurl: /GEO-Playbook
+theme: jekyll-theme-primer
+plugins:
+  - jekyll-seo-tag
+  - jekyll-sitemap
+  - jekyll-relative-links
+  - jekyll-optional-front-matter
+  - jekyll-readme-index
+  - jekyll-titles-from-headings
+  - jekyll-default-layout
+relative_links:
+  enabled: true
+  collections: false
+titles_from_headings:
+  enabled: true
+  strip_title: false
+kramdown:
+  input: GFM
+  parse_block_html: true
+exclude:
+  - assets/*.html
+  - Gemfile
+  - Gemfile.lock
+  - vendor

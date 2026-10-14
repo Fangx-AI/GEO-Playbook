@@ -16,7 +16,7 @@ fi
 
 DIR="geo-audit-$(date +%Y%m%d-%H%M%S)"
 mkdir -p "$DIR"
-UA="Mozilla/5.0 (geo-learning-map audit)"
+UA="Mozilla/5.0 (GEO-Playbook audit)"
 PASS=0; WARN=0
 ok()   { echo "  ✅ $*"; PASS=$((PASS+1)); }
 warn() { echo "  ⚠️  $*"; WARN=$((WARN+1)); }
@@ -104,6 +104,13 @@ fi
 echo
 echo "④ 规范地址（canonical）"
 CANON=$(grep -ioE '<link[^>]+rel=["'"'"']?canonical["'"'"']?[^>]*>' "$DIR/page.clean.html" | head -1 | grep -ioE 'href=["'"'"'][^"'"'"']+' | sed -E 's/^href=.//')
+# 相对地址（/pricing、pricing、//host/x）先补全成绝对地址再比较
+case "$CANON" in
+  ""|http://*|https://*) ;;
+  //*) CANON="${FINAL%%//*}$CANON" ;;
+  /*)  CANON="$ORIGIN$CANON" ;;
+  *)   BASE="${FINAL%%[?#]*}"; CANON="${BASE%/*}/$CANON" ;;
+esac
 if [[ -z "$CANON" ]]; then
   warn "原始 HTML 没有 canonical（不是错误，但重要页面建议加上）"
 elif [[ "${CANON%/}" == "${FINAL%/}" ]]; then

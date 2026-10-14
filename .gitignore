@@ -2,3 +2,7 @@
 __pycache__/
 *.pyc
 reports/
+_site/
+.sass-cache/
+.jekyll-cache/
+geo-audit-*/

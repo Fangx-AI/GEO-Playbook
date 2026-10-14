@@ -4,7 +4,7 @@
 
 ### 让豆包、DeepSeek、元宝、ChatGPT、Perplexity 找到你、说对你、引用你
 
-**中文 GEO（生成式引擎优化）实战地图：7 条行业路线 · 10 个提示词 · 1 个体检脚本 · 12 个误区辟谣**<br>
+**中文 GEO（生成式引擎优化）实战手册：8 条行业路线 · 10 个提示词 · 1 个体检脚本 · 12 个误区辟谣**<br>
 Get Cited by AI · 不卖课，不吹涨幅。每条结论都附官方原文或研究出处，你可以自己点开核对。
 
 [![GitHub stars](https://img.shields.io/github/stars/Fangx-AI/GEO-Playbook?style=social)](https://github.com/Fangx-AI/GEO-Playbook/stargazers)
@@ -20,7 +20,7 @@ Get Cited by AI · 不卖课，不吹涨幅。每条结论都附官方原文或�
 
 用户不再翻十页搜索结果，而是直接问 AI：“附近哪家咖啡店能办公？”“20 人团队用什么知识库？”
 
-**AI 的回答里没有你，或者把你的价格、营业时间、功能说错了，你就在悄悄失去客户。** 这份地图教你一步步排查原因、改对资料、测出效果。
+**AI 的回答里没有你，或者把你的价格、营业时间、功能说错了，你就在悄悄失去客户。** 这份手册教你一步步排查原因、改对资料、测出效果。
 
 <div align="center">
 
@@ -32,7 +32,7 @@ Get Cited by AI · 不卖课，不吹涨幅。每条结论都附官方原文或�
 
 ## 💎 这里有什么不一样
 
-| 常见 GEO 资料 | 这份地图 |
+| 常见 GEO 资料 | 这份手册 |
 | --- | --- |
 | “权威性、结构化、语义相关”等抽象概念 | 每章都是**可以照做的步骤**，附命令、模板和填好的示例 |
 | “某品牌 AI 可见度暴涨 500%” | 把案例数字拆开算：**分母、对照组、百分点还是百分比** |
@@ -49,12 +49,54 @@ Get Cited by AI · 不卖课，不吹涨幅。每条结论都附官方原文或�
 
 **② 检查 AI 能不能读到你的网站（5 分钟）**
 
+macOS / Linux（终端）：
+
 ```bash
 curl -O https://raw.githubusercontent.com/Fangx-AI/GEO-Playbook/master/toolkit/geo-audit.sh
 bash geo-audit.sh https://你的网站/重要页面 "页面里的一句关键正文"
 ```
 
-脚本会检查状态码、跳转、robots.txt 对各家 AI 爬虫的规则、noindex、canonical，以及正文是否真的在原始 HTML 里（macOS / Linux；Windows 版命令见[网站实战](docs/playbooks/website.md)）。
+Windows（PowerShell）：
+
+```powershell
+curl.exe -O https://raw.githubusercontent.com/Fangx-AI/GEO-Playbook/master/toolkit/geo-audit.ps1
+powershell -ExecutionPolicy Bypass -File geo-audit.ps1 https://你的网站/重要页面 "页面里的一句关键正文"
+```
+
+脚本只读取公开页面，检查状态码、跳转、robots.txt 对各家 AI 爬虫的规则、noindex、canonical，以及正文是否真的在原始 HTML 里。
+
+<details>
+<summary markdown="span"><b>👀 看看输出长什么样</b>（模拟页面，一次查出 3 个常见坑）</summary>
+
+```text
+🩺 GEO 体检：https://example.com/p/pricing.html
+
+① 访问与跳转
+  ✅ 最终状态码 200
+  ✅ 无跳转
+
+② robots.txt（https://example.com/robots.txt）
+  ⚠️  GPTBot 被整站 Disallow（如果是有意屏蔽训练用途可忽略）
+  ✅ 通用分组 User-agent: * 没有整站封禁
+
+③ 索引控制（noindex）
+  ✅ 响应头无 noindex
+  ⚠️  HTML 的 robots meta 含 noindex（检查 CMS 的“阻止搜索引擎”开关）
+
+④ 规范地址（canonical）
+  ⚠️  canonical 指向别处：https://example.com/（产品页误指首页很常见）
+
+⑤ 正文是否在原始 HTML 里（不依赖 JavaScript）
+  ✅ 原始 HTML 有约 909 字节文字
+  ✅ 找到指定正文：「团队版每月 299 元」
+  ✅ 标题：价格 - 示例文档工具
+
+—— 结果：7 项通过，3 项需要关注。原始文件在 ./geo-audit-20261014-101500/
+```
+
+这个页面在浏览器里看一切正常，但 noindex 会让它不进搜索索引，canonical 又把它指向了首页。这类问题肉眼看不出来，所以先跑脚本。
+
+</details>
 
 **③ 把一段广告文案改成 AI 会引用的样子（5 分钟）**
 
@@ -86,7 +128,7 @@ bash geo-audit.sh https://你的网站/重要页面 "页面里的一句关键正
 路线可以组合，比如咖啡店先走本地商家，再补小程序预约。
 
 <details>
-<summary><b>🔍 从问题找答案：24 个最常见的 GEO 问题</b></summary>
+<summary markdown="span"><b>🔍 从问题找答案：24 个最常见的 GEO 问题</b></summary>
 
 | 我遇到的问题 | 去哪看 |
 | --- | --- |
@@ -123,7 +165,7 @@ bash geo-audit.sh https://你的网站/重要页面 "页面里的一句关键正
 
 | 工具 | 解决什么问题 |
 | --- | --- |
-| [🩺 一键体检脚本](toolkit/geo-audit.sh) | AI 爬虫能不能读到你的页面？一条命令检查 5 类常见技术问题 |
+| 🩺 一键体检脚本：[macOS / Linux](toolkit/geo-audit.sh) · [Windows](toolkit/geo-audit.ps1) | AI 爬虫能不能读到你的页面？一条命令检查 5 类常见技术问题 |
 | [🤖 AI 爬虫 robots 模板](toolkit/robots-ai-bots.txt) | 按“搜索 / 训练 / 用户触发”分组，放行哪个、屏蔽哪个一目了然 |
 | [💬 10 个 GEO 提示词](toolkit/prompts.md) | 挖用户问题 → 整理事实卡 → 改稿 → 审稿 → 写 FAQ → 核查引用 → 诊断错误 |
 | [✅ 3 张检查清单](toolkit/checklists.md) | 15 分钟体检 · 发布前审核 · 每周观察 |
@@ -196,7 +238,7 @@ bash geo-audit.sh https://你的网站/重要页面 "页面里的一句关键正
 
 欢迎补充：**能公开分母和页面改动的中文平台案例**、新的官方文档、验证过的提示词、失败实验（没效果的实验同样有价值）。规则见 [CONTRIBUTING.md](CONTRIBUTING.md)，不熟悉 Git 可以直接 [提 Issue](https://github.com/Fangx-AI/GEO-Playbook/issues/new/choose)。
 
-**如果这份地图帮到了你，点个 ⭐ Star 是对我们最大的支持，也能让更多人看到它。**
+**如果这份手册帮到了你，点个 ⭐ Star 是对我们最大的支持，也能让更多人看到它。**
 
 [![Star History Chart](https://api.star-history.com/svg?repos=Fangx-AI/GEO-Playbook&type=Date)](https://star-history.com/#Fangx-AI/GEO-Playbook&Date)
 

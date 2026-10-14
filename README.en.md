@@ -24,13 +24,20 @@ No courses to sell, no hype. Every claim links to an official doc or a published
 
 ## Toolkit (language-agnostic)
 
-- [`toolkit/geo-audit.sh`](toolkit/geo-audit.sh): one-command check for status/redirects, robots.txt rules per AI crawler, noindex, canonical, and whether your copy is in the raw HTML.
+- [`toolkit/geo-audit.sh`](toolkit/geo-audit.sh) (macOS / Linux) · [`toolkit/geo-audit.ps1`](toolkit/geo-audit.ps1) (Windows): one-command check for status/redirects, robots.txt rules per AI crawler, noindex, canonical, and whether your copy is in the raw HTML.
 - [`toolkit/robots-ai-bots.txt`](toolkit/robots-ai-bots.txt): robots template grouped by *search / training / user-triggered* crawlers.
 - [`toolkit/prompts.md`](toolkit/prompts.md): 10 prompts (Chinese) for question mining, fact cards, rewriting, fact-checking AI citations, and diagnosing wrong answers.
 
 ```bash
 curl -O https://raw.githubusercontent.com/Fangx-AI/GEO-Playbook/master/toolkit/geo-audit.sh
 bash geo-audit.sh https://your-site.com/important-page "a unique sentence from the page"
+```
+
+On Windows (PowerShell):
+
+```powershell
+curl.exe -O https://raw.githubusercontent.com/Fangx-AI/GEO-Playbook/master/toolkit/geo-audit.ps1
+powershell -ExecutionPolicy Bypass -File geo-audit.ps1 https://your-site.com/important-page "a unique sentence from the page"
 ```
 
 All sources verified on 2026-10-14. Contributions (especially cases with disclosed denominators) are welcome. See [CONTRIBUTING.md](CONTRIBUTING.md).
