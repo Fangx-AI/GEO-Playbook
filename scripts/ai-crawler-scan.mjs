@@ -102,6 +102,13 @@ export function render(data) {
   L.push(`| 🚫 屏蔽 Bytespider（字节跳动） | ${blocks('Bytespider')} | ${pct(blocks('Bytespider'))}% |`);
   L.push(`| ✅ 对表中所有爬虫都不设限 | ${openAll} | ${pct(openAll)}% |`);
   L.push('');
+  const names = (fn) => ok.filter(fn).map((r) => r.name).join('、') || '无';
+  L.push('### 重点发现');
+  L.push('');
+  L.push(`- **4 个 AI 搜索爬虫全部挡住的网站**：${names((r) => AI_SEARCH.every((t) => !r.allowed[t]))}。`);
+  L.push(`- **其中仍放行百度的**：${names((r) => r.allowed.Baiduspider && AI_SEARCH.every((t) => !r.allowed[t]))}。`);
+  L.push('- 这些大多是内容平台。**如果你的 GEO 策略是"在知乎、小红书、微博上铺内容"，按 robots.txt 规则，ChatGPT 搜索、Perplexity、Claude 搜索都不应抓取这些页面**，它们更可能引用你自己官网或其他开放平台上的内容。国内 AI 产品各自怎么获取这些平台的内容，robots.txt 看不出来。');
+  L.push('');
   L.push('**怎么读这张表**：很多中文网站的 robots.txt 是"白名单"写法，只列出百度、谷歌等老牌爬虫，最后一句 `User-agent: *` + `Disallow: /` 把其他所有爬虫挡在门外。这样写的时候，AI 搜索爬虫往往不是被"故意屏蔽"，而是**根本没被想到**。结果是：用户在 ChatGPT、Perplexity、Claude 里问到相关问题时，这些网站的页面很难被抓取和引用。');
   L.push('');
   L.push('屏蔽训练爬虫（GPTBot、ClaudeBot、Google-Extended、CCBot）是网站的正当选择，不影响搜索可见度；表里单独列出，只作参考。');
@@ -119,7 +126,8 @@ export function render(data) {
     for (const r of data.results.filter((x) => x.category === c)) {
       const name = `[${r.name}](https://${r.domain}/robots.txt)`;
       if (r.state === 'error') { L.push(`| ${name} | ${BOTS.map(() => '—').join(' | ')} |`); continue; }
-      const note = r.state === 'none' ? ' ¹' : '';
+      const host = r.robotsUrl ? new URL(r.robotsUrl).hostname : r.domain;
+      const note = (r.state === 'none' ? ' ¹' : '') + (host !== r.domain && host !== 'www.' + r.domain ? ' ²' : '');
       L.push(`| ${name}${note} | ${BOTS.map((b) => mark(r.allowed[b.token])).join(' | ')} |`);
     }
     L.push('');
@@ -132,6 +140,8 @@ export function render(data) {
   L.push('- **只看 robots.txt**：防火墙 / CDN 按 UA 或 IP 拦截、页面 `noindex`、正文靠 JavaScript 渲染等问题不在这张表里，这些要用 geo-audit 逐页检查。真实爬虫是否来访，要以网站日志为准。');
   L.push('- **只看首页**：有的网站首页放行、内页屏蔽，或反过来。');
   L.push('- ¹ 没有 robots.txt（返回 4xx 或 HTML 页面），按规范视为不限制。');
+  L.push('- ² robots.txt 跳转到了别的域名（例如境外请求被导向海外站），表中是跳转后那份规则。');
+  L.push('- **用户触发的访问**：ChatGPT-User、Perplexity-User 这类"用户让 AI 打开某个网页"的请求，平台文档说明不一定遵守 robots.txt；表里按规则字面判断。');
   L.push(`- — 扫描时读取失败（超时、5xx 或连接被拒，共 ${errs.length} 个），不计入占比的分母。`);
   L.push('- **名单**：[data/sites-cn.txt](../data/sites-cn.txt)，原始数据：[data/ai-crawler-scan.json](../data/ai-crawler-scan.json)。漏了谁、判断错了，欢迎提 [issue](https://github.com/Fangx-AI/GEO-Playbook/issues/new/choose) 或 PR。');
   L.push('- robots.txt 随时会改，本表只代表扫描当天的状态。');

@@ -2,43 +2,38 @@
 
 # GEO 实战手册 · GEO-Playbook
 
-### 让豆包、DeepSeek、元宝、ChatGPT、Perplexity 找到你、说对你、引用你
+### AI 搜索看得见你吗？一行命令查出 ChatGPT、豆包、DeepSeek 为什么不提你
 
-**中文 GEO（生成式引擎优化）实战手册：8 条行业路线 · 10 个提示词 · 1 个 AI 爬虫体检工具 · 12 个误区辟谣**<br>
-Get Cited by AI · 不卖课，不吹涨幅。每条结论都附官方原文或研究出处，你可以自己点开核对。
+```bash
+npx github:Fangx-AI/GEO-Playbook https://你的网站
+```
+
+**开源 GEO（生成式引擎优化）工具 + 实战手册**：体检 AI 能不能读到你 → 按问题清单修 → 用固定问题集复测<br>
+不卖课，不吹涨幅，不保证排名。每条结论都附官方原文或可复现的数据。
 
 [![GitHub stars](https://img.shields.io/github/stars/Fangx-AI/GEO-Playbook?style=social)](https://github.com/Fangx-AI/GEO-Playbook/stargazers)
+[![test](https://github.com/Fangx-AI/GEO-Playbook/actions/workflows/test.yml/badge.svg)](https://github.com/Fangx-AI/GEO-Playbook/actions/workflows/test.yml)
 [![资料核验](https://img.shields.io/badge/资料核验-2026--10--14-2ea44f)](#evidence)
 [![License: CC BY 4.0](https://img.shields.io/badge/License-CC%20BY%204.0-lightgrey.svg)](LICENSE)
 [![PRs Welcome](https://img.shields.io/badge/PRs-welcome-brightgreen.svg)](CONTRIBUTING.md)
-[![test](https://github.com/Fangx-AI/GEO-Playbook/actions/workflows/test.yml/badge.svg)](https://github.com/Fangx-AI/GEO-Playbook/actions/workflows/test.yml)
 
-[⚡ 15 分钟上手](#quickstart) · [🗺 按项目选路线](#routes) · [🧰 工具箱](#toolkit) · [❌ 误区辟谣](docs/myths.md) · [📈 案例数字](#cases) · [English](README.en.md)
+[🩺 体检你的网站](#quickstart) · [🚧 AI 爬虫封锁榜](docs/ai-crawler-leaderboard.md) · [🗺 按项目选路线](#routes) · [🧰 工具箱](#toolkit) · [❌ 误区辟谣](docs/myths.md) · [English](README.en.md)
 
 </div>
 
 ---
 
+> 🚧 **[中文网站 AI 爬虫封锁榜](docs/ai-crawler-leaderboard.md)**：我们读取了 97 个知名中文网站的 robots.txt。**知乎、小红书、微博、贝壳、马蜂窝都把 ChatGPT 搜索、Perplexity、Claude 搜索挡在门外**，微博还点名屏蔽了 DeepSeek、Kimi、豆包。在这些平台上铺内容做 GEO，海外 AI 按规则是读不到的。[看完整榜单和方法 →](docs/ai-crawler-leaderboard.md)
+
 用户不再翻十页搜索结果，而是直接问 AI：“附近哪家咖啡店能办公？”“20 人团队用什么知识库？”
 
-**AI 的回答里没有你，或者把你的价格、营业时间、功能说错了，你就在悄悄失去客户。** 这份手册教你一步步排查原因、改对资料、测出效果。
+**AI 的回答里没有你，或者把你的价格、营业时间、功能说错了，你就在悄悄失去客户。** 原因往往很无聊：一行 robots 规则、一个忘删的 `noindex`、一个拦机器人的防火墙。这个项目帮你先查出来，再教你修对、测准。
 
 <div align="center">
 
 ![GEO 速查卡：AI 回答背后的 6 关、最常见的 3 个技术坑、写内容的 3 条原则、测量的 5 层漏斗](assets/geo-cheatsheet.png)
 
-<sub>☝️ 一张图看懂 GEO，欢迎保存转发。</sub>
-
 </div>
-
-## 💎 这里有什么不一样
-
-| 常见 GEO 资料 | 这份手册 |
-| --- | --- |
-| “权威性、结构化、语义相关”等抽象概念 | 每章都是**可以照做的步骤**，附命令、模板和填好的示例 |
-| “某品牌 AI 可见度暴涨 500%” | 把案例数字拆开算：**分母、对照组、百分点还是百分比** |
-| 只讲 ChatGPT 和 Google | 同时覆盖**豆包、DeepSeek、百度、元宝、Kimi、千问**，以及微信小程序和本地门店 |
-| 流传的“平台偏好”“内部权重” | 只写官方原文能证明的；不知道的，明确标“未知”并教你自己测 |
 
 <a id="quickstart"></a>
 

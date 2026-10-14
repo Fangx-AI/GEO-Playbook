@@ -13,6 +13,12 @@
 | 🚫 屏蔽 Bytespider（字节跳动） | 7 | 8% |
 | ✅ 对表中所有爬虫都不设限 | 76 | 84% |
 
+### 重点发现
+
+- **4 个 AI 搜索爬虫全部挡住的网站**：百度、知乎、小红书、微博、马蜂窝、贝壳找房、作业帮、中国知网。
+- **其中仍放行百度的**：百度、知乎、小红书、微博、马蜂窝、贝壳找房、作业帮。
+- 这些大多是内容平台。**如果你的 GEO 策略是"在知乎、小红书、微博上铺内容"，按 robots.txt 规则，ChatGPT 搜索、Perplexity、Claude 搜索都不应抓取这些页面**，它们更可能引用你自己官网或其他开放平台上的内容。国内 AI 产品各自怎么获取这些平台的内容，robots.txt 看不出来。
+
 **怎么读这张表**：很多中文网站的 robots.txt 是"白名单"写法，只列出百度、谷歌等老牌爬虫，最后一句 `User-agent: *` + `Disallow: /` 把其他所有爬虫挡在门外。这样写的时候，AI 搜索爬虫往往不是被"故意屏蔽"，而是**根本没被想到**。结果是：用户在 ChatGPT、Perplexity、Claude 里问到相关问题时，这些网站的页面很难被抓取和引用。
 
 屏蔽训练爬虫（GPTBot、ClaudeBot、Google-Extended、CCBot）是网站的正当选择，不影响搜索可见度；表里单独列出，只作参考。
@@ -81,7 +87,7 @@
 | --- | :-: | :-: | :-: | :-: | :-: | :-: | :-: | :-: | :-: | :-: | :-: | :-: |
 | [淘宝](https://www.taobao.com/robots.txt) | ✅ | ✅ | ✅ | ✅ | ✅ | ✅ | ✅ | ✅ | ✅ | ✅ | ✅ | ✅ |
 | [天猫](https://www.tmall.com/robots.txt) | ✅ | ✅ | ✅ | ✅ | ✅ | ✅ | ✅ | ✅ | ✅ | ✅ | ✅ | ✅ |
-| [京东](https://www.jd.com/robots.txt) ¹ | ✅ | ✅ | ✅ | ✅ | ✅ | ✅ | ✅ | ✅ | ✅ | ✅ | ✅ | ✅ |
+| [京东](https://www.jd.com/robots.txt) ¹ ² | ✅ | ✅ | ✅ | ✅ | ✅ | ✅ | ✅ | ✅ | ✅ | ✅ | ✅ | ✅ |
 | [拼多多](https://www.pinduoduo.com/robots.txt) | ✅ | ✅ | ✅ | ✅ | ✅ | ✅ | ✅ | ✅ | ✅ | ✅ | ✅ | ✅ |
 | [唯品会](https://www.vip.com/robots.txt) | ✅ | ✅ | ✅ | ✅ | ✅ | ✅ | ✅ | ✅ | ✅ | ✅ | ✅ | ✅ |
 | [苏宁易购](https://www.suning.com/robots.txt) ¹ | ✅ | ✅ | ✅ | ✅ | ✅ | ✅ | ✅ | ✅ | ✅ | ✅ | ✅ | ✅ |
@@ -179,7 +185,7 @@
 | [中国大学MOOC](https://www.icourse163.org/robots.txt) ¹ | ✅ | ✅ | ✅ | ✅ | ✅ | ✅ | ✅ | ✅ | ✅ | ✅ | ✅ | ✅ |
 | [作业帮](https://www.zuoyebang.com/robots.txt) | ✅ | ✅ | 🚫 | 🚫 | 🚫 | 🚫 | 🚫 | 🚫 | 🚫 | 🚫 | ✅ | 🚫 |
 | [网易有道](https://www.youdao.com/robots.txt) | — | — | — | — | — | — | — | — | — | — | — | — |
-| [中国知网](https://www.cnki.net/robots.txt) | 🚫 | 🚫 | 🚫 | 🚫 | 🚫 | 🚫 | 🚫 | 🚫 | 🚫 | 🚫 | 🚫 | 🚫 |
+| [中国知网](https://www.cnki.net/robots.txt) ² | 🚫 | 🚫 | 🚫 | 🚫 | 🚫 | 🚫 | 🚫 | 🚫 | 🚫 | 🚫 | 🚫 | 🚫 |
 
 ## 方法与局限
 
@@ -188,6 +194,8 @@
 - **只看 robots.txt**：防火墙 / CDN 按 UA 或 IP 拦截、页面 `noindex`、正文靠 JavaScript 渲染等问题不在这张表里，这些要用 geo-audit 逐页检查。真实爬虫是否来访，要以网站日志为准。
 - **只看首页**：有的网站首页放行、内页屏蔽，或反过来。
 - ¹ 没有 robots.txt（返回 4xx 或 HTML 页面），按规范视为不限制。
+- ² robots.txt 跳转到了别的域名（例如境外请求被导向海外站），表中是跳转后那份规则。
+- **用户触发的访问**：ChatGPT-User、Perplexity-User 这类"用户让 AI 打开某个网页"的请求，平台文档说明不一定遵守 robots.txt；表里按规则字面判断。
 - — 扫描时读取失败（超时、5xx 或连接被拒，共 6 个），不计入占比的分母。
 - **名单**：[data/sites-cn.txt](../data/sites-cn.txt)，原始数据：[data/ai-crawler-scan.json](../data/ai-crawler-scan.json)。漏了谁、判断错了，欢迎提 [issue](https://github.com/Fangx-AI/GEO-Playbook/issues/new/choose) 或 PR。
 - robots.txt 随时会改，本表只代表扫描当天的状态。
