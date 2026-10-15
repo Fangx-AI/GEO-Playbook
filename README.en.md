@@ -26,8 +26,8 @@ Install it into your AI assistant with one sentence. It finds out why AI leaves 
 
 </div>
 
-<p align="center"><img src="assets/geo-audit-terminal-en.png" alt="Real output of the audit script: all 9 AI search crawlers are allowed, but the page body is rendered by JavaScript, so AI can't read it. Score 60/100" width="100%"></p>
-<p align="center"><sub>Real, unedited output of the audit step, run against a local test page: crawlers are allowed, but the page is an empty <code>&lt;div id="root"&gt;</code>, so AI can't read the text.</sub></p>
+<p align="center"><img src="assets/geo-audit-terminal-en.png" alt="Real output of the audit script: all 9 AI search crawlers are allowed, but the raw HTML has no body text. Score 60/100" width="100%"></p>
+<p align="center"><sub>Real, unedited output of the audit step, run against a local test page: crawlers are allowed, but the raw HTML is an empty <code>&lt;div id="root"&gt;</code>, so AI crawlers that don't run JavaScript can't read the text.</sub></p>
 
 ---
 

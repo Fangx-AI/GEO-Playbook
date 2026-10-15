@@ -28,8 +28,8 @@
 
 </div>
 
-<p align="center"><img src="assets/geo-audit-terminal.png" alt="体检脚本的真实输出：9 个 AI 搜索爬虫都放行，但首页正文是 JS 渲染的，AI 读不到，得分 60/100" width="100%"></p>
-<p align="center"><sub>体检这一步的真实输出（对一个本地测试页运行，未加修饰）：爬虫都放行了，但首页只有一个空的 <code>&lt;div id="root"&gt;</code>，AI 读不到正文。</sub></p>
+<p align="center"><img src="assets/geo-audit-terminal.png" alt="体检脚本的真实输出：9 个 AI 搜索爬虫都放行，但原始 HTML 里没有正文，得分 60/100" width="100%"></p>
+<p align="center"><sub>体检这一步的真实输出（对一个本地测试页运行，未加修饰）：爬虫都放行了，但原始 HTML 只有一个空的 <code>&lt;div id="root"&gt;</code>，不执行 JavaScript 的 AI 爬虫读不到正文。</sub></p>
 
 ---
 
