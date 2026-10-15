@@ -2,7 +2,9 @@
 
 # 🩺 GEO 医生
 
-### 让豆包、DeepSeek、元宝愿意推荐你的产品
+### 让豆包、DeepSeek、ChatGPT、Claude 愿意推荐你的产品
+
+国内的豆包、DeepSeek、元宝、千问、文心、Kimi，海外的 ChatGPT、Claude、Perplexity、Gemini、Copilot，<br>中文网站、英文网站都能看。
 
 一句话装进你的 AI 助手。它会查出 AI 为什么不提你、哪里把你说错了，<br>帮你改资料、写内容、告诉你发到哪，再用数据复查有没有用。
 
@@ -14,7 +16,7 @@
 </tr>
 </table>
 
-**免费开源** · **不用服务器** · **一句话安装** · 已在 WorkBuddy 实测可用
+**免费开源** · **不用服务器** · **一句话安装** · **中英双语** · 已在 WorkBuddy 实测可用
 
 [![GitHub stars](https://img.shields.io/github/stars/Fangx-AI/geo-doctor?style=social)](https://github.com/Fangx-AI/geo-doctor/stargazers)
 [![test](https://github.com/Fangx-AI/geo-doctor/actions/workflows/test.yml/badge.svg)](https://github.com/Fangx-AI/geo-doctor/actions/workflows/test.yml)
@@ -22,15 +24,16 @@
 [![License: MIT](https://img.shields.io/badge/skill-MIT-blue.svg)](skills/geo-doctor/SKILL.md)
 [![PRs Welcome](https://img.shields.io/badge/PRs-welcome-brightgreen.svg)](CONTRIBUTING.md)
 
-[📦 安装](#install) · [🩺 它会做什么](#what) · [❓ 常见问题](#faq) · [🧰 不装也能用](#quickstart) · [📚 GEO 实战手册](#handbook)
+[📦 安装](#install) · [🩺 它会做什么](#what) · [❓ 常见问题](#faq) · [🧰 不装也能用](#quickstart) · [📚 GEO 实战手册](#handbook) · [English](README.en.md)
 
 </div>
 
-<p align="center"><img src="assets/geo-doctor-demo.png" alt="GEO 医生实测：一句话安装，说“帮我做 GEO”后先问诊，再体检出首页是 JS 空壳、AI 读不到正文" width="100%"></p>
+<p align="center"><img src="assets/geo-audit-terminal.png" alt="体检脚本的真实输出：9 个 AI 搜索爬虫都放行，但首页正文是 JS 渲染的，AI 读不到，得分 60/100" width="100%"></p>
+<p align="center"><sub>体检这一步的真实输出（对一个本地测试页运行，未加修饰）：爬虫都放行了，但首页只有一个空的 <code>&lt;div id="root"&gt;</code>，AI 读不到正文。</sub></p>
 
 ---
 
-用户越来越多地直接问 AI："20 人团队用什么知识库？""有没有不用联网的记账 App？"
+用户越来越多地直接问 AI："20 人团队用什么知识库？""有没有不用联网的记账 App？""best CRM for a 10-person startup?"
 
 **AI 的回答里没有你，或者把你的价格、功能说错了，你就在悄悄失去用户。** 找 GEO 服务商要花几千到几万，效果还说不清。GEO 医生把整套方法装进你已经在用的 AI 助手里，你只要说一句"帮我做 GEO"。
 
@@ -70,14 +73,14 @@
 
 | 步 | 你说 | GEO 医生做什么 | 你拿到 |
 | --- | --- | --- | --- |
-| 0 问诊 | "帮我做 GEO" | 问清产品、想被哪个 AI 推荐，联网调研你的行业 | 病历 |
+| 0 问诊 | "帮我做 GEO" | 问清产品、想被哪个 AI 推荐（国内还是海外），联网调研你的行业 | 病历 |
 | 1 体检 | "AI 能读到我的网站吗" | 查 robots、AI 爬虫、noindex、正文能不能被读到 | 问题清单和修法 |
 | 2 事实卡 | "帮我整理产品资料" | 从官网、价格页、文档里整理事实，找出各渠道说法不一致的地方 | 唯一事实源 |
 | 3 问题集 | "用户会怎么问 AI" | 用真实用户的原话，写 20 到 30 道题，挑 10 道核心题 | 问题清单 |
 | 4 采样 | "AI 现在怎么说我" | 告诉你去目标 AI 里问哪 10 道题，你把回答贴回来 | 回答存档 |
 | 5 诊断 | "为什么不推荐我" | 算提及率、正确率，找出 AI 引用了谁、同行赢在哪 | 按优先级排的处方 |
 | 6 写内容 | "帮我写" | 只针对缺口写，只用事实卡里的事实，自带夸大和违规检查 | 文章、FAQ、对比页、口播稿 |
-| 7 发布指导 | "发到哪、怎么发" | 按"你想被哪个 AI 推荐"选平台，给出入口、写法和节奏 | 发布计划表 |
+| 7 发布指导 | "发到哪、怎么发" | 按"你想被哪个 AI 推荐"选平台：豆包看抖音头条，元宝看公众号；海外先看 Google、必应收录和各家 AI 搜索爬虫 | 发布计划表 |
 | 8 复查 | "两周了，有用吗" | 同一批题再测，前后对比，写明样本数 | 复查报告 |
 
 目前支持**软件、App、网站、小程序和线上产品**。本地门店版本在路上。
@@ -95,6 +98,8 @@
 **能保证豆包推荐我吗？** 不能，谁都不能。GEO 医生做的是把 AI 读不到、说不对的地方找出来修好，再用同一批问题前后对比，用数据说明有没有变化。承诺"保证上推荐"的服务，先问他要分母和原始记录。
 
 **会不会帮我编内容、刷评价？** 不会。写进内容的每个事实都要你确认过；批量发同质软文、编造用户评价、刷量这类做法，skill 里明确拒绝，高风险行业另有红线（见 [合规说明](skills/geo-doctor/references/compliance.md)）。
+
+**支持英文和海外 AI 吗？** 支持。你用英文跟它说话，它就全程用英文，写出的内容也是英文。目标是 ChatGPT、Claude、Perplexity、Gemini、Copilot 时，体检会重点看这些 AI 的搜索爬虫有没有被挡，发布指导改用必应、Google 的收录入口和海外商家平台。
 
 **豆包、DeepSeek 里能直接用吗？** 普通聊天 App 目前装不了技能。在 WorkBuddy、Claude Code、Codex、Kimi Code 这类能装技能的助手里做诊断，采样时再去豆包、DeepSeek 里问。
 

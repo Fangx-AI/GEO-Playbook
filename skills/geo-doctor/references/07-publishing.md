@@ -2,7 +2,7 @@
 
 **目的：** 把内容发到**目标 AI 实际会读的平台**上，并且按平台规则发对。
 
-先读 [ai-sources-cn.md](ai-sources-cn.md)，它说明了每个 AI 从哪里取信息、证据有多强。再结合第 5 步采样里**你的目标 AI 实际引用了哪些平台**。两者冲突时，以用户自己的采样结果为准。
+先读信源地图：国内 AI 看 [ai-sources-cn.md](ai-sources-cn.md)，海外 AI 看 [ai-sources-global.md](ai-sources-global.md)。它们说明了每个 AI 从哪里取信息、证据有多强。再结合第 5 步采样里**你的目标 AI 实际引用了哪些平台**。两者冲突时，以用户自己的采样结果为准。
 
 ## 第一步：按目标 AI 选 2 到 3 个平台
 
@@ -16,6 +16,9 @@
 | 千问 | 官网、头条号、B 站；实物产品加淘宝/天猫详情页 | 📊 QuestMobile：不同品类分别以头条、B 站等为主；🟢 千问接入淘宝 |
 | DeepSeek | 官网、搜狐号、知乎；争取进入百度百科 | 📊 新榜：偏好搜狐、百度百科、网易 |
 | Kimi | 官网、公众号、权威媒体报道 | 🟢 Kimi 称优先政府、权威媒体、学术、财报类来源 |
+| ChatGPT、Claude、Perplexity | 官网（放行各家搜索爬虫）、Google 和必应收录；其余平台按采样里实际引用的站点选 | 🟢 各家爬虫说明，见 [ai-sources-global.md](ai-sources-global.md) |
+| Google AI 概览、Gemini | 官网（提交 Google Search Console）；门店加 Google 商家资料 | 🟢 Google 生成式搜索指南；📊 BrightLocal：本地查询第一信源是 Google 商家资料 |
+| Copilot | 官网（提交 Bing Webmaster Tools，用 IndexNow 通知更新）；门店加 Bing Places | 🟢 必应 AI Performance 公告 |
 
 **所有 AI 都适用：官网是根。** 先把官网和帮助中心的内容改好、统一，再去别的平台发。
 
@@ -25,7 +28,7 @@
 
 | 平台 | 入口 | 发之前准备 | 怎么发 |
 | --- | --- | --- | --- |
-| 官网 / 帮助中心 | 自己的网站 | 体检通过 | 每个问题一个页面或一个小节，标题用用户原话；写更新日期；更新后提交百度搜索资源平台和 Bing Webmaster |
+| 官网 / 帮助中心 | 自己的网站 | 体检通过 | 每个问题一个页面或一个小节，标题用用户原话；写更新日期；更新后提交百度搜索资源平台、Bing Webmaster 和 Google Search Console |
 | 公众号 | mp.weixin.qq.com | 完成企业认证，名称和事实卡一致 | 标题直接写问题或结论；正文按第 6 步写法；文末放官网链接；开通"微信搜一搜品牌官方区"（[说明](https://kf.qq.com/faq/1803217VzIRr180321YzeQJV.html)） |
 | 视频号 | channels.weixin.qq.com | 和公众号绑定同一主体 | 口播第一句说出产品名和解决什么问题；简介写关键事实 |
 | 头条号 | mp.toutiao.com | 企业认证 | 问答型文章，一篇只回答一个问题 |

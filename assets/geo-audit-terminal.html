@@ -1,0 +1,41 @@
+<!doctype html><html><head><meta charset="utf-8"><style>
+body{margin:0;background:#fff}
+pre{margin:0;width:1320px;background:#0d1117;color:#e6edf3;font:22px/1.55 "DejaVu Sans Mono","WenQuanYi Zen Hei Mono","Noto Color Emoji",monospace;padding:30px 34px;border-radius:10px;white-space:pre-wrap}
+.p{color:#7ee787}
+</style></head><body><pre><span class="p">$</span> npx github:Fangx-AI/geo-doctor http://shop.example/ --phrase &quot;拍小票自动记账&quot;
+
+🩺 GEO 体检：http://shop.example/
+
+① 访问与跳转
+  ✅ 最终状态码 200
+  ✅ 无跳转
+
+② robots.txt 与 AI 爬虫
+  ✅ 9 个搜索类爬虫都可以抓取这个页面
+
+③ 防火墙 / CDN
+  ✅ 用 AI 爬虫的 UA 访问，与浏览器结果一致
+  ℹ️  注：这里只模拟 UA，真实爬虫还要按官方 IP 核对服务器日志
+
+④ 索引控制
+  ✅ 响应头无 noindex
+  ✅ HTML 无 noindex meta
+
+⑤ 规范地址
+  ✅ canonical 指向本页：http://shop.example/
+
+⑥ 正文与页面信息
+  ❌ 原始 HTML 未提取到正文：检查页面是否为空、依赖 JavaScript 或需要登录
+  ❌ 「拍小票自动记账」只出现在标签属性或 &lt;head&gt; 里（例如 meta description），正文里看不到
+  ✅ 标题：小鹿记账 - 个人记账 App
+  ✅ 有 meta description
+  ⚠️  没有 H1：给页面一个说清主题的主标题
+  ✅ 声明了语言 lang=&quot;zh-CN&quot;
+
+⑦ 发现与结构化数据
+  ✅ 找到 sitemap：http://shop.example/sitemap.xml
+  ℹ️  没有 JSON-LD：不是必需项，官方没有“AI 专用 schema”，只在符合页面类型时添加
+
+得分：60/100  ·  11 项通过 · 1 项注意 · 2 项问题
+下一步：逐项修复后再跑一次。详细排查步骤见 https://github.com/Fangx-AI/geo-doctor/blob/master/docs/playbooks/website.md
+提醒：能被读到 ≠ 已被收录或引用，后者要用固定题集观察。</pre></body></html>

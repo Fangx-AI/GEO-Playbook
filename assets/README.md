@@ -4,7 +4,7 @@
 
 | 文件 | 用途 | 依据 |
 | --- | --- | --- |
-| `geo-doctor-demo.png` / `.html` | 首页效果图：安装 → 问诊 → 体检 | 2026-10-14～15 在 WorkBuddy（Windows 桌面端）的实测对话，措辞有删减、网址已隐去；HTML 为源文件，用浏览器截图生成 PNG |
+| `geo-audit-terminal.png` / `-en.png`（及 `.html`） | 首页配图：体检脚本的真实输出（中文 / 英文） | 2026-10-15 用 `cli/geo-audit.mjs` 对本地测试页运行的原样输出，未删改；测试页首页只有空的 `<div id="root">`，标题、描述、canonical、robots、sitemap 齐全；HTML 只是把输出排成终端样式，再用浏览器截图生成 PNG |
 | `geo-cheatsheet.png` / `.html` | 首页速查卡：6 关、技术坑、内容原则、测量五层 | 本项目各章要点；HTML 为源文件，用浏览器截图生成 PNG |
 | `learning-map.png` / `.svg` | 三阶段学习路线 | 本项目课程结构 |
 | `public-evidence.png` / `.svg` | 不同项目可维护的公开资料与三项检查 | README 基础课与四类项目实践章节 |
@@ -13,7 +13,7 @@
 | `measurement.png` / `.svg` | 分母、引用与准确支持 | `examples/observation-demo.csv` 的合成教学数据 |
 | `webflow-results.png` / `.svg` | 原始变化与对照校正的区别 | [Graphite 案例](https://graphite.io/five-percent/case-studies/webflow-llm-signups)；原文数值重绘，不是其历史截图 |
 
-以上八张静态图均直接绘制，提供 PNG 及 SVG / HTML 源文件；使用白底、深色文字和少量强调色。关键内容也写在 README 正文，不依赖读图才能完成课程。
+以上静态图均直接绘制，提供 PNG 及 SVG / HTML 源文件；使用白底、深色文字和少量强调色。关键内容也写在 README 正文，不依赖读图才能完成课程。
 
 ## 配图标准
 
@@ -23,6 +23,6 @@
 - 真实截图保留必要上下文、来源和日期；示意图不能冒充实际界面或客户结果。
 - 不添加与理解无关的山水、机器人、光效或装饰图标。缩到 README 正文宽度后仍须可读。
 
-此前的 AI 生成概念插画已退出当前版本，可在 Git 历史中追溯。当前八张图均为图形与文字直接排版，不使用生成式装饰插画。
+此前的 AI 生成概念插画已退出当前版本，可在 Git 历史中追溯。当前各图均为图形与文字直接排版，不使用生成式装饰插画。
 
 项目自制教学图按根目录 CC BY 4.0 声明提供。第三方案例链接中的原图及商标不属于本项目资产，也未被重新许可。
