@@ -1,6 +1,6 @@
 # GEO 医生跨平台安装指南（草稿）
 
-文档核对日期：2026-10-14。以下是官方文档支持的安装方式、待验证路径和记录模板；六个平台的真实设备实测均未完成。手机普通聊天、桌面工作模式和编程工具需分开记录，不能互相代替。
+文档核对日期：2026-10-15。以下是官方文档支持的安装方式、待验证路径和记录模板。实测进度：WorkBuddy（Windows 桌面端）对话安装成功、同会话可用；豆包普通对话不能安装；其余平台待实测，详见文末实测记录。手机普通聊天、桌面工作模式和编程工具需分开记录，不能互相代替。
 
 ## 先拿到完整技能
 
@@ -65,6 +65,8 @@ $skill-installer 请从 Fangx-AI/geo-doctor 安装 skills/geo-doctor，保留完
 
 先尝试上面的对话安装提示词，记录实际动作。桌面端也可用“技能 → 添加技能 → 上传技能”导入本地技能包并启用，依据：[官方技能说明](https://www.codebuddy.cn/docs/workbuddy/From-Beginner-to-Expert-Guide/Function-Description/Skills-Market)。官方说明存在导入能力，但本项目 zip 的目录结构和脚本执行仍待实测。
 
+**实测 2026-10-14～15（WorkBuddy Windows 桌面端）**：在对话里发送 README 的一句话安装提示后，WorkBuddy 自动把完整目录装到 `C:\Users\<用户名>\.workbuddy\skills\geo-doctor`（用户级），SKILL.md、LICENSE、references/、assets/、scripts/ 齐全；它还自行做了安全检查，并运行 `geo-audit.mjs --version` 冒烟通过。随后在同一会话发送"帮我做 GEO"，它加载 geo-doctor，按第 0 步问诊提问（第一问为诊断对象类型：软件/App、网站、小程序、实体产品、其他），没有编造产品资料。注意：刚装好时技能列表尚未刷新，它是直接读取磁盘上的 SKILL.md；新会话下的自动触发、references/assets 读取仍待补测。结论：对话安装成功，同会话可用。
+
 手机/小程序单独记录：[官方移动端说明](https://www.codebuddy.cn/docs/workbuddymini/features/Attachments-and-Skills)介绍了将 SkillHub 安装指令粘贴到对话的方式；这不代表本项目已上架 SkillHub，也不能推断任意 GitHub 链接都能安装。
 
 ### 豆包
@@ -100,7 +102,7 @@ $skill-installer 请从 Fangx-AI/geo-doctor 安装 skills/geo-doctor，保留完
 | Codex | 对话安装或复制完整目录 | 待实测 | 待实测 | 待实测 / 待实测 | 未操作 |
 | Kimi Code | 复制目录 → 新会话 | 待实测 | 待实测 | 待实测 / 待实测 | 未操作 |
 | 豆包 | 先确认客户端/模式 → 对话安装 | 待实测 | 待实测 | 待实测 / 待实测 | 手机安装能力和资源访问待验证 |
-| WorkBuddy | 对话安装或本地技能包导入 | 待实测 | 待实测 | 待实测 / 待实测 | 未操作 |
+| WorkBuddy（Windows 桌面端） | 对话发送一句话安装提示 | 成功（2026-10-14） | 同会话触发，进入问诊；新会话待测 | 待实测 / 待实测 | 装好后技能列表未立即刷新；新会话是否刷新待测 |
 | 扣子 | 区分扣子/扣子编程 → 对话或导入 | 待实测 | 待实测 | 待实测 / 待实测 | 包格式与任务启用范围待验证 |
 
 每次实测追加一份记录，不把原表里的待实测直接改成无证据的成功：

@@ -59,7 +59,7 @@
 
 > 豆包、DeepSeek 这类普通聊天 App 目前装不了技能（2026-10-14 在豆包 App 实测），但它们正是 GEO 医生要优化的对象：在能装技能的助手里诊断，采样时再去豆包里问。
 >
-> 各平台的对话安装还在逐一实测，结果会更新在[安装指南](docs/install.md)。AI 说"装不了"或打不开链接时，可以用下面的方式，或[提 issue](https://github.com/Fangx-AI/geo-doctor/issues/new/choose) 告诉我们是哪个平台。
+> 已实测：**WorkBuddy（Windows 桌面端）一句话即可装好并进入问诊**。其他平台还在逐一实测，结果会更新在[安装指南](docs/install.md)。AI 说"装不了"或打不开链接时，可以用下面的方式，或[提 issue](https://github.com/Fangx-AI/geo-doctor/issues/new/choose) 告诉我们是哪个平台。
 
 <details>
 <summary markdown="span"><b>其他安装方式</b>（命令行、手动复制、上传压缩包）</summary>
