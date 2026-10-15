@@ -1,0 +1,41 @@
+<!doctype html><html><head><meta charset="utf-8"><style>
+body{margin:0;background:#fff}
+pre{margin:0;width:1320px;background:#0d1117;color:#e6edf3;font:22px/1.55 "DejaVu Sans Mono","WenQuanYi Zen Hei Mono","Noto Color Emoji",monospace;padding:30px 34px;border-radius:10px;white-space:pre-wrap}
+.p{color:#7ee787}
+</style></head><body><pre><span class="p">$</span> npx github:Fangx-AI/geo-doctor http://app.example/ --phrase &quot;snap a receipt and it is logged&quot; --lang en
+
+🩺 GEO audit: http://app.example/
+
+① Access &amp; redirects
+  ✅ Final status 200
+  ✅ No redirects
+
+② robots.txt &amp; AI crawlers
+  ✅ All 9 search crawlers may fetch this page
+
+③ Firewall / CDN
+  ✅ Requests with AI crawler user-agents look the same as a browser
+  ℹ️  Note: this only spoofs the user-agent; verify real crawlers by their published IPs in your logs
+
+④ Indexing
+  ✅ No noindex header
+  ✅ No noindex meta tag
+
+⑤ Canonical
+  ✅ Canonical points to this page: http://app.example/
+
+⑥ Content &amp; page info
+  ❌ No body text extracted from the raw HTML: check for an empty page, JavaScript rendering or a login requirement
+  ❌ &quot;snap a receipt and it is logged&quot; only appears in tag attributes or &lt;head&gt; (e.g. meta description), not in the visible body text
+  ✅ Title: Fawn Budget - Personal expense tracker
+  ✅ Has a meta description
+  ⚠️  No H1: give the page one heading that states its topic
+  ✅ Declares lang=&quot;en&quot;
+
+⑦ Discovery &amp; structured data
+  ✅ Sitemap found: http://app.example/sitemap.xml
+  ℹ️  No JSON-LD: optional; there is no special &quot;AI schema&quot;, add it only where it fits the page type
+
+Score: 60/100  ·  11 passed · 1 warnings · 2 problems
+Next: fix and run again. Step-by-step troubleshooting: https://github.com/Fangx-AI/geo-doctor/blob/master/docs/playbooks/website.md
+Reminder: readable ≠ indexed or cited. Track that with a fixed question set.</pre></body></html>
