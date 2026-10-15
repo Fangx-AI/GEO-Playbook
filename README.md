@@ -1,5 +1,7 @@
 <div align="center">
 
+<img src="assets/hero-banner.jpg" alt="GEO 医生：你的官网很漂亮，AI 看到的却是一片空白" width="100%">
+
 # 🩺 GEO 医生
 
 ### 让豆包、DeepSeek、ChatGPT、Claude 愿意推荐你的产品
@@ -27,9 +29,6 @@
 [📦 安装](#install) · [🩺 它会做什么](#what) · [❓ 常见问题](#faq) · [🧰 不装也能用](#quickstart) · [📚 GEO 实战手册](#handbook) · [English](README.en.md)
 
 </div>
-
-<p align="center"><img src="assets/geo-audit-terminal.png" alt="体检脚本的真实输出：9 个 AI 搜索爬虫都放行，但原始 HTML 里没有正文，得分 60/100" width="100%"></p>
-<p align="center"><sub>体检这一步的真实输出（对一个本地测试页运行，未加修饰）：爬虫都放行了，但原始 HTML 只有一个空的 <code>&lt;div id="root"&gt;</code>，不执行 JavaScript 的 AI 爬虫读不到正文。</sub></p>
 
 ---
 
@@ -112,6 +111,9 @@
 ```bash
 npx github:Fangx-AI/geo-doctor https://你的网站/重要页面 --phrase "页面里的一句关键正文"
 ```
+
+<p align="center"><img src="assets/geo-audit-terminal.png" alt="体检脚本的真实输出：9 个 AI 搜索爬虫都放行，但原始 HTML 里没有正文，得分 60/100" width="100%"></p>
+<p align="center"><sub>体检这一步的真实输出（对一个本地测试页运行，未加修饰）：爬虫都放行了，但原始 HTML 只有一个空的 <code>&lt;div id="root"&gt;</code>，不执行 JavaScript 的 AI 爬虫读不到正文。</sub></p>
 
 <details>
 <summary markdown="span"><b>15 分钟上手：问 AI、跑体检、改一段文案</b></summary>

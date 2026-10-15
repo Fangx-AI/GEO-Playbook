@@ -26,9 +26,6 @@ Install it into your AI assistant with one sentence. It finds out why AI leaves 
 
 </div>
 
-<p align="center"><img src="assets/geo-audit-terminal-en.png" alt="Real output of the audit script: all 9 AI search crawlers are allowed, but the raw HTML has no body text. Score 60/100" width="100%"></p>
-<p align="center"><sub>Real, unedited output of the audit step, run against a local test page: crawlers are allowed, but the raw HTML is an empty <code>&lt;div id="root"&gt;</code>, so AI crawlers that don't run JavaScript can't read the text.</sub></p>
-
 ---
 
 People now ask AI directly: "best CRM for a 10-person startup?", "an expense app that works offline?"
@@ -96,6 +93,9 @@ No install, works on Windows / macOS / Linux with Node.js 18+:
 ```bash
 npx github:Fangx-AI/geo-doctor https://your-site.com/pricing --phrase "a key sentence from the page"
 ```
+
+<p align="center"><img src="assets/geo-audit-terminal-en.png" alt="Real output of the audit script: all 9 AI search crawlers are allowed, but the raw HTML has no body text. Score 60/100" width="100%"></p>
+<p align="center"><sub>Real, unedited output of the audit step, run against a local test page: crawlers are allowed, but the raw HTML is an empty <code>&lt;div id="root"&gt;</code>, so AI crawlers that don't run JavaScript can't read the text.</sub></p>
 
 Seven groups of checks and a 0–100 score: status and redirects, robots.txt rules for 9 AI and search crawlers (RFC 9309 longest-match, wildcards), whether a firewall/CDN blocks AI crawler user-agents, `noindex` in headers and meta, canonical, whether your copy is in the raw HTML (not only rendered by JavaScript), sitemap and JSON-LD. Add `--json` for machine output, `--report report.md` for a Markdown report, `--fail-under 80` to fail CI.
 
