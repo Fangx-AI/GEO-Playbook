@@ -1,11 +1,20 @@
 <div align="center">
 
-# 🩺 GEO 医生 · geo-doctor
+# 🩺 GEO 医生
 
-### 一句话，让 AI 帮你做完一整套 GEO：<br>查清豆包、DeepSeek、元宝为什么不推荐你，改对资料，写好内容，告诉你发到哪，再测有没有用
+### 让豆包、DeepSeek、元宝愿意推荐你的产品
 
-**开源的中文 GEO（生成式引擎优化）skill**，装进 Claude Code、Codex、Kimi、WorkBuddy 等能装技能的 AI 助手就能用。<br>
-不用服务器，不用网页，不保排名，只给证据。
+一句话装进你的 AI 助手。它会查出 AI 为什么不提你、哪里把你说错了，<br>帮你改资料、写内容、告诉你发到哪，再用数据复查有没有用。
+
+<table>
+<tr>
+<td align="center" width="33%"><b>🔍 查得出</b><br><sub>体检你的网站，AI 读不到、读错的地方逐项列出，附修法</sub></td>
+<td align="center" width="33%"><b>✍️ 改得对</b><br><sub>只用你确认过的事实写内容，不夸大、不编造、不刷量</sub></td>
+<td align="center" width="33%"><b>📊 测得准</b><br><sub>同一批问题改前改后各问一遍，用提及率说话，不保排名</sub></td>
+</tr>
+</table>
+
+**免费开源** · **不用服务器** · **一句话安装** · 已在 WorkBuddy 实测可用
 
 [![GitHub stars](https://img.shields.io/github/stars/Fangx-AI/geo-doctor?style=social)](https://github.com/Fangx-AI/geo-doctor/stargazers)
 [![test](https://github.com/Fangx-AI/geo-doctor/actions/workflows/test.yml/badge.svg)](https://github.com/Fangx-AI/geo-doctor/actions/workflows/test.yml)
@@ -13,15 +22,45 @@
 [![License: MIT](https://img.shields.io/badge/skill-MIT-blue.svg)](skills/geo-doctor/SKILL.md)
 [![PRs Welcome](https://img.shields.io/badge/PRs-welcome-brightgreen.svg)](CONTRIBUTING.md)
 
-[📦 安装](#install) · [🩺 它会做什么](#what) · [🧰 网站体检命令](#quickstart) · [🚧 AI 爬虫封锁榜](docs/ai-crawler-leaderboard.md) · [📚 实战手册](#routes)
+[📦 安装](#install) · [🩺 它会做什么](#what) · [❓ 常见问题](#faq) · [🧰 不装也能用](#quickstart) · [📚 GEO 实战手册](#handbook)
 
 </div>
+
+<p align="center"><img src="assets/geo-doctor-demo.png" alt="GEO 医生实测：一句话安装，说“帮我做 GEO”后先问诊，再体检出首页是 JS 空壳、AI 读不到正文" width="100%"></p>
 
 ---
 
 用户越来越多地直接问 AI："20 人团队用什么知识库？""有没有不用联网的记账 App？"
 
-**AI 的回答里没有你，或者把你的价格、功能说错了，你就在悄悄失去用户。** GEO 服务商报价几千到几万，效果却说不清。GEO 医生把整套方法装进你已经在用的 AI 助手里，你只要说一句"帮我做 GEO"。
+**AI 的回答里没有你，或者把你的价格、功能说错了，你就在悄悄失去用户。** 找 GEO 服务商要花几千到几万，效果还说不清。GEO 医生把整套方法装进你已经在用的 AI 助手里，你只要说一句"帮我做 GEO"。
+
+<a id="install"></a>
+
+## 📦 安装：复制一句话发给你的 AI
+
+在 Claude Code、Codex、Kimi Code、WorkBuddy 等能安装技能的 AI 助手里，新开一个对话，发送：
+
+```text
+帮我安装这个 skill：https://github.com/Fangx-AI/geo-doctor/tree/master/skills/geo-doctor
+```
+
+装好后说一句 **"帮我做 GEO"**，它会先问你几个问题，再开始体检。
+
+> 豆包、DeepSeek 这类普通聊天 App 目前装不了技能（2026-10-14 在豆包 App 实测），但它们正是 GEO 医生要优化的对象：在能装技能的助手里诊断，采样时再去豆包里问。
+>
+> 已实测：**WorkBuddy（Windows 桌面端）一句话即可装好并进入问诊**。其他平台还在逐一实测，结果会更新在[安装指南](docs/install.md)。AI 说"装不了"或打不开链接时，可以用下面的方式，或[提 issue](https://github.com/Fangx-AI/geo-doctor/issues/new/choose) 告诉我们是哪个平台。
+
+<details>
+<summary markdown="span"><b>其他安装方式</b>（命令行、手动复制、上传压缩包）</summary>
+
+| 你用的工具 | 怎么装 |
+| --- | --- |
+| **Claude Code** | 输入 `/plugin marketplace add Fangx-AI/geo-doctor`，再输入 `/plugin install geo-doctor@geo-doctor` |
+| **Codex** | 请 `$skill-installer` 安装本仓库的 `skills/geo-doctor`，或把完整文件夹放到 `~/.agents/skills/geo-doctor/` |
+| **Kimi Code** | 把完整文件夹放到 `~/.kimi-code/skills/geo-doctor/`（设置了 `KIMI_CODE_HOME` 时放到 `$KIMI_CODE_HOME/skills/geo-doctor/`），新开会话后使用 |
+| **支持上传技能包的客户端** | 在 [Releases](https://github.com/Fangx-AI/geo-doctor/releases) 下载 `geo-doctor.zip`，在技能页面上传 |
+
+</details>
 
 <a id="what"></a>
 
@@ -45,41 +84,32 @@
 
 > 为什么"采样"要你自己去问？因为你在 App 里看到的回答，才是你的用户看到的。AI 每次回答都不一样，所以每题问 2 次，看出现率而不是单次排名。只想提高豆包，就只问豆包，一轮 15 到 20 分钟。
 
-<a id="install"></a>
+<a id="faq"></a>
 
-## 📦 安装：复制一句话发给你的 AI
+## ❓ 常见问题
 
-在 Claude Code、Codex、Kimi Code、WorkBuddy 等能安装技能的 AI 助手里，新开一个对话，发送：
+**要花钱吗？** 不要。skill 和体检脚本都是开源的（MIT），只消耗你自己 AI 助手的额度。
 
-```text
-帮我安装这个 skill：https://github.com/Fangx-AI/geo-doctor/tree/master/skills/geo-doctor
-```
+**安全吗？** 体检脚本零依赖，只访问你给的网址和它的 robots.txt、sitemap.xml，不向第三方上传数据，不读密钥。它会模拟 AI 爬虫的身份访问页面，用来检查防火墙有没有拦 AI，所以请只体检自己的网站。
 
-装好后说：**"用 GEO 医生帮我看看 https://你的网站"**。
+**能保证豆包推荐我吗？** 不能，谁都不能。GEO 医生做的是把 AI 读不到、说不对的地方找出来修好，再用同一批问题前后对比，用数据说明有没有变化。承诺"保证上推荐"的服务，先问他要分母和原始记录。
 
-> 豆包、DeepSeek 这类普通聊天 App 目前装不了技能（2026-10-14 在豆包 App 实测），但它们正是 GEO 医生要优化的对象：在能装技能的助手里诊断，采样时再去豆包里问。
->
-> 已实测：**WorkBuddy（Windows 桌面端）一句话即可装好并进入问诊**。其他平台还在逐一实测，结果会更新在[安装指南](docs/install.md)。AI 说"装不了"或打不开链接时，可以用下面的方式，或[提 issue](https://github.com/Fangx-AI/geo-doctor/issues/new/choose) 告诉我们是哪个平台。
+**会不会帮我编内容、刷评价？** 不会。写进内容的每个事实都要你确认过；批量发同质软文、编造用户评价、刷量这类做法，skill 里明确拒绝，高风险行业另有红线（见 [合规说明](skills/geo-doctor/references/compliance.md)）。
 
-<details>
-<summary markdown="span"><b>其他安装方式</b>（命令行、手动复制、上传压缩包）</summary>
-
-| 你用的工具 | 怎么装 |
-| --- | --- |
-| **Claude Code** | 输入 `/plugin marketplace add Fangx-AI/geo-doctor`，再输入 `/plugin install geo-doctor@geo-doctor` |
-| **Codex** | 请 `$skill-installer` 安装本仓库的 `skills/geo-doctor`，或把完整文件夹放到 `~/.agents/skills/geo-doctor/` |
-| **Kimi Code** | 把完整文件夹放到 `~/.kimi-code/skills/geo-doctor/`（设置了 `KIMI_CODE_HOME` 时放到 `$KIMI_CODE_HOME/skills/geo-doctor/`），新开会话后使用 |
-| **支持上传技能包的客户端** | 在 [Releases](https://github.com/Fangx-AI/geo-doctor/releases) 下载 `geo-doctor.zip`，在技能页面上传 |
-
-</details>
-
----
-
-> 🚧 **[中文网站 AI 爬虫封锁榜](docs/ai-crawler-leaderboard.md)**：我们读取了 97 个知名中文网站的 robots.txt。**知乎、小红书、微博、贝壳、马蜂窝都把 ChatGPT 搜索、Perplexity、Claude 搜索挡在门外**，微博还点名屏蔽了 DeepSeek、Kimi、豆包。[看完整榜单和方法 →](docs/ai-crawler-leaderboard.md)
+**豆包、DeepSeek 里能直接用吗？** 普通聊天 App 目前装不了技能。在 WorkBuddy、Claude Code、Codex、Kimi Code 这类能装技能的助手里做诊断，采样时再去豆包、DeepSeek 里问。
 
 <a id="quickstart"></a>
 
-## 🧰 不装 skill 也能用：15 分钟上手
+## 🧰 不装 skill 也能用
+
+装了 [Node.js](https://nodejs.org/zh-cn)（18 以上）的话，一行命令检查 AI 能不能读到你的网页：
+
+```bash
+npx github:Fangx-AI/geo-doctor https://你的网站/重要页面 --phrase "页面里的一句关键正文"
+```
+
+<details>
+<summary markdown="span"><b>15 分钟上手：问 AI、跑体检、改一段文案</b></summary>
 
 **① 看看 AI 现在怎么说你（5 分钟）**
 
@@ -170,9 +200,19 @@ powershell -ExecutionPolicy Bypass -File geo-audit.ps1 https://你的网站/重�
 
 改后的每一句都是能被引用、能被核对的事实，**连“不支持什么”都写清楚**。这正是 AI 回答“适不适合我”时最需要的信息。（示例产品为虚构，完整课程见 [改稿实战课](docs/content-rewrite.md)。）
 
+</details>
+
+> 🚧 **[中文网站 AI 爬虫封锁榜](docs/ai-crawler-leaderboard.md)**：我们读取了 97 个知名中文网站的 robots.txt。**知乎、小红书、微博、贝壳、马蜂窝都把 ChatGPT 搜索、Perplexity、Claude 搜索挡在门外**，微博还点名屏蔽了 DeepSeek、Kimi、豆包。[看完整榜单和方法 →](docs/ai-crawler-leaderboard.md)
+
+<a id="handbook"></a>
+
+## 📚 GEO 实战手册
+
+GEO 医生背后的方法都写成了公开手册：每条结论附官方原文或研究出处，不装 skill 也能照着做。
+
 <a id="routes"></a>
 
-## 🗺 按你的项目选一条路线
+### 🗺 按你的项目选一条路线
 
 不用从头读完。找到你的项目，点进去照着做。每条路线都写明了用时、交付物和验收标准。
 
@@ -221,9 +261,10 @@ powershell -ExecutionPolicy Bypass -File geo-audit.ps1 https://你的网站/重�
 
 </details>
 
-<a id="toolkit"></a>
+<details>
+<summary markdown="span"><b>🧰 工具箱：提示词、检查清单、模板、CI 自动体检</b></summary>
 
-## 🧰 工具箱：复制就能用
+<a id="toolkit"></a>
 
 | 工具 | 解决什么问题 |
 | --- | --- |
@@ -264,7 +305,10 @@ jobs:
 
 `--fail-under` 只接受 0–100 的数值；参数缺值、阈值无效或 `--lang` 不是 `zh` / `en` 时，退出码为 2，并在开始请求网页前报错，避免 CI 因配置拼写错误而静默放行。
 
-## 🧠 GEO 核心原则速记
+</details>
+
+<details>
+<summary markdown="span"><b>🧠 GEO 核心原则速记</b></summary>
 
 1. **先定位卡在哪一关**：抓取 → 索引 → 检索 → 生成 → 引用 → 行动。不知道卡在哪，写再多内容也没用。（[5 分钟入门](docs/basics.md)）
 2. **技术三件套先排查**：robots 误封、遗留 noindex、canonical 指错，外加 JS 渲染的空壳页。
@@ -277,9 +321,12 @@ jobs:
 9. **百分点和百分比别混写**：8.48% → 56.35% 是 +47.87 个百分点，不是 +47.87%。
 10. **没有公开的“排名公式”**：承诺保证上推荐的，先要分母和原始记录。
 
-<a id="cases"></a>
+</details>
 
-## 📈 案例与研究：关键数字一览
+<details>
+<summary markdown="span"><b>📈 案例与研究：关键数字一览</b></summary>
+
+<a id="cases"></a>
 
 | 来源 | 关键数字 | 一眼要看穿的地方 | 详细 |
 | --- | --- | --- | --- |
@@ -290,7 +337,10 @@ jobs:
 | Omnius | 自报 AI 点击 +138%、SQL +414% | 标题 106% 和正文 138% 是两个数 | [案例精读](docs/cases.md#omnius) |
 | AirOps | 自报点击 +15%、AI 引用 +20% | 组合改动，无法归因到单项 | [案例精读](docs/cases.md#airops) |
 
-## 📚 完整课程目录
+</details>
+
+<details>
+<summary markdown="span"><b>📚 完整课程目录</b></summary>
 
 ![GEO 三阶段学习地图：看懂回答、按项目动手、用数据复盘](assets/learning-map.png)
 
@@ -311,9 +361,12 @@ jobs:
 - [真实案例精读](docs/cases.md) · [行业研究速读](docs/studies.md) · [论文与开源代码](docs/research.md)
 - [工具选择](docs/tools.md) · [🎓 毕业项目](docs/capstone.md)
 
-<a id="evidence"></a>
+</details>
 
-## 🏷 证据标签
+<details>
+<summary markdown="span"><b>🏷 证据标签：怎样区分官方、研究、自报和教学数据</b></summary>
+
+<a id="evidence"></a>
 
 每条资料都标明证据等级，避免把广告当事实：
 
@@ -326,11 +379,13 @@ jobs:
 
 全部资料核验于 **2026-10-14**。平台规则变化快，以链接原文的当前版本为准；发现过时信息欢迎提 Issue。
 
+</details>
+
 ## 🤝 参与贡献
 
 欢迎补充：**能公开分母和页面改动的中文平台案例**、新的官方文档、验证过的提示词、失败实验（没效果的实验同样有价值）。规则见 [CONTRIBUTING.md](CONTRIBUTING.md)，不熟悉 Git 可以直接 [提 Issue](https://github.com/Fangx-AI/geo-doctor/issues/new/choose)。
 
-**如果这份手册帮到了你，点个 ⭐ Star 是对我们最大的支持，也能让更多人看到它。**
+**如果 GEO 医生或这份手册帮到了你，点个 ⭐ Star 是对我们最大的支持，也能让更多人看到它。**
 
 [![Star History Chart](https://api.star-history.com/svg?repos=Fangx-AI/geo-doctor&type=Date)](https://star-history.com/#Fangx-AI/geo-doctor&Date)
 

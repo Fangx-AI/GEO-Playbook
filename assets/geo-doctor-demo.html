@@ -1,0 +1,51 @@
+<!doctype html><html><head><meta charset="utf-8"><style>
+*{box-sizing:border-box;margin:0;padding:0}
+body{width:1640px;background:#fff;font-family:"WenQuanYi Zen Hei",sans-serif;color:#1f2328;padding:52px 56px 44px}
+h1{font-size:54px;font-weight:700;letter-spacing:1px}
+.sub{font-size:28px;color:#57606a;margin-top:14px}
+.cols{display:flex;gap:0;margin-top:44px;align-items:stretch}
+.col{flex:1;border:2px solid #d0d7de;border-radius:16px;padding:24px 22px 20px;background:#f6f8fa;display:flex;flex-direction:column}
+.col.hl{border-color:#0969da;background:#f3f9ff}
+.ar{width:36px;display:flex;align-items:center;justify-content:center;color:#0969da;font-size:38px;font-weight:700}
+.n{font-size:24px;color:#0969da;font-weight:700}
+.t{font-size:38px;font-weight:700;margin:6px 0 20px}
+.msg{font-size:27px;line-height:1.5;border-radius:12px;padding:14px 18px;margin-bottom:14px}
+.me{background:#0969da;color:#fff;align-self:flex-end;max-width:92%}
+.ai{background:#fff;border:2px solid #d0d7de;max-width:100%}
+.who{font-size:19px;color:#57606a;margin-bottom:4px}
+.me .who{color:#cfe3ff}
+.score{font-size:46px;font-weight:700;color:#9a6700}
+.bad{color:#cf222e;font-weight:700}
+.good{color:#1a7f37;font-weight:700}
+code{white-space:nowrap;font-family:"WenQuanYi Zen Hei Mono",monospace;background:#ffebe9;color:#a40e26;border-radius:6px;padding:1px 6px;font-size:22px}
+.next{margin-top:auto;font-size:22px;color:#0969da;font-weight:700}
+.foot{margin-top:30px;font-size:22px;color:#57606a;border-top:2px solid #d0d7de;padding-top:20px;display:flex;justify-content:space-between}
+.foot b{color:#1f2328}
+</style></head><body>
+<h1>一句话装好，再说一句，它就开始给你的网站看病</h1>
+<div class="sub">GEO 医生在 WorkBuddy 里的一次真实使用：安装 → 问诊 → 体检，全程不用写代码</div>
+<div class="cols">
+  <div class="col">
+    <div class="n">① 安装</div><div class="t">把一句话发给 AI</div>
+    <div class="msg me"><div class="who">你</div>帮我安装这个 skill：github.com/Fangx-AI/geo-doctor/tree/master/skills/geo-doctor</div>
+    <div class="msg ai"><div class="who">AI 助手</div>装好了。说明、参考资料、模板、体检脚本都在。<br>已自查：脚本只访问你给的网址，不向第三方上传数据。</div>
+  </div>
+  <div class="ar">→</div>
+  <div class="col">
+    <div class="n">② 问诊</div><div class="t">先问清楚，不乱编</div>
+    <div class="msg me"><div class="who">你</div>帮我做 GEO</div>
+    <div class="msg ai"><div class="who">AI 助手</div>第 0 步：问诊，一次最多问 3 件事。<br>诊断的是软件、网站还是小程序？想被哪个 AI 推荐？网址是？</div>
+    <div class="msg me"><div class="who">你</div>网站，豆包，我的个人博客</div>
+  </div>
+  <div class="ar">→</div>
+  <div class="col hl">
+    <div class="n">③ 体检</div><div class="t">直接指出卡在哪</div>
+    <div class="msg ai"><div class="who">AI 助手</div><span class="score">60</span> / 100<br>
+      <span class="bad">✕ 致命：</span>首页只有 <code>&lt;div id="root"&gt;</code>，AI 爬虫不执行 JS，读不到正文<br>
+      <span class="good">✓</span> 标题、描述、canonical、sitemap、robots 都齐了<br>
+      修法二选一：预渲染，或给爬虫一份静态页 / RSS</div>
+    <div class="next">下一步：整理事实卡（只写你确认过的） →</div>
+  </div>
+</div>
+<div class="foot"><span>整理自 2026-10-14～15 在 WorkBuddy（Windows 桌面端）的实测对话，措辞有删减，网址已隐去。不是软件界面截图。</span><span><b>github.com/Fangx-AI/geo-doctor</b></span></div>
+</body></html>
