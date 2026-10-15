@@ -1,6 +1,6 @@
 <div align="center">
 
-# GEO-Playbook (GEO 实战手册)
+# geo-doctor (GEO 医生)
 
 ### Get found, described correctly, and cited by AI search (ChatGPT, Perplexity, Google AI, Doubao, DeepSeek, Yuanbao…)
 
@@ -27,7 +27,7 @@ No courses to sell, no hype. Every claim links to an official doc or a published
 No install, works on Windows / macOS / Linux with Node.js 18+:
 
 ```bash
-npx github:Fangx-AI/GEO-Playbook https://your-site.com/pricing --phrase "a key sentence from the page"
+npx github:Fangx-AI/geo-doctor https://your-site.com/pricing --phrase "a key sentence from the page"
 ```
 
 Seven groups of checks and a 0–100 score: status and redirects, robots.txt rules for 9 AI and search crawlers (RFC 9309 longest-match, wildcards), whether a firewall/CDN blocks AI crawler user-agents, `noindex` in headers and meta, canonical, whether your copy is in the raw HTML (not only rendered by JavaScript), sitemap and JSON-LD. Add `--json` for machine output, `--report report.md` for a Markdown report, `--fail-under 80` to fail CI.
@@ -35,7 +35,7 @@ Seven groups of checks and a 0–100 score: status and redirects, robots.txt rul
 **GitHub Action**: catch a staging `noindex` or `Disallow: /` before it reaches production.
 
 ```yaml
-- uses: Fangx-AI/GEO-Playbook@master
+- uses: Fangx-AI/geo-doctor@master
   with:
     urls: |
       https://example.com/
@@ -54,4 +54,4 @@ All sources verified on 2026-10-14. Contributions (especially cases with disclos
 
 If this helps you, a ⭐ star helps others find it.
 
-<sub>GEO-Playbook (GEOPlaybook) · Generative Engine Optimization playbook. Text, templates and diagrams: [CC BY 4.0](LICENSE). Scripts: [MIT](scripts/LICENSE).</sub>
+<sub>geo-doctor (GEO 医生, formerly GEO-Playbook) · Generative Engine Optimization playbook. Text, templates and diagrams: [CC BY 4.0](LICENSE). Scripts: [MIT](scripts/LICENSE).</sub>

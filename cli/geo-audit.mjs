@@ -1,9 +1,9 @@
 #!/usr/bin/env node
-// geo-audit · GEO-Playbook
+// geo-audit · geo-doctor
 // Can AI search engines actually read your page? One command, no dependencies.
 // AI 搜索能不能读到你的页面？一条命令，零依赖。
 //
-//   npx github:Fangx-AI/GEO-Playbook https://example.com/pricing
+//   npx github:Fangx-AI/geo-doctor https://example.com/pricing
 //
 // Only fetches public pages. Nothing is sent anywhere else.
 // 只读取公开页面，不向任何第三方发送数据。
@@ -14,8 +14,8 @@ import { dirname } from 'node:path';
 import { pathToFileURL } from 'node:url';
 
 export const VERSION = '1.0.0';
-const DOCS = 'https://github.com/Fangx-AI/GEO-Playbook/blob/master/';
-const BROWSER_UA = 'Mozilla/5.0 (compatible; GEO-Playbook-audit/1.0; +https://github.com/Fangx-AI/GEO-Playbook)';
+const DOCS = 'https://github.com/Fangx-AI/geo-doctor/blob/master/';
+const BROWSER_UA = 'Mozilla/5.0 (compatible; geo-doctor-audit/1.0; +https://github.com/Fangx-AI/geo-doctor)';
 
 // Crawlers that decide whether you can appear in AI / web search answers.
 // 决定你能否出现在 AI 搜索 / 网页搜索回答里的爬虫。
@@ -101,7 +101,7 @@ const M = {
   -v, --version       显示版本
 
 例子：
-  npx github:Fangx-AI/GEO-Playbook https://example.com/pricing --phrase "团队版每月 299 元"`,
+  npx github:Fangx-AI/geo-doctor https://example.com/pricing --phrase "团队版每月 299 元"`,
   },
   en: {
     title: 'GEO audit', score: 'Score', sep: ': ',
@@ -167,7 +167,7 @@ Options:
   -v, --version       show version
 
 Example:
-  npx github:Fangx-AI/GEO-Playbook https://example.com/pricing --phrase "Team plan $29/month"`,
+  npx github:Fangx-AI/geo-doctor https://example.com/pricing --phrase "Team plan $29/month"`,
   },
 };
 
@@ -502,7 +502,7 @@ export function formatMarkdown(results, lang) {
       out.push(`- ${ICON[c.status].trim()} ${c.msg}`);
     }
   }
-  out.push('', `<sub>${t.remind} · [GEO-Playbook](https://github.com/Fangx-AI/GEO-Playbook)</sub>`, '');
+  out.push('', `<sub>${t.remind} · [geo-doctor](https://github.com/Fangx-AI/geo-doctor)</sub>`, '');
   return out.join('\n');
 }
 

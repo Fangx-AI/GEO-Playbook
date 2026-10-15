@@ -6,7 +6,7 @@
 
 需要整个 [`skills/geo-doctor`](../skills/geo-doctor) 文件夹，包括 `SKILL.md`、`LICENSE`、`references/`、`assets/`、`scripts/`。只复制 SKILL.md 会丢失各步骤的规则和模板。
 
-- 优先在 [Releases](https://github.com/Fangx-AI/GEO-Playbook/releases) 的附件中找 `geo-doctor.zip`。核对版本；若没有这个附件，不能把 GitHub 自动生成的整个仓库源码包当成同一种安装包。
+- 优先在 [Releases](https://github.com/Fangx-AI/geo-doctor/releases) 的附件中找 `geo-doctor.zip`。核对版本；若没有这个附件，不能把 GitHub 自动生成的整个仓库源码包当成同一种安装包。
 - 附件缺失时，可以下载仓库源码、解压后取出 `skills/geo-doctor/`。复制完整文件夹到支持的技能目录即可；支持 zip 导入的客户端可尝试压缩该文件夹，具体根目录要求仍需在该客户端验证。
 - 维护者本地打包方式（在仓库根目录）：`mkdir -p dist && cd skills && zip -qr ../dist/geo-doctor.zip geo-doctor`。zip 内第一层为 `geo-doctor/`。
 - 手动复制或导入不会自动保证更新。记录 tag 或 commit；更新前检查已有同名技能，保留用户自己的改动，不直接覆盖。
@@ -18,14 +18,14 @@
 README 给用户的是最短的一句：
 
 ```text
-帮我安装这个 skill：https://github.com/Fangx-AI/GEO-Playbook/tree/master/skills/geo-doctor
+帮我安装这个 skill：https://github.com/Fangx-AI/geo-doctor/tree/master/skills/geo-doctor
 ```
 
 实测时用下面的完整版，方便记录安装结果：
 
 ```text
 请安装 GEO 医生：
-https://github.com/Fangx-AI/GEO-Playbook/tree/master/skills/geo-doctor
+https://github.com/Fangx-AI/geo-doctor/tree/master/skills/geo-doctor
 
 请使用完整技能目录，保留 references、assets 和 scripts。
 完成后告诉我实际安装位置或技能列表中的名称，以及是否需要在新任务中重新启用。
@@ -41,8 +41,8 @@ https://github.com/Fangx-AI/GEO-Playbook/tree/master/skills/geo-doctor
 在 Claude Code 对话中依次输入：
 
 ```text
-/plugin marketplace add Fangx-AI/GEO-Playbook
-/plugin install geo-doctor@geo-playbook
+/plugin marketplace add Fangx-AI/geo-doctor
+/plugin install geo-doctor@geo-doctor
 ```
 
 检查插件已启用，再新开会话测试。仓库已有 marketplace 和 plugin 清单；命令形式符合[官方安装文档](https://code.claude.com/docs/en/plugins/install)，本项目实际加载仍待验证。若自动触发失败，记录插件/技能列表和报错，再通过列表显式选择 GEO 医生。
@@ -52,7 +52,7 @@ https://github.com/Fangx-AI/GEO-Playbook/tree/master/skills/geo-doctor
 在对话中发送：
 
 ```text
-$skill-installer 请从 Fangx-AI/GEO-Playbook 安装 skills/geo-doctor，保留完整目录。
+$skill-installer 请从 Fangx-AI/geo-doctor 安装 skills/geo-doctor，保留完整目录。
 ```
 
 也可手动把完整文件夹复制到 `~/.agents/skills/geo-doctor/`；仓库内使用可放在 `.agents/skills/geo-doctor/`。`~` 是运行 Codex 的环境的用户主目录，Windows 原生环境和 WSL 的目录分别记录。未识别时重启会话，在 `/skills` 中查看，显式触发可用 `$geo-doctor`。依据：[官方技能文档](https://learn.chatgpt.com/docs/build-skills)。这里的文件路径不代表手机 ChatGPT 的安装路径。

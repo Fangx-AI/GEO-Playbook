@@ -29,7 +29,7 @@ $HeadersFile = Join-Path $Dir "headers.txt"
 $PageFile = Join-Path $Dir "page.html"
 $RobotsFile = Join-Path $Dir "robots.txt"
 $CleanFile = Join-Path $Dir "page.clean.html"
-$UA = "Mozilla/5.0 (GEO-Playbook audit)"
+$UA = "Mozilla/5.0 (geo-doctor audit)"
 $script:Pass = 0; $script:Warn = 0
 function Ok($m)   { Write-Output "  ✅ $m"; $script:Pass++ }
 function Warn($m) { Write-Output "  ⚠️  $m"; $script:Warn++ }

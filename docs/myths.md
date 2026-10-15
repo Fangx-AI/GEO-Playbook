@@ -148,6 +148,6 @@
 
 ← [GEO 5 分钟入门](basics.md) · [🏠 目录](../README.md) · [改稿实战课](content-rewrite.md) →
 
-<sub>有帮助的话，回 [首页](../README.md) 点个 ⭐ Star；发现错误或过时信息，欢迎 [提 Issue](https://github.com/Fangx-AI/GEO-Playbook/issues/new/choose)。</sub>
+<sub>有帮助的话，回 [首页](../README.md) 点个 ⭐ Star；发现错误或过时信息，欢迎 [提 Issue](https://github.com/Fangx-AI/geo-doctor/issues/new/choose)。</sub>
 
 </div>
