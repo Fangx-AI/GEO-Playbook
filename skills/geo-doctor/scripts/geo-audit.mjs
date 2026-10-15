@@ -151,7 +151,7 @@ const M = {
     jsonldOk: (t) => `JSON-LD structured data: ${t}`,
     jsonldBad: 'JSON-LD present but fails to parse: check the JSON syntax',
     jsonldNone: 'No JSON-LD: optional; there is no special "AI schema", add it only where it fits the page type',
-    summary: (p, w, f) => `${p} passed · ${w} warnings · ${f} problems`,
+    summary: (p, w, f) => `${p} passed · ${w} ${w === 1 ? 'warning' : 'warnings'} · ${f} ${f === 1 ? 'problem' : 'problems'}`,
     next: 'Next: fix and run again. Step-by-step troubleshooting:',
     remind: 'Reminder: readable ≠ indexed or cited. Track that with a fixed question set.',
     usage: `Usage: geo-audit <url...> [options]
