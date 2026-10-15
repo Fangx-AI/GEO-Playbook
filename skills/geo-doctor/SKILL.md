@@ -3,7 +3,7 @@ name: geo-doctor
 description: GEO 医生：中文 GEO（生成式引擎优化）全流程助手。用户说“帮我做 GEO”，或提到 AI 搜索优化、让豆包/DeepSeek/元宝推荐我、AI 不提我或说错我的信息、AI 爬虫、robots、事实卡、AI 可见度、发什么内容/发到哪个平台能被 AI 引用时使用。帮助软件、产品、网站、小程序改善在豆包、DeepSeek、元宝、千问、文心、Kimi 等 AI 中的可见度和事实准确性，不保证推荐。流程：问诊 → 体检 → 事实卡 → 问题集 → 采样 → 诊断 → 写内容 → 发布指导 → 复查。GEO doctor for Chinese AI search visibility.
 license: MIT
 metadata:
-  version: "0.1.0"
+  version: "0.1.1"
   homepage: https://github.com/Fangx-AI/geo-doctor
 ---
 
