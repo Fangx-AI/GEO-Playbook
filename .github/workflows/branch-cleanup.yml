@@ -1,7 +1,7 @@
 name: branch-cleanup
 # Deletes a pull request's branch once it is merged. A manual run also deletes leftover
 # branches whose pull requests are all closed; branches with an open PR, branches that never
-# had a PR, and the default branch are kept.
+# had a PR from this repository (fork PRs are ignored), and the default branch are kept.
 on:
   pull_request:
     types: [closed]
@@ -21,8 +21,8 @@ jobs:
       - if: github.event_name == 'workflow_dispatch'
         run: |
           default=$(gh api "repos/$GITHUB_REPOSITORY" -q .default_branch)
-          open=$(gh pr list -R "$GITHUB_REPOSITORY" --state open --limit 500 --json headRefName -q '.[].headRefName')
-          closed=$(gh pr list -R "$GITHUB_REPOSITORY" --state closed --limit 500 --json headRefName -q '.[].headRefName')
+          open=$(gh pr list -R "$GITHUB_REPOSITORY" --state open --limit 500 --json headRefName,isCrossRepository -q '.[] | select(.isCrossRepository | not) | .headRefName')
+          closed=$(gh pr list -R "$GITHUB_REPOSITORY" --state closed --limit 500 --json headRefName,isCrossRepository -q '.[] | select(.isCrossRepository | not) | .headRefName')
           gh api --paginate "repos/$GITHUB_REPOSITORY/branches" -q '.[].name' | while read -r b; do
             [ "$b" = "$default" ] && continue
             printf '%s\n' "$open" | grep -qxF -- "$b" && continue
