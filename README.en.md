@@ -6,12 +6,12 @@
 
 Works for English and Chinese sites: ChatGPT, Claude, Perplexity, Gemini, Google AI Overviews and Copilot,<br>plus Doubao, DeepSeek, Yuanbao, Qwen, ERNIE and Kimi in China.
 
-Install it into your AI assistant with one sentence. It finds out which competitors AI recommends, why not you, and which sites AI reads when it recommends them,<br>then helps you write content AI wants to cite, publish where AI reads, and re-test your recommendation rate.
+Install it into your AI assistant with one sentence. It finds out which competitors AI recommends, why not you, and which sites AI reads when it recommends them,<br>then writes content AI wants to cite in batches, publishes it where AI reads, and re-tests your recommendation rate.
 
 <table>
 <tr>
 <td align="center" width="33%"><b>🔍 Finds the gap</b><br><sub>Who AI recommends, how often, which sites it cites, and the exact questions you're missing from</sub></td>
-<td align="center" width="33%"><b>✍️ Writes to get cited</b><br><sub>Uses the tactics the GEO paper found work best: statistics, cited sources, quotations. Only your real facts</sub></td>
+<td align="center" width="33%"><b>✍️ Writes and publishes in batches</b><br><sub>One article per gap, only from your real facts. Auto-publishes to your site, packages posts for other platforms</sub></td>
 <td align="center" width="33%"><b>📈 Tracks your recommendation rate</b><br><sub>Asks the same questions before and after, and compares your recommendations with competitors'</sub></td>
 </tr>
 </table>
@@ -71,11 +71,13 @@ Like a doctor's visit, in eight steps, each with a file you keep:
 | 3 Questions | "how do people ask AI?" | Writes 20–30 questions in your users' own words and picks 10 core ones | Question set |
 | 4 Sampling | "what does AI say about me now?" | Tells you which 10 questions to ask in your target AI; you paste the answers back | Answer archive |
 | 5 Diagnosis | "why doesn't it recommend me?" | Computes your recommendation rate, ranks competitors, and lists each question where a competitor is recommended and you aren't, with the sites AI read | Competitor gap list and prescription |
-| 6 Writing | "write it for me" | Writes only for the gaps, only from the fact card, with checks for hype and violations | Pages, FAQs, comparisons, scripts |
-| 7 Publishing | "where do I post this?" | Picks platforms by target AI: Google and Bing indexing and AI search crawlers overseas, Douyin, Toutiao or WeChat in China | Publishing plan |
+| 6 Batch writing | "write them all" | One article per gap question, only from the fact card; a script checks placeholders, hype, unconfirmed facts and near-duplicates | A batch of pages, FAQs, comparisons |
+| 7 Batch publishing | "publish them" | Picks platforms by target AI. Publishes to your own site automatically (static HTML, WordPress, any HTTP API); packages ready-to-paste posts for Medium, Reddit, Zhihu, WeChat and more that you publish yourself | Live site pages, platform-ready posts and a checklist |
 | 8 Re-test | "two weeks later, did it work?" | Asks the same questions again and compares, with sample sizes | Re-test report |
 
 Supports **software, apps, websites, mini programs and online products**. A local-business version is in progress.
+
+> Steps 6 and 7 also run from the command line: `npx -p github:Fangx-AI/geo-doctor geo-publish check geo/drafts` checks a batch, `… site … --to wordpress` publishes to your site, `… pack …` packages posts for other platforms. Run `geo-publish --help` for the full usage.
 
 <a id="faq"></a>
 
@@ -87,7 +89,7 @@ Supports **software, apps, websites, mini programs and online products**. A loca
 
 **Can it guarantee ChatGPT will recommend me?** No, and nobody can. GEO Doctor finds what AI can't read or gets wrong, helps you fix it, and re-asks the same questions to show what changed. If someone guarantees placement, ask them for the denominator and the raw records.
 
-**Will it write fake content or reviews?** No. Every fact it writes must be one you confirmed. Mass-produced lookalike posts, fake reviews and inflated numbers are refused in the skill itself.
+**Can it write and publish in bulk without becoming spam?** Yes. Each article answers a different real question where AI left you out, every fact must be one you confirmed, and reworded copies of the same article are flagged. Your own site can be published automatically; third-party platforms are only packaged, and you post them from your real account, because automated mass posting gets accounts banned. Fake reviews and inflated numbers are refused in the skill itself.
 
 **Can I use it inside ChatGPT or Doubao?** Plain chat apps can't install skills yet. Run the diagnosis in an assistant that can, then ask your questions in ChatGPT, Claude or Doubao when sampling, because what users see in the app is what counts.
 

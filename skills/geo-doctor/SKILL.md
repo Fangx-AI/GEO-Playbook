@@ -1,9 +1,9 @@
 ---
 name: geo-doctor
-description: GEO 医生：中英双语 GEO（生成式引擎优化）全流程助手。用户说“帮我做 GEO”，或提到 AI 搜索优化、让豆包/DeepSeek/元宝/ChatGPT/Claude 推荐我、AI 不提我或说错我的信息、AI 爬虫、robots、事实卡、AI 可见度、发什么内容/发到哪个平台能被 AI 引用时使用。帮助软件、产品、网站、小程序改善在豆包、DeepSeek、元宝、千问、文心、Kimi，以及 ChatGPT、Claude、Perplexity、Gemini、Google AI 概览、Copilot 中的可见度和事实准确性，不保证推荐。流程：问诊 → 体检 → 事实卡 → 问题集 → 采样 → 诊断 → 写内容 → 发布指导 → 复查。GEO doctor (generative engine optimization): use when the user says "help me with GEO", asks how to get recommended or cited by ChatGPT, Claude, Perplexity, Gemini, Google AI Overviews or Copilot, or says AI ignores or misdescribes their product.
+description: GEO 医生：中英双语 GEO（生成式引擎优化）全流程助手。用户说“帮我做 GEO”，或提到 AI 搜索优化、让豆包/DeepSeek/元宝/ChatGPT/Claude 推荐我、AI 不提我或说错我的信息、AI 爬虫、robots、事实卡、AI 可见度、发什么内容/发到哪个平台能被 AI 引用时使用。帮助软件、产品、网站、小程序改善在豆包、DeepSeek、元宝、千问、文心、Kimi，以及 ChatGPT、Claude、Perplexity、Gemini、Google AI 概览、Copilot 中的可见度和事实准确性，不保证推荐。流程：问诊 → 体检 → 事实卡 → 问题集 → 采样 → 诊断 → 批量写内容 → 发布（官网自动发，第三方平台打包由人发）→ 复查。GEO doctor (generative engine optimization): use when the user says "help me with GEO", asks how to get recommended or cited by ChatGPT, Claude, Perplexity, Gemini, Google AI Overviews or Copilot, or says AI ignores or misdescribes their product.
 license: MIT
 metadata:
-  version: "0.2.0"
+  version: "0.3.0"
   homepage: https://github.com/Fangx-AI/geo-doctor
 ---
 
@@ -26,6 +26,7 @@ metadata:
 ### 运行环境与资源
 
 - 以本 `SKILL.md` 所在目录为技能根目录，读取对应的 `references/`、`assets/` 和 `scripts/`，不要把它们当成用户项目里的路径。第 2–4 步分别使用 [fact-card.yaml](assets/fact-card.yaml)、[questions.csv](assets/questions.csv)、[runs.csv](assets/runs.csv)。
+- 第 1 步的体检用 `scripts/geo-audit.mjs`，第 6、7 步的批量检查、发布和打包用 `scripts/geo-publish.mjs`，都是零依赖的 Node.js 脚本。
 - 缺少参考文件或模板时，说明具体缺哪个文件，请用户补充完整技能包；不要假装读过或凭空补出模板。只收到链接或粘贴文本，不代表已持久安装。
 - 根据实际工具能力选择执行方式，不按平台名称假定能联网、运行命令或写文件。不能写文件时，在对话中按目标文件名给出可复制的完整内容，并注明“待保存”；不能运行脚本时，按第 1 步做可完成的人工检查，未检查项标为“未验证”，不编造得分。
 - 没有联网能力时使用用户提供的材料，缺出处的事实标为“未知”；不要为了继续流程重复索要无关账号登录。
@@ -38,8 +39,8 @@ metadata:
 | 3 | **问题集**：用户会怎么问 AI | [03-questions.md](references/03-questions.md) | `geo/questions.csv` |
 | 4 | **采样**：用户在目标 AI 里问，把回答贴回来 | [04-sampling.md](references/04-sampling.md) | `geo/runs/<批次>/`、`geo/runs.csv` |
 | 5 | **诊断**：AI 推荐了谁、你缺在哪题、它推荐别人时读哪些网站 | [05-diagnosis.md](references/05-diagnosis.md) | `geo/diagnosis.md` |
-| 6 | **开方·写内容**：只针对缺口，只用事实卡 | [06-writing.md](references/06-writing.md) | `geo/drafts/` |
-| 7 | **开方·发布指导**：发到哪、怎么发、多久发 | [07-publishing.md](references/07-publishing.md) | `geo/publish-plan.md` |
+| 6 | **开方·写内容**：按缺口清单一题一篇，可以成批写，只用事实卡 | [06-writing.md](references/06-writing.md) | `geo/drafts/<slug>.md` |
+| 7 | **发布**：官网自动发，第三方平台打包好由用户本人发 | [07-publishing.md](references/07-publishing.md) | `geo/publish-plan.md`、`geo/outbox/`、`geo/published.csv` |
 | 8 | **复查**：同一问题集再测，对比前后 | [08-retest.md](references/08-retest.md) | `geo/report-日期.md` |
 
 ## 开始之前（第 0 步：问诊）
