@@ -11,7 +11,7 @@
 // 自己的官网可以自动发布；知乎、公众号、小红书等第三方平台只打包好，由人点发布，脚本不会登录或代发。
 // SPDX-License-Identifier: MIT
 
-import { appendFileSync, existsSync, mkdirSync, readdirSync, readFileSync, writeFileSync } from 'node:fs';
+import { appendFileSync, existsSync, mkdirSync, readdirSync, readFileSync, rmSync, writeFileSync } from 'node:fs';
 import { basename, dirname, join, resolve } from 'node:path';
 import { pathToFileURL } from 'node:url';
 
@@ -84,6 +84,8 @@ WordPress 用"应用密码"登录，密码从环境变量 GEO_WP_APP_PASSWORD �
     checkHead: (n, e, w) => `检查了 ${n} 篇草稿：${e} 个错误，${w} 个提醒`,
     checkOk: '可以发布的草稿：',
     wrote: (f) => `已写入 ${f}`,
+    removed: (f) => `已删除不再发布的页面 ${f}`,
+    noFactFile: (f) => `找不到事实卡 ${f}`,
     sent: (slug, url, st) => `已发布 ${slug} → ${url}（${st}）`,
     updated: (slug, url, st) => `已更新 ${slug} → ${url}（${st}）`,
     dry: (what) => `[演练] ${what}`,
@@ -101,6 +103,7 @@ WordPress 用"应用密码"登录，密码从环境变量 GEO_WP_APP_PASSWORD �
       'unknown-fact': (id) => `事实卡里没有编号 ${id}`,
       'unconfirmed-fact': (id, st) => `事实 ${id} 的状态是"${st}"，只有已确认的事实能写进文章`,
       'no-facts': '没有标注用到了哪些事实卡编号（facts 字段），发布前请核对',
+      'no-fact-card': (f) => `用到了事实卡编号，但找不到事实卡 ${f}，无法核对；用 --facts 指定路径`,
       hype: (w) => `用了需要证据的说法「${w}」，确认有依据或改掉`,
       review: '像是引用了用户评价，确认有真实、可公开的出处，不能编',
       'near-dup': (o, p) => `和 ${o} 有 ${p}% 相似，同一内容换个说法重复发属于低质内容，合并或重写`,
@@ -166,6 +169,8 @@ Only drafts with status: confirmed are published or packaged. Third-party platfo
     checkHead: (n, e, w) => `Checked ${n} draft(s): ${e} error(s), ${w} warning(s)`,
     checkOk: 'Ready to publish:',
     wrote: (f) => `Wrote ${f}`,
+    removed: (f) => `Removed page no longer published: ${f}`,
+    noFactFile: (f) => `Fact card not found: ${f}`,
     sent: (slug, url, st) => `Published ${slug} → ${url} (${st})`,
     updated: (slug, url, st) => `Updated ${slug} → ${url} (${st})`,
     dry: (what) => `[dry run] ${what}`,
@@ -183,6 +188,7 @@ Only drafts with status: confirmed are published or packaged. Third-party platfo
       'unknown-fact': (id) => `Fact ${id} is not in the fact card`,
       'unconfirmed-fact': (id, st) => `Fact ${id} has status "${st}"; only confirmed facts may be used`,
       'no-facts': 'No fact card IDs listed (facts field); check the claims before publishing',
+      'no-fact-card': (f) => `Uses fact card IDs, but the fact card ${f} was not found, so they cannot be checked. Pass --facts <file>`,
       hype: (w) => `Claim needs proof: "${w}". Back it up or rewrite it`,
       review: 'Looks like a quoted review: make sure it is real and you may publish it. Never invent one',
       'near-dup': (o, p) => `${p}% similar to ${o}. Reworded copies are low-quality content: merge or rewrite`,
@@ -405,7 +411,7 @@ function hypeHits(text, lang) {
 }
 
 // Returns [{ file, level: 'error'|'warn'|'info', code, msg }]. 返回问题列表。
-export function checkDrafts(drafts, { facts = null, lang = 'zh' } = {}) {
+export function checkDrafts(drafts, { facts = null, missingFactCard = null, lang = 'zh' } = {}) {
   const t = M[lang].issues; const issues = [];
   const add = (d, level, code, msg) => issues.push({ file: d.file, slug: d.slug, level, code, msg });
   const slugs = new Map();
@@ -425,7 +431,7 @@ export function checkDrafts(drafts, { facts = null, lang = 'zh' } = {}) {
         if (!facts.has(id)) add(d, 'error', 'unknown-fact', t['unknown-fact'](id));
         else if (!CONFIRMED.has(String(facts.get(id)).toLowerCase())) add(d, 'error', 'unconfirmed-fact', t['unconfirmed-fact'](id, facts.get(id)));
       }
-    }
+    } else if (missingFactCard && d.facts.length) add(d, 'error', 'no-fact-card', t['no-fact-card'](missingFactCard));
     if (!d.facts.length) add(d, 'warn', 'no-facts', t['no-facts']);
     for (const w of hypeHits(full, d.lang)) add(d, 'warn', 'hype', t.hype(w));
     if (REVIEW.test(body)) add(d, 'warn', 'review', t.review);
@@ -620,7 +626,8 @@ export function renderFor(platform, d, { url = '', brand = '', lang = 'zh' } = {
 function packDrafts(drafts, o, t, lang, logRows) {
   const files = []; const rows = []; const warnings = [];
   for (const d of drafts) {
-    const url = (logRows.filter((r) => r.slug === d.slug && r.platform === SITE && r.url).pop() || {}).url || d.meta.url || '';
+    const isPublic = (u) => /^https?:\/\//i.test(u || '');
+    const url = (logRows.filter((r) => r.slug === d.slug && r.platform === SITE && isPublic(r.url)).pop() || {}).url || (isPublic(d.meta.url) ? d.meta.url : '');
     for (const p of d.platforms) {
       if (p === SITE || !PLATFORMS[p] || (o.platforms && !o.platforms.includes(p))) continue;
       const r = renderFor(p, d, { url, brand: o.brand, lang });
@@ -695,9 +702,11 @@ export async function main(argv, { env = process.env, out = console.log, err = c
   const drafts = loadDrafts(dir);
   if (!drafts.length) { err(t.noDrafts(o.dir)); return 2; }
   const factsFile = o.facts || join(dir, '..', 'fact-card.yaml');
+  // An explicit --facts path must exist; a missing default card fails every draft that cites fact IDs.
+  if (o.facts && !existsSync(factsFile)) { err(t.noFactFile(o.facts)); return 2; }
   const facts = existsSync(factsFile) ? parseFacts(readFileSync(factsFile, 'utf8')) : null;
   const logFile = o.log || join(dir, '..', 'published.csv');
-  const issues = checkDrafts(drafts, { facts, lang });
+  const issues = checkDrafts(drafts, { facts, missingFactCard: facts ? null : factsFile, lang });
 
   if (o.cmd === 'check') {
     if (o.json) out(JSON.stringify({ drafts: drafts.map((d) => ({ file: d.file, slug: d.slug, title: d.title, confirmed: d.confirmed, platforms: d.platforms })), issues, factCard: facts ? factsFile : null }, null, 2));
@@ -732,17 +741,30 @@ export async function main(argv, { env = process.env, out = console.log, err = c
   if (o.to === 'static') {
     if (!o.out) { err(t.need('--out')); return 2; }
     const outDir = resolve(o.out);
+    // The manifest lists pages earlier runs wrote, so pages no longer eligible are removed (and nothing else is).
+    const manifest = join(outDir, '.geo-publish.json');
+    let previous = [];
+    try { previous = JSON.parse(readFileSync(manifest, 'utf8')).pages || []; } catch {}
+    const current = picked.map((d) => `${d.slug}.html`);
+    for (const f of previous) {
+      if (current.includes(f) || !/^[a-z0-9-]+\.html$/.test(f) || f === 'index.html') continue;
+      const file = join(outDir, f);
+      if (!existsSync(file)) continue;
+      if (o.dryRun) { out(t.dry(t.removed(file))); continue; }
+      rmSync(file); out(t.removed(file));
+    }
     for (const d of picked) {
       const url = o.baseUrl ? joinUrl(o.baseUrl, `${d.slug}.html`) : null;
       const file = join(outDir, `${d.slug}.html`);
       if (o.dryRun) { out(t.dry(file)); continue; }
       mkdirSync(outDir, { recursive: true }); writeFileSync(file, articleHtml(d, { url }));
       out(t.wrote(file));
-      appendLog(logFile, { slug: d.slug, platform: SITE, url: url || file, status: 'static', title: d.title });
+      appendLog(logFile, { slug: d.slug, platform: SITE, url: url || '', status: 'static', title: d.title });
     }
     if (!o.dryRun) {
       const idx = join(outDir, 'index.html'); writeFileSync(idx, indexHtml(picked, lang, o.baseUrl)); out(t.wrote(idx));
       if (o.baseUrl) { const sm = join(outDir, 'sitemap.xml'); writeFileSync(sm, sitemapXml(picked, o.baseUrl)); out(t.wrote(sm)); }
+      writeFileSync(manifest, JSON.stringify({ generator: 'geo-publish', pages: current }, null, 2) + '\n');
       out(t.logged(logFile));
     }
     return 0;

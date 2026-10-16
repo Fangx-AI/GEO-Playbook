@@ -196,6 +196,52 @@ test('static site: confirmed drafts only, readable by AI crawlers, logged with U
   } finally { srv.close(); }
 });
 
+test('a missing fact card fails drafts that cite fact IDs', async () => {
+  const geo = setup({ 'a.md': draft({ ...GOOD, facts: '[DOES-NOT-EXIST]' }) });
+  cleanup.push(join(geo, '..'));
+  rmSync(join(geo, 'fact-card.yaml'));
+  const r = await run(['check', join(geo, 'drafts'), '--json']);
+  assert.equal(r.code, 1);
+  assert.ok(JSON.parse(r.out).issues.some((x) => x.code === 'no-fact-card'));
+  const s = await run(['site', join(geo, 'drafts'), '--to', 'static', '--out', join(geo, '..', 'site')]);
+  assert.equal(s.code, 1);
+  assert.ok(!existsSync(join(geo, '..', 'site')));
+  const typo = await run(['check', join(geo, 'drafts'), '--facts', join(geo, 'nope.yaml')]);
+  assert.equal(typo.code, 2);
+  assert.match(typo.err, /找不到事实卡/);
+});
+
+test('static site without --base-url logs no local path and pack adds no fake link', async () => {
+  const geo = setup({ 'a.md': draft(GOOD) });
+  cleanup.push(join(geo, '..'));
+  const r = await run(['site', join(geo, 'drafts'), '--to', 'static', '--out', join(geo, '..', 'site')]);
+  assert.equal(r.code, 0, r.err);
+  assert.equal(readLog(join(geo, 'published.csv'))[0].url, '');
+  const p = await run(['pack', join(geo, 'drafts'), '--platforms', 'zhihu']);
+  assert.equal(p.code, 0, p.err);
+  const md = readFileSync(join(geo, 'outbox', 'zhihu', 'offline-budget-app.md'), 'utf8');
+  assert.ok(!md.includes('原文：'), md.slice(-200));
+  assert.ok(!md.includes(geo));
+});
+
+test('static rebuild removes pages that are no longer published, and only those', async () => {
+  const b = { ...GOOD, slug: 'second-page', title: '第二篇' };
+  const geo = setup({ 'a.md': draft(GOOD), 'b.md': draft(b, BODY.replace('不用联网也能记账吗', '第二篇：离线记账')) });
+  cleanup.push(join(geo, '..'));
+  const out = join(geo, '..', 'site');
+  mkdirSync(out, { recursive: true });
+  writeFileSync(join(out, 'about.html'), 'mine');
+  assert.equal((await run(['site', join(geo, 'drafts'), '--to', 'static', '--out', out])).code, 0);
+  assert.ok(existsSync(join(out, 'second-page.html')));
+  writeFileSync(join(geo, 'drafts', 'b.md'), draft({ ...b, status: 'draft' }));
+  const r = await run(['site', join(geo, 'drafts'), '--to', 'static', '--out', out]);
+  assert.equal(r.code, 0, r.err);
+  assert.ok(!existsSync(join(out, 'second-page.html')));
+  assert.ok(existsSync(join(out, 'offline-budget-app.html')));
+  assert.equal(readFileSync(join(out, 'about.html'), 'utf8'), 'mine');
+  assert.doesNotMatch(readFileSync(join(out, 'index.html'), 'utf8'), /second-page/);
+});
+
 test('publishing refuses while a confirmed draft has errors', async () => {
   const geo = setup({ 'a.md': draft({ ...GOOD, facts: '[P01]' }) });
   cleanup.push(join(geo, '..'));
