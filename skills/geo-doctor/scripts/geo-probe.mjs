@@ -79,6 +79,7 @@ API 回答不等于用户在 App 里看到的回答：记录都标"入口=API"�
     wrote: (f) => `已写入 ${f}`,
     apiNote: 'API 采样：不登录、多数不联网，结果和 App 内可能不同；推荐判定为关键词初判，需复核。',
     noRuns: (f) => `${f} 里还没有采样记录`,
+    batchExists: (b) => `批次 ${b} 已经存在，换一个 --batch 名称（已有批次的原文不会被覆盖）`,
   },
   en: {
     usage: `geo-probe ${VERSION} · GEO Doctor's automatic sampler
@@ -121,6 +122,7 @@ knows the brands you listed; review them.`,
     wrote: (f) => `Wrote ${f}`,
     apiNote: 'API sample: no login, usually no web search, may differ from the apps; recommendation flags are a keyword first pass, review them.',
     noRuns: (f) => `No sampling records in ${f} yet`,
+    batchExists: (b) => `Batch ${b} already exists. Pick another --batch name (existing answers are never overwritten)`,
   },
 };
 
@@ -281,7 +283,8 @@ const splitList = (s) => String(s || '').split(/[;；]/).map((x) => x.trim()).fi
 const ratio = (a, b) => (b ? `${a}/${b}` : 'NA');
 
 // The five numbers from step 5, per batch × platform × entry. 第 5 步的五个数，按批次 × 平台 × 入口分组。
-export function summarize(rows, types = new Map()) {
+// types: question id → class; byBatch: batch → its own snapshot's map, which wins for that batch's rows.
+export function summarize(rows, types = new Map(), byBatch = new Map()) {
   const groups = new Map();
   for (const r of rows) {
     const k = [r['批次'] || '未知', r['平台'] || '未知', r['入口'] || '未知'].join('\u0000');
@@ -290,7 +293,8 @@ export function summarize(rows, types = new Map()) {
   }
   return [...groups.entries()].map(([k, list]) => {
     const [batch, platform, entry] = k.split('\u0000');
-    const cls = (r) => (types.get(r['问题id']) || '').toUpperCase();
+    const own = byBatch.get(batch);
+    const cls = (r) => ((own && own.get(r['问题id'])) || types.get(r['问题id']) || '').toUpperCase();
     const valid = list.filter((r) => VALID.has(r['回答状态']));
     const status = {};
     for (const r of list) { const s = r['回答状态'] || '未知'; status[s] = (status[s] || 0) + 1; }
@@ -400,14 +404,14 @@ export async function main(argv, { env = process.env, out = console.log, err = c
     let rows = parseCsv(readFileSync(runsFile, 'utf8'));
     if (o.batch) rows = rows.filter((r) => r['批次'] === o.batch);
     if (!rows.length) { err(t.noRuns(runsFile)); return 1; }
-    const types = new Map();
+    const types = new Map(); const byBatch = new Map();
     const qFile = resolve(o.questions || join(dirname(runsFile), 'questions.csv'));
     if (existsSync(qFile)) for (const q of loadQuestions(readFileSync(qFile, 'utf8')).asked) types.set(q.id, q.cls);
     for (const b of new Set(rows.map((r) => r['批次']))) {
       const snap = join(dirname(runsFile), 'runs', b, 'questions.csv');
-      if (b && existsSync(snap)) for (const q of loadQuestions(readFileSync(snap, 'utf8')).asked) if (!types.has(q.id)) types.set(q.id, q.cls);
+      if (b && existsSync(snap)) byBatch.set(b, new Map(loadQuestions(readFileSync(snap, 'utf8')).asked.map((q) => [q.id, q.cls])));
     }
-    const groups = summarize(rows, types);
+    const groups = summarize(rows, types, byBatch);
     const md = formatSummary(groups, lang);
     if (o.out) { writeFileSync(o.out, md); out(t.wrote(o.out)); }
     out(o.json ? JSON.stringify(groups, null, 2) : md);
@@ -456,11 +460,24 @@ export async function main(argv, { env = process.env, out = console.log, err = c
   const when = stamp(now());
   const results = [];
 
+  // An explicit --batch never reuses an existing folder, so archived answers are never overwritten.
+  if (o.batch) {
+    const seen = new Map();
+    for (const x of targets) {
+      let name = targets.length > 1 ? `${o.batch}-${x.name}` : o.batch;
+      const n = (seen.get(name) || 0) + 1; seen.set(name, n);
+      if (n > 1) name += `-${n}`;
+      x.batch = name;
+    }
+    const taken = targets.filter((x) => existsSync(join(runsDir, x.batch)));
+    if (taken.length) { for (const x of taken) err(t.batchExists(x.batch)); return 2; }
+  }
+
   for (const x of targets) {
     const total = questions.length * times;
     out(t.plan(x.p.label === 'Custom' ? x.model : x.p.label, x.model, questions.length, times, total));
     if (o.dryRun) continue;
-    const batch = o.batch ? (targets.length > 1 ? `${o.batch}-${x.name}` : o.batch) : nextBatch(runsDir, `${when.date}-${x.name}-api`);
+    const batch = x.batch || nextBatch(runsDir, `${when.date}-${x.name}-api`);
     const dir = join(runsDir, batch);
     mkdirSync(dir, { recursive: true });
     copyFileSync(qFile, join(dir, 'questions.csv'));
@@ -495,7 +512,9 @@ export async function main(argv, { env = process.env, out = console.log, err = c
     });
 
     mkdirSync(dirname(runsFile), { recursive: true });
-    if (!existsSync(runsFile) || !readFileSync(runsFile, 'utf8').trim()) writeFileSync(runsFile, '\uFEFF' + csvLine(RUNS_HEADER) + '\n');
+    const existing = existsSync(runsFile) ? readFileSync(runsFile, 'utf8') : '';
+    if (!existing.trim()) writeFileSync(runsFile, '\uFEFF' + csvLine(RUNS_HEADER) + '\n');
+    else if (!/\n$/.test(existing)) appendFileSync(runsFile, '\n');
     appendFileSync(runsFile, rows.map((r) => csvLine(RUNS_HEADER.map((h) => r[h])) + '\n').join(''));
     const types = new Map(questions.map((q) => [q.id, q.cls]));
     const [g] = summarize(rows.map((r) => Object.fromEntries(Object.entries(r).map(([k, v]) => [k, String(v)]))), types);

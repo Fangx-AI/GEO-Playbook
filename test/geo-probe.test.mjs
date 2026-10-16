@@ -188,3 +188,36 @@ test('summarize: valid answers only, brands counted once per answer, NA for empt
   assert.deepEqual(g.sources, [{ domain: 'zhihu.com', n: 1 }]);
   assert.equal(g.correct.of, 0);
 });
+
+test('run: an existing --batch is refused, duplicate providers get distinct batches, CSV without final newline stays intact', async () => {
+  const geo = setup();
+  const srv = createServer((req, res) => { res.writeHead(200, { 'content-type': 'application/json' }); res.end(JSON.stringify({ choices: [{ message: { content: '推荐小鹿记账' }, finish_reason: 'stop' }] })); });
+  await new Promise((ok) => srv.listen(0, '127.0.0.1', ok));
+  try {
+    writeFileSync(join(geo, 'runs.csv'), 'run_id,问题id,回答状态,批次\nmanual-Q01-1,Q01,完整,manual');
+    const args = ['run', join(geo, 'questions.csv'), '--only', 'A', '--times', '1', '--brand', '小鹿记账', '--base-url', `http://127.0.0.1:${srv.address().port}/v1`];
+    const env = { DEEPSEEK_API_KEY: 'k' };
+    assert.equal((await run([...args, '--ai', 'deepseek', '--batch', 'b1'], { env })).code, 0);
+    const before = readFileSync(join(geo, 'runs', 'b1', 'Q01-1.md'), 'utf8');
+    const again = await run([...args, '--ai', 'deepseek', '--batch', 'b1'], { env });
+    assert.equal(again.code, 2);
+    assert.match(again.err, /批次 b1 已经存在/);
+    assert.equal(readFileSync(join(geo, 'runs', 'b1', 'Q01-1.md'), 'utf8'), before);
+    const rows = parseCsv(readFileSync(join(geo, 'runs.csv'), 'utf8'));
+    assert.deepEqual(rows.map((x) => x.run_id), ['manual-Q01-1', 'b1-Q01-1']);
+    assert.equal(rows[0]['批次'], 'manual');
+    assert.equal((await run([...args, '--ai', 'deepseek,deepseek:deepseek-reasoner', '--batch', 'two'], { env })).code, 0);
+    assert.ok(existsSync(join(geo, 'runs', 'two-deepseek', 'Q01-1.md')));
+    assert.ok(existsSync(join(geo, 'runs', 'two-deepseek-2', 'Q01-1.md')));
+  } finally { srv.close(); }
+});
+
+test('report: each batch is classified by its own question snapshot', () => {
+  const rows = [
+    { '批次': 'old', '平台': 'p', '入口': 'App', '问题id': 'Q1', '回答状态': '完整', '是否推荐我们': '推荐', '是否提到我们': '是' },
+    { '批次': 'new', '平台': 'p', '入口': 'App', '问题id': 'Q1', '回答状态': '完整', '描述是否正确': '对' },
+  ];
+  const [oldG, newG] = summarize(rows, new Map([['Q1', 'B']]), new Map([['old', new Map([['Q1', 'A']])]]));
+  assert.deepEqual([oldG.recommend.of, oldG.correct.of], [1, 0]);
+  assert.deepEqual([newG.recommend.of, newG.correct.of], [0, 1]);
+});
