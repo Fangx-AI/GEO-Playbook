@@ -1,6 +1,6 @@
 {
   "name": "geo-doctor",
-  "version": "1.0.0",
+  "version": "1.1.0",
   "description": "GEO audit CLI: can AI search engines (ChatGPT, Perplexity, Claude, Google AI, Doubao…) actually read your page? Part of geo-doctor (GEO 医生).",
   "type": "module",
   "bin": {

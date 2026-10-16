@@ -22,7 +22,7 @@ Install it into your AI assistant with one sentence. It finds out which competit
 [![test](https://github.com/Fangx-AI/geo-doctor/actions/workflows/test.yml/badge.svg)](https://github.com/Fangx-AI/geo-doctor/actions/workflows/test.yml)
 [![License: MIT](https://img.shields.io/badge/skill-MIT-blue.svg)](skills/geo-doctor/SKILL.md)
 
-[📦 Install](#install) · [🩺 What it does](#what) · [❓ FAQ](#faq) · [🧰 No-install audit](#quickstart) · [📚 Handbook](#handbook) · [中文](README.md)
+[📦 Install](#install) · [🩺 What it does](#what) · [❓ FAQ](#faq) · [🧰 No-install audit](#quickstart) · [📛 Badge](#badge) · [📚 Handbook](#handbook) · [中文](README.md)
 
 </div>
 
@@ -97,7 +97,7 @@ npx github:Fangx-AI/geo-doctor https://your-site.com/pricing --phrase "a key sen
 <p align="center"><img src="assets/geo-audit-terminal-en.png" alt="Real output of the audit script: all 9 AI search crawlers are allowed, but the raw HTML has no body text. Score 60/100" width="100%"></p>
 <p align="center"><sub>Real, unedited output of the audit step, run against a local test page: crawlers are allowed, but the raw HTML is an empty <code>&lt;div id="root"&gt;</code>, so AI crawlers that don't run JavaScript can't read the text.</sub></p>
 
-Seven groups of checks and a 0–100 score: status and redirects, robots.txt rules for 9 AI and search crawlers (RFC 9309 longest-match, wildcards), whether a firewall/CDN blocks AI crawler user-agents, `noindex` in headers and meta, canonical, whether your copy is in the raw HTML (not only rendered by JavaScript), sitemap and JSON-LD. Add `--json` for machine output, `--report report.md` for a Markdown report, `--fail-under 80` to fail CI.
+Seven groups of checks and a 0–100 score: status and redirects, robots.txt rules for 9 AI and search crawlers (RFC 9309 longest-match, wildcards), whether a firewall/CDN blocks AI crawler user-agents, `noindex` in headers and meta, canonical, whether your copy is in the raw HTML (not only rendered by JavaScript), sitemap and JSON-LD. Add `--json` for machine output, `--report report.md` for a Markdown report, `--fail-under 80` to fail CI, `--badge geo-badge.svg` for a [score badge](#badge).
 
 **GitHub Action**: catch a staging `noindex` or `Disallow: /` before it reaches production.
 
@@ -111,6 +111,64 @@ Seven groups of checks and a 0–100 score: status and redirects, robots.txt rul
 ```
 
 No Node? Use [`toolkit/geo-audit.sh`](toolkit/geo-audit.sh) (macOS / Linux) or [`toolkit/geo-audit.ps1`](toolkit/geo-audit.ps1) (Windows) with fewer checks.
+
+<a id="badge"></a>
+
+## 📛 Audit badge: show your score
+
+Score **80 or higher** and the audit prints one extra line of badge code. Paste it into your README or website footer:
+
+[![GEO audit 96/100](https://img.shields.io/badge/GEO%20audit-96%2F100-brightgreen)](#badge)
+[![GEO audit 85/100](https://img.shields.io/badge/GEO%20audit-85%2F100-green)](#badge)
+[![GEO 体检 92/100](https://img.shields.io/badge/GEO%20%E4%BD%93%E6%A3%80-92%2F100-brightgreen)](#badge)
+
+It tells visitors two things: this site takes AI search seriously, and AI crawlers can read it.
+
+| Where | How |
+| --- | --- |
+| GitHub README | Copy the Markdown line at the end of the audit output |
+| Website footer | Run again with `--report audit.md`; the report ends with an HTML version |
+| Self-hosted, no third-party image | Add `--badge geo-badge.svg` to write an SVG file you can commit or host |
+
+```bash
+npx github:Fangx-AI/geo-doctor https://your-site.com --badge geo-badge.svg
+```
+
+<details>
+<summary markdown="span"><b>Keep it current every week</b> (GitHub Actions)</summary>
+
+```yaml
+name: GEO badge
+on:
+  schedule: [{ cron: "0 2 * * 1" }]
+  workflow_dispatch:
+permissions:
+  contents: write
+jobs:
+  badge:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: Fangx-AI/geo-doctor@master
+        with:
+          urls: https://your-site.com/
+          badge: .github/geo-badge.svg
+      - run: |
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git add .github/geo-badge.svg
+          git diff --cached --quiet || (git commit -m "Update GEO audit badge" && git push)
+```
+
+Then use `[![GEO audit](.github/geo-badge.svg)](https://github.com/Fangx-AI/geo-doctor#badge)` in your README.
+
+</details>
+
+**Colours**: 90+ bright green, 80–89 green, 61–79 yellow, 60 or below red (a critical problem, such as AI being unable to read the page text).
+
+> The badge reflects one technical audit: whether AI crawlers can read the page, and when it was checked (the date is in the badge's alt text). It does **not** mean AI will recommend the site. Re-run after you change the page.
+>
+> **Came here from a badge on someone's site?** Test your own with the command above, or [install GEO Doctor](#install) to get ChatGPT, Claude and others to recommend you.
 
 <a id="handbook"></a>
 
