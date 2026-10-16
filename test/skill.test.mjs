@@ -46,10 +46,12 @@ for (const name of skills) {
   });
 }
 
-test('bundled geo-audit script matches cli/geo-audit.mjs', () => {
-  assert.equal(readFileSync('skills/geo-doctor/scripts/geo-audit.mjs', 'utf8'), readFileSync('cli/geo-audit.mjs', 'utf8'),
-    'run: cp cli/geo-audit.mjs skills/geo-doctor/scripts/');
-});
+for (const script of ['geo-audit.mjs', 'geo-publish.mjs']) {
+  test(`bundled ${script} matches cli/${script}`, () => {
+    assert.equal(readFileSync(`skills/geo-doctor/scripts/${script}`, 'utf8'), readFileSync(`cli/${script}`, 'utf8'),
+      `run: cp cli/${script} skills/geo-doctor/scripts/`);
+  });
+}
 
 test('each skill ships its own license file for the standalone zip', () => {
   for (const name of skills) {

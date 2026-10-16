@@ -1,13 +1,16 @@
 {
   "name": "geo-doctor",
-  "version": "1.1.0",
-  "description": "GEO audit CLI: can AI search engines (ChatGPT, Perplexity, Claude, Google AI, Doubao…) actually read your page? Part of geo-doctor (GEO 医生).",
+  "version": "1.2.0",
+  "description": "GEO toolkit: audit whether AI search (ChatGPT, Perplexity, Claude, Google AI, Doubao…) can read your page, then batch-check and publish fact-based articles. Part of geo-doctor (GEO 医生).",
   "type": "module",
   "bin": {
-    "geo-audit": "cli/geo-audit.mjs"
+    "geo-doctor": "cli/geo-audit.mjs",
+    "geo-audit": "cli/geo-audit.mjs",
+    "geo-publish": "cli/geo-publish.mjs"
   },
   "files": [
-    "cli/geo-audit.mjs"
+    "cli/geo-audit.mjs",
+    "cli/geo-publish.mjs"
   ],
   "engines": {
     "node": ">=18"

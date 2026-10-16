@@ -45,6 +45,36 @@
 
 > 小红书：对用户种草和转化有帮助，但研究显示 AI 很少引用（📊 QuestMobile 旅游类：不在任何平台引用 TOP10），而且它的 robots.txt 挡住了多数海外 AI 爬虫。不要把它当成 GEO 主阵地。
 
+## 第三步：批量发布（自己的官网自动发，第三方平台由人发）
+
+第 6 步的草稿里，`status: confirmed` 的才会被处理。能运行命令时用 `scripts/geo-publish.mjs`（也可以 `npx -p github:Fangx-AI/geo-doctor geo-publish …`）；脚本会先跑一遍检查，有错误就不发。
+
+**自己的官网：自动发布。** `platforms` 里有 `site` 的稿件，按用户网站的情况选一种：
+
+| 网站类型 | 命令 | 说明 |
+| --- | --- | --- |
+| 静态网站、GitHub Pages、任何能放 HTML 的空间 | `geo-publish site geo/drafts --to static --out <网站目录>/geo --base-url https://网址/geo` | 每篇生成一个页面，加上 index.html 和 sitemap.xml。页面自带标题、描述、canonical、Article 结构化数据，正文写在 HTML 里，体检能过 |
+| WordPress | `geo-publish site geo/drafts --to wordpress --site https://网址 --user 用户名` | 用 WordPress 的"应用密码"，请用户自己设置环境变量 `GEO_WP_APP_PASSWORD`，**不要让用户把密码发给你，也不要写进文件**。默认存为草稿，用户在后台看过再发布；用户明确要直接上线时加 `--status publish`。同一个 slug 再发会更新原文，不会重复 |
+| 其他 CMS 或自建后台 | `geo-publish site geo/drafts --to http --endpoint https://接口地址 --token-env 变量名` | 向接口 POST 一份 JSON（标题、slug、描述、Markdown、HTML 等），令牌从环境变量读 |
+
+先加 `--dry-run` 演练一遍，确认会发哪些再正式发。发完链接自动记到 `geo/published.csv`，然后照第二步提交收录（百度搜索资源平台、Google Search Console、Bing Webmaster）。
+
+**第三方平台：打包好，由用户本人发。** 知乎、公众号、头条号、百家号、搜狐号、小红书、掘金、Medium、Reddit 都不自动发：多数平台禁止机器批量发帖，自动发容易封号，也正是"GEO 投毒"的做法。
+
+```bash
+geo-publish pack geo/drafts --brand 品牌名
+```
+
+它会在 `geo/outbox/` 里按平台生成可以直接粘贴的稿件（知乎、掘金、Medium、Reddit 用 Markdown；公众号、头条号、百家号、搜狐号用带排版的 HTML；小红书用纯文本加话题），附一份 `geo/outbox/README.md` 发布清单：每篇发哪、编辑器链接、注意事项。官网已经发布的，稿件末尾会带上原文链接；Reddit 稿件开头带利益披露。
+
+告诉用户按清单逐个打开编辑器、粘贴、通读、配图、点发布，并按平台要求标注 AI 辅助创作。每发一篇，把链接记下来（用户给你链接时由你来记）：
+
+```bash
+geo-publish log --slug offline-budget-app --platform zhihu --url https://zhuanlan.zhihu.com/p/…
+```
+
+不能运行命令时，按同样的分工手动做：官网的页面内容给用户或网站管理员，第三方平台的稿件按平台整理好给用户复制。
+
 ## 第三方内容：真实地争取，不能自己编
 
 AI 更信第三方的说法（📊 Muck Rack：AI 引用中 82% 到 89% 是媒体报道等"赢得的内容"，样本以海外模型为主）。可以做的：
@@ -70,4 +100,4 @@ AI 更信第三方的说法（📊 Muck Rack：AI 引用中 82% 到 89% 是媒�
 | 处方 | 内容（草稿文件） | 平台 | 计划日期 | 状态 | 发布链接 |
 | --- | --- | --- | --- | --- | --- |
 
-再告诉用户：先发哪篇、发在哪、发完把链接填回表里，**两周后找我复查**。
+用了脚本时，官网的发布链接和用户发完第三方平台后记下的链接都在 `geo/published.csv`，表里的"发布链接"照它填。再告诉用户：先发哪篇、发在哪、发完把链接告诉你，**两周后找我复查**。

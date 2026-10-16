@@ -10,7 +10,7 @@
 // SPDX-License-Identifier: MIT
 
 import { mkdirSync, writeFileSync } from 'node:fs';
-import { dirname } from 'node:path';
+import { basename, dirname } from 'node:path';
 import { pathToFileURL } from 'node:url';
 
 export const VERSION = '1.1.0';
@@ -653,6 +653,6 @@ export async function main(argv) {
   return Number.isFinite(o.failUnder) && min < o.failUnder ? 1 : 0;
 }
 
-if (import.meta.url === pathToFileURL(process.argv[1] || '').href || process.argv[1]?.endsWith('geo-audit')) {
+if (import.meta.url === pathToFileURL(process.argv[1] || '').href || /^(geo-audit|geo-doctor)$/.test(basename(process.argv[1] || ''))) {
   main(process.argv.slice(2)).then((code) => { process.exitCode = code; }, (e) => { console.error(e); process.exitCode = 2; });
 }
