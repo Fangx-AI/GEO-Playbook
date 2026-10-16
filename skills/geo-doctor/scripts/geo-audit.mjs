@@ -13,8 +13,9 @@ import { mkdirSync, writeFileSync } from 'node:fs';
 import { dirname } from 'node:path';
 import { pathToFileURL } from 'node:url';
 
-export const VERSION = '1.0.0';
+export const VERSION = '1.1.0';
 const DOCS = 'https://github.com/Fangx-AI/geo-doctor/blob/master/';
+const BADGE_LINK = { zh: 'https://github.com/Fangx-AI/geo-doctor#badge', en: 'https://github.com/Fangx-AI/geo-doctor/blob/master/README.en.md#badge' };
 const BROWSER_UA = 'Mozilla/5.0 (compatible; geo-doctor-audit/1.0; +https://github.com/Fangx-AI/geo-doctor)';
 
 // Crawlers that decide whether you can appear in AI / web search answers.
@@ -88,6 +89,15 @@ const M = {
     summary: (p, w, f) => `${p} 项通过 · ${w} 项注意 · ${f} 项问题`,
     next: '下一步：逐项修复后再跑一次。详细排查步骤见',
     remind: '提醒：能被读到 ≠ 已被收录或引用，后者要用固定题集观察。',
+    badgeLabel: 'GEO 体检',
+    badgeAlt: (s, d) => `GEO 体检 ${s}/100（${d}，AI 能否读到这个页面）`,
+    badgeTip: '📛 分数不错，可以挂个徽章：把下面这行贴到 README（网页用 --report 里的 HTML 版）',
+    badgeLocked: (n) => `📛 修到 ${n} 分以上，就能生成 GEO 体检徽章挂在你的 README 或官网上`,
+    badgeSaved: (f, s) => `已生成徽章文件 ${f}（${s}/100），可以提交到仓库或放到网站上引用`,
+    badgeMulti: '多个网址按最低分生成徽章',
+    badgeTitle: '📛 体检徽章',
+    badgeNote: '徽章只代表这次技术体检（AI 爬虫能否读到页面）的分数和日期，不代表 AI 会推荐你。页面改动后请重新体检。',
+    code: 'zh',
     usage: `用法：geo-audit <网址...> [选项]
 
 选项：
@@ -97,6 +107,7 @@ const M = {
   --fail-under 分数   0–100；低于该值退出码为 1，参数无效为 2（用于 CI）
   --lang zh|en        输出语言（默认跟随系统）
   --no-probe          跳过“用 AI 爬虫 UA 访问”的防火墙检查
+  --badge 文件.svg    生成体检分数徽章（SVG，多个网址按最低分）
   -h, --help          显示帮助
   -v, --version       显示版本
 
@@ -154,6 +165,15 @@ const M = {
     summary: (p, w, f) => `${p} passed · ${w} ${w === 1 ? 'warning' : 'warnings'} · ${f} ${f === 1 ? 'problem' : 'problems'}`,
     next: 'Next: fix and run again. Step-by-step troubleshooting:',
     remind: 'Reminder: readable ≠ indexed or cited. Track that with a fixed question set.',
+    badgeLabel: 'GEO audit',
+    badgeAlt: (s, d) => `GEO audit ${s}/100 (${d}, can AI crawlers read this page)`,
+    badgeTip: '📛 Nice score. Show it off: paste this line into your README (HTML version in the --report file)',
+    badgeLocked: (n) => `📛 Reach ${n}+ to earn a GEO audit badge for your README or website`,
+    badgeSaved: (f, s) => `Badge written to ${f} (${s}/100). Commit it to your repo or host it on your site`,
+    badgeMulti: 'With several URLs the badge uses the lowest score',
+    badgeTitle: '📛 Audit badge',
+    badgeNote: 'The badge shows this technical audit (can AI crawlers read the page) and its date. It does not mean AI will recommend you. Re-run after you change the page.',
+    code: 'en',
     usage: `Usage: geo-audit <url...> [options]
 
 Options:
@@ -163,6 +183,7 @@ Options:
   --fail-under N      0–100; exit 1 below N, exit 2 for invalid options (for CI)
   --lang zh|en        output language (default: system locale)
   --no-probe          skip the "fetch with AI crawler user-agents" firewall check
+  --badge file.svg    write a score badge (SVG; lowest score when auditing several URLs)
   -h, --help          show help
   -v, --version       show version
 
@@ -466,7 +487,56 @@ function finish(url, final, checks, t) {
   let score = total ? Math.round((got / total) * 100) : 0;
   if (checks.some((c) => c.critical && c.status === 'fail')) score = Math.min(score, 60);
   const count = (s) => checks.filter((c) => c.status === s).length;
-  return { url, finalUrl: final, score, passed: count('pass'), warnings: count('warn'), problems: count('fail'), checks };
+  return { url, finalUrl: final, score, passed: count('pass'), warnings: count('warn'), problems: count('fail'), checks, badge: badgeInfo(score, t.code) };
+}
+
+// ---------------------------------------------------------------- badge
+
+// Score shown as a badge people can put on their README or website. The link
+// explains what the score means, so the badge never claims more than the audit.
+// 体检分数徽章：可以贴在 README 或官网上；链接指向说明，徽章不夸大体检的含义。
+export const BADGE_MIN = 80;
+const BADGE_COLORS = [[90, 'brightgreen', '#4c1'], [80, 'green', '#97ca00'], [61, 'yellow', '#dfb317'], [0, 'red', '#e05d44']];
+const today = () => new Date().toISOString().slice(0, 10);
+
+export function badgeColor(score) {
+  const [, name, hex] = BADGE_COLORS.find(([min]) => score >= min);
+  return { name, hex };
+}
+
+// shields.io static badge path: "-" → "--", "_" → "__", then percent-encode.
+const shieldsPart = (s) => encodeURIComponent(String(s).replace(/-/g, '--').replace(/_/g, '__'));
+const escapeXml = (s) => String(s).replace(/[&<>"']/g, (c) => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&apos;' })[c]);
+
+export function badgeInfo(score, lang = 'en', date = today()) {
+  const t = M[lang] || M.en; const { name } = badgeColor(score); const link = BADGE_LINK[t.code];
+  const label = t.badgeLabel; const message = `${score}/100`;
+  const image = `https://img.shields.io/badge/${shieldsPart(label)}-${shieldsPart(message)}-${name}`;
+  const alt = t.badgeAlt(score, date);
+  return {
+    score, label, message, color: name, date, image, link, alt,
+    markdown: `[![${alt.replace(/[[\]]/g, '')}](${image})](${link})`,
+    html: `<a href="${link}"><img src="${image}" alt="${escapeXml(alt)}"></a>`,
+  };
+}
+
+// Rough text width for an 11px sans-serif badge: CJK and full-width ≈ 11px, others ≈ 6.5px.
+const textWidth = (s) => [...s].reduce((w, ch) => w + (/[⺀-鿿가-힯＀-￯]/.test(ch) ? 11 : /[0-9]/.test(ch) ? 7 : 6.5), 0);
+
+// Self-contained flat badge, so it also works where img.shields.io is slow or blocked.
+// 自带的扁平徽章 SVG：不依赖 img.shields.io，国内网络下也能显示。
+export function badgeSvg(score, lang = 'en', date = today()) {
+  const b = badgeInfo(score, lang, date); const { hex } = badgeColor(score);
+  const lw = Math.round(textWidth(b.label) + 14); const mw = Math.round(textWidth(b.message) + 14); const w = lw + mw;
+  const font = 'Verdana,Geneva,"DejaVu Sans","PingFang SC","Microsoft YaHei",sans-serif';
+  const text = (x, s) => `<text x="${x}" y="15" fill="#010101" fill-opacity=".3">${escapeXml(s)}</text><text x="${x}" y="14">${escapeXml(s)}</text>`;
+  return `<svg xmlns="http://www.w3.org/2000/svg" width="${w}" height="20" role="img" aria-label="${escapeXml(b.alt)}">`
+    + `<title>${escapeXml(b.alt)}</title>`
+    + `<linearGradient id="s" x2="0" y2="100%"><stop offset="0" stop-color="#bbb" stop-opacity=".1"/><stop offset="1" stop-opacity=".1"/></linearGradient>`
+    + `<clipPath id="r"><rect width="${w}" height="20" rx="3" fill="#fff"/></clipPath>`
+    + `<g clip-path="url(#r)"><rect width="${lw}" height="20" fill="#555"/><rect x="${lw}" width="${mw}" height="20" fill="${hex}"/><rect width="${w}" height="20" fill="url(#s)"/></g>`
+    + `<g fill="#fff" text-anchor="middle" font-family='${font}' font-size="11">${text(lw / 2, b.label)}${text(lw + mw / 2, b.message)}</g>`
+    + `</svg>\n`;
 }
 
 // ---------------------------------------------------------------- output
@@ -487,6 +557,8 @@ export function formatText(r, lang) {
   out.push('', color('1', `${t.score}${t.sep}`) + color(`1;${sc}`, `${r.score}/100`) + `  ·  ${t.summary(r.passed, r.warnings, r.problems)}`);
   if (r.problems || r.warnings) out.push(`${t.next} ${DOCS}docs/playbooks/website.md`);
   out.push(color('2', t.remind));
+  if (r.badge && r.score >= BADGE_MIN) out.push('', t.badgeTip, r.badge.markdown);
+  else if (r.badge) out.push('', color('2', t.badgeLocked(BADGE_MIN)));
   return out.join('\n');
 }
 
@@ -501,6 +573,12 @@ export function formatMarkdown(results, lang) {
       if (c.section !== section) { section = c.section; out.push('', `**${t.sections[section]}** · [docs](${DOCS}${DOC_LINKS[section]})`, ''); }
       out.push(`- ${ICON[c.status].trim()} ${c.msg}`);
     }
+  }
+  const low = results.reduce((a, b) => (b.score < a.score ? b : a), results[0]);
+  if (low?.badge) {
+    out.push('', `## ${t.badgeTitle}`, '', low.badge.markdown, '');
+    if (results.length > 1) out.push(`${t.badgeMulti}.`, '');
+    out.push('```markdown', low.badge.markdown, '```', '', '```html', low.badge.html, '```', '', `> ${t.badgeNote}`);
   }
   out.push('', `<sub>${t.remind} · [geo-doctor](https://github.com/Fangx-AI/geo-doctor)</sub>`, '');
   return out.join('\n');
@@ -521,6 +599,7 @@ export function parseArgs(argv) {
     if (a === '--phrase') o.phrase = valueFor(a, argv[++i]);
     else if (a === '--json') o.json = true;
     else if (a === '--report') o.report = valueFor(a, argv[++i]);
+    else if (a === '--badge') o.badge = valueFor(a, argv[++i]);
     else if (a === '--fail-under') {
       o.failUnder = Number(valueFor(a, argv[++i]));
       if (!Number.isFinite(o.failUnder) || o.failUnder < 0 || o.failUnder > 100) {
@@ -566,6 +645,11 @@ export async function main(argv) {
     writeFileSync(o.report, formatMarkdown(results, lang));
   }
   const min = Math.min(...results.map((r) => r.score));
+  if (o.badge) {
+    mkdirSync(dirname(o.badge), { recursive: true });
+    writeFileSync(o.badge, badgeSvg(min, lang));
+    if (!o.json) console.error(M[lang].badgeSaved(o.badge, min));
+  }
   return Number.isFinite(o.failUnder) && min < o.failUnder ? 1 : 0;
 }
 

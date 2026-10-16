@@ -24,10 +24,17 @@ inputs:
     description: Also fetch with AI crawler user-agents to detect firewall / CDN blocking (true or false).
     required: false
     default: "true"
+  badge:
+    description: Optional path for an SVG score badge (lowest score across the URLs), e.g. .github/geo-badge.svg. Commit it in a later step to keep the badge current.
+    required: false
+    default: ""
 outputs:
   report:
     description: Path to the Markdown report.
     value: ${{ steps.audit.outputs.report }}
+  badge:
+    description: Path to the SVG badge, when the badge input is set.
+    value: ${{ steps.audit.outputs.badge }}
 runs:
   using: composite
   steps:
@@ -42,11 +49,13 @@ runs:
         GEO_FAIL_UNDER: ${{ inputs.fail-under }}
         GEO_LANG: ${{ inputs.lang }}
         GEO_PROBE: ${{ inputs.probe }}
+        GEO_BADGE: ${{ inputs.badge }}
       run: |
         report="$RUNNER_TEMP/geo-audit-report.md"
         args=(--lang "$GEO_LANG" --report "$report" --fail-under "$GEO_FAIL_UNDER")
         [[ -n "$GEO_PHRASE" ]] && args+=(--phrase "$GEO_PHRASE")
         [[ "$GEO_PROBE" == "false" ]] && args+=(--no-probe)
+        [[ -n "$GEO_BADGE" ]] && args+=(--badge "$GEO_BADGE")
         read -r -a urls <<< "$(echo "$GEO_URLS" | tr ',\n' '  ')"
         set +e
         node "$GITHUB_ACTION_PATH/cli/geo-audit.mjs" "${urls[@]}" "${args[@]}"
@@ -54,4 +63,5 @@ runs:
         set -e
         [[ -f "$report" ]] && cat "$report" >> "$GITHUB_STEP_SUMMARY"
         echo "report=$report" >> "$GITHUB_OUTPUT"
+        [[ -n "$GEO_BADGE" && -f "$GEO_BADGE" ]] && echo "badge=$GEO_BADGE" >> "$GITHUB_OUTPUT"
         exit $code

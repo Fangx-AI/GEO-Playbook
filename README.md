@@ -26,7 +26,7 @@
 [![License: MIT](https://img.shields.io/badge/skill-MIT-blue.svg)](skills/geo-doctor/SKILL.md)
 [![PRs Welcome](https://img.shields.io/badge/PRs-welcome-brightgreen.svg)](CONTRIBUTING.md)
 
-[📦 安装](#install) · [🩺 它会做什么](#what) · [❓ 常见问题](#faq) · [🧰 不装也能用](#quickstart) · [📚 GEO 实战手册](#handbook) · [English](README.en.md)
+[📦 安装](#install) · [🩺 它会做什么](#what) · [❓ 常见问题](#faq) · [🧰 不装也能用](#quickstart) · [📛 体检徽章](#badge) · [📚 GEO 实战手册](#handbook) · [English](README.en.md)
 
 </div>
 
@@ -209,6 +209,68 @@ powershell -ExecutionPolicy Bypass -File geo-audit.ps1 https://你的网站/重�
 
 </details>
 
+<a id="badge"></a>
+
+## 📛 体检徽章：把分数挂出来
+
+体检到 **80 分以上**，命令行最后会多给你一行徽章代码。把它贴到你的 README 或官网页脚，就会显示成这样：
+
+<p align="center"><img src="assets/geo-badge-demo.png" alt="把上面那个空壳页修好后重新体检：100/100，命令行最后给出徽章代码，下方是生成的徽章" width="100%"></p>
+<p align="center"><sub>把上面那个 60 分的空壳测试页修好（正文写进 HTML、加上 H1）后重新体检的真实输出，中间省略了 7 类检查。</sub></p>
+
+徽章告诉访客两件事：这个网站认真对待了 AI 搜索，而且 AI 爬虫能顺利读到它。
+
+**三种用法**
+
+| 场景 | 怎么做 |
+| --- | --- |
+| 贴到 GitHub README | 复制体检结果最后那行 Markdown，粘贴进 README |
+| 放到官网页脚 | 加 `--report audit.md` 再跑一次，报告末尾有 HTML 版，复制进页面 |
+| 国内网络更稳的版本 | 加 `--badge geo-badge.svg`，生成一个不依赖外部服务的 SVG 文件，放进你的仓库或网站引用即可 |
+
+```bash
+npx github:Fangx-AI/geo-doctor https://你的网站 --badge geo-badge.svg
+```
+
+<details>
+<summary markdown="span"><b>让徽章每周自动更新</b>（GitHub Actions）</summary>
+
+在你的仓库里新建 `.github/workflows/geo-badge.yml`：
+
+```yaml
+name: GEO badge
+on:
+  schedule: [{ cron: "0 2 * * 1" }]   # 每周一自动体检
+  workflow_dispatch:
+permissions:
+  contents: write
+jobs:
+  badge:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: Fangx-AI/geo-doctor@master
+        with:
+          urls: https://你的网站/
+          lang: zh
+          badge: .github/geo-badge.svg
+      - run: |
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git add .github/geo-badge.svg
+          git diff --cached --quiet || (git commit -m "更新 GEO 体检徽章" && git push)
+```
+
+README 里用 `[![GEO 体检](.github/geo-badge.svg)](https://github.com/Fangx-AI/geo-doctor#badge)` 引用，分数就会跟着网站的实际情况变。
+
+</details>
+
+**颜色怎么看**：90 分以上深绿，80 到 89 浅绿，61 到 79 黄色，60 分及以下红色（有致命问题，比如 AI 读不到正文）。
+
+> 徽章只代表那次技术体检的结果：AI 爬虫能不能读到这个页面，以及体检日期（写在徽章的说明文字里）。它**不代表** AI 一定会推荐这个网站。页面改版后请重新体检。
+>
+> **你是点了别人网站上的徽章过来的？** 想测测自己的网站，复制上面那行命令就行；想让豆包、DeepSeek、ChatGPT 推荐你，[一句话装上 GEO 医生](#install)。
+
 > 🚧 **[中文网站 AI 爬虫封锁榜](docs/ai-crawler-leaderboard.md)**：我们读取了 97 个知名中文网站的 robots.txt。**知乎、小红书、微博、贝壳、马蜂窝都把 ChatGPT 搜索、Perplexity、Claude 搜索挡在门外**，微博还点名屏蔽了 DeepSeek、Kimi、豆包。[看完整榜单和方法 →](docs/ai-crawler-leaderboard.md)
 
 <a id="handbook"></a>
@@ -308,7 +370,7 @@ jobs:
           lang: zh
 ```
 
-也可以直接调用：`npx github:Fangx-AI/geo-doctor 网址 --json` 输出 JSON，`--fail-under 80` 低于 80 分时退出码为 1。
+也可以直接调用：`npx github:Fangx-AI/geo-doctor 网址 --json` 输出 JSON，`--fail-under 80` 低于 80 分时退出码为 1。Action 加上 `badge: .github/geo-badge.svg` 会同时生成分数徽章，用法见[体检徽章](#badge)。
 
 `--fail-under` 只接受 0–100 的数值；参数缺值、阈值无效或 `--lang` 不是 `zh` / `en` 时，退出码为 2，并在开始请求网页前报错，避免 CI 因配置拼写错误而静默放行。
 

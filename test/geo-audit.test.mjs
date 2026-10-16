@@ -2,7 +2,7 @@
 import { test, before, after } from 'node:test';
 import assert from 'node:assert/strict';
 import { createServer } from 'node:http';
-import { audit, parseRobots, isAllowed, parseArgs, formatMarkdown, visibleText } from '../cli/geo-audit.mjs';
+import { audit, parseRobots, isAllowed, parseArgs, formatMarkdown, formatText, visibleText, badgeColor, badgeInfo, badgeSvg, BADGE_MIN } from '../cli/geo-audit.mjs';
 
 const BODY = '<p>' + '团队版每月 299 元，含 20 个席位，超出部分每席 20 元。'.repeat(12) + '</p>';
 const page = (head, body = BODY, lang = ' lang="zh-CN"') =>
@@ -221,7 +221,7 @@ test('argument parsing', () => {
 });
 
 test('invalid CLI option values are rejected rather than silently ignored', () => {
-  for (const flag of ['--phrase', '--report', '--lang', '--fail-under']) {
+  for (const flag of ['--phrase', '--report', '--lang', '--fail-under', '--badge']) {
     assert.throws(() => parseArgs(['a.com', flag]), /requires a value/);
     assert.throws(() => parseArgs(['a.com', flag, '--json']), /requires a value/);
   }
@@ -261,5 +261,79 @@ test('--report creates missing folders', async () => {
     // Async so this process can keep serving the fixture page while the CLI fetches it.
     await promisify(execFile)(process.execPath, [new URL('../cli/geo-audit.mjs', import.meta.url).pathname, base + '/good', '--no-probe', '--lang', 'zh', '--report', 'geo/audit.md'], { cwd: dir });
     assert.match(readFileSync(join(dir, 'geo/audit.md'), 'utf8'), /最终状态码 200/);
+  } finally { rmSync(dir, { recursive: true, force: true }); }
+});
+
+test('badge colour follows the score; a critical failure (capped at 60) is red', () => {
+  assert.equal(badgeColor(100).name, 'brightgreen');
+  assert.equal(badgeColor(90).name, 'brightgreen');
+  assert.equal(badgeColor(89).name, 'green');
+  assert.equal(badgeColor(80).name, 'green');
+  assert.equal(badgeColor(79).name, 'yellow');
+  assert.equal(badgeColor(61).name, 'yellow');
+  assert.equal(badgeColor(60).name, 'red');
+  assert.equal(badgeColor(0).name, 'red');
+});
+
+test('badge links explain the score and escape shields.io paths', () => {
+  const b = badgeInfo(85, 'zh', '2026-10-16');
+  assert.equal(b.image, 'https://img.shields.io/badge/GEO%20%E4%BD%93%E6%A3%80-85%2F100-green');
+  assert.equal(b.link, 'https://github.com/Fangx-AI/geo-doctor#badge');
+  assert.match(b.alt, /2026-10-16/);
+  assert.equal(b.markdown, `[![${b.alt}](${b.image})](${b.link})`);
+  assert.match(b.html, /^<a href="https:\/\/github\.com\/Fangx-AI\/geo-doctor#badge"><img src="https:\/\/img\.shields\.io\/badge\/[^"]+" alt="[^"]+"><\/a>$/);
+  const en = badgeInfo(42, 'en');
+  assert.match(en.image, /\/GEO%20audit-42%2F100-red$/);
+  assert.equal(en.link, 'https://github.com/Fangx-AI/geo-doctor/blob/master/README.en.md#badge');
+});
+
+test('badge SVG is self-contained, sized to its text and escaped', () => {
+  const svg = badgeSvg(95, 'zh', '2026-10-16');
+  assert.match(svg, /^<svg xmlns="http:\/\/www\.w3\.org\/2000\/svg" width="\d+" height="20"/);
+  assert.match(svg, /<title>GEO 体检 95\/100（2026-10-16/);
+  assert.match(svg, /fill="#4c1"/);
+  assert.ok(!/https?:\/\/(?!www\.w3\.org)/.test(svg), 'no external resources');
+  const wide = Number(badgeSvg(100, 'en').match(/width="(\d+)"/)[1]);
+  const narrow = Number(badgeSvg(5, 'en').match(/width="(\d+)"/)[1]);
+  assert.ok(wide > narrow);
+});
+
+test('audit results carry a badge; text output only offers it at a good score', async () => {
+  const good = await audit(base + '/good', { lang: 'zh', probe: false });
+  assert.ok(good.score >= BADGE_MIN);
+  assert.equal(good.badge.message, `${good.score}/100`);
+  assert.match(formatText(good, 'zh'), /徽章[\s\S]*img\.shields\.io/);
+  const shell = await audit(base + '/empty', { lang: 'zh', probe: false });
+  assert.ok(shell.score < BADGE_MIN);
+  const text = formatText(shell, 'zh');
+  assert.ok(!text.includes('img.shields.io'));
+  assert.match(text, new RegExp(`修到 ${BADGE_MIN} 分以上`));
+});
+
+test('Markdown report has a badge for the lowest-scoring page', async () => {
+  const good = await audit(base + '/good', { lang: 'en', probe: false });
+  const shell = await audit(base + '/empty', { lang: 'en', probe: false });
+  const md = formatMarkdown([good, shell], 'en');
+  assert.match(md, /## 📛 Audit badge/);
+  assert.ok(md.includes(shell.badge.markdown));
+  assert.ok(md.includes(shell.badge.html));
+  assert.match(md, /lowest score/);
+});
+
+test('--badge writes an SVG with the lowest score', async () => {
+  const { mkdtempSync, readFileSync, rmSync } = await import('node:fs');
+  const { tmpdir } = await import('node:os');
+  const { join } = await import('node:path');
+  const { execFile } = await import('node:child_process');
+  const { promisify } = await import('node:util');
+  const dir = mkdtempSync(join(tmpdir(), 'geo-'));
+  try {
+    const { stderr } = await promisify(execFile)(process.execPath, [new URL('../cli/geo-audit.mjs', import.meta.url).pathname,
+      base + '/good', base + '/empty', '--no-probe', '--lang', 'en', '--badge', 'badges/geo.svg'], { cwd: dir });
+    const svg = readFileSync(join(dir, 'badges/geo.svg'), 'utf8');
+    const shell = await audit(base + '/empty', { lang: 'en', probe: false });
+    assert.match(svg, new RegExp(`>${shell.score}/100<`));
+    assert.match(stderr, /Badge written to badges\/geo\.svg/);
+    assert.equal(parseArgs(['a.com', '--badge', 'x.svg']).badge, 'x.svg');
   } finally { rmSync(dir, { recursive: true, force: true }); }
 });
