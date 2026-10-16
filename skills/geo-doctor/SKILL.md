@@ -37,7 +37,7 @@ metadata:
 | 2 | **事实卡**：所有渠道统一的唯一事实源 | [02-fact-card.md](references/02-fact-card.md) | `geo/fact-card.yaml` |
 | 3 | **问题集**：用户会怎么问 AI | [03-questions.md](references/03-questions.md) | `geo/questions.csv` |
 | 4 | **采样**：用户在目标 AI 里问，把回答贴回来 | [04-sampling.md](references/04-sampling.md) | `geo/runs/<批次>/`、`geo/runs.csv` |
-| 5 | **诊断**：哪题没提你、哪里说错、引用了谁 | [05-diagnosis.md](references/05-diagnosis.md) | `geo/diagnosis.md` |
+| 5 | **诊断**：AI 推荐了谁、你缺在哪题、它推荐别人时读哪些网站 | [05-diagnosis.md](references/05-diagnosis.md) | `geo/diagnosis.md` |
 | 6 | **开方·写内容**：只针对缺口，只用事实卡 | [06-writing.md](references/06-writing.md) | `geo/drafts/` |
 | 7 | **开方·发布指导**：发到哪、怎么发、多久发 | [07-publishing.md](references/07-publishing.md) | `geo/publish-plan.md` |
 | 8 | **复查**：同一问题集再测，对比前后 | [08-retest.md](references/08-retest.md) | `geo/report-日期.md` |
