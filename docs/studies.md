@@ -1,6 +1,6 @@
 # 🔬 研究速读：读懂数据，不只抄一个涨幅
 
-> [GEO 实战手册](../README.md) › 测量与研究 › 行业研究
+> [GEO 实战手册](handbook.md) › 测量与研究 › 行业研究
 
 **三项高质量研究，各回答一个问题：什么和 AI 可见度相关？用户还点不点链接？AI 给的出处靠不靠谱？**
 
@@ -112,7 +112,7 @@
 
 <div align="center">
 
-← [案例精读](cases.md) · [🏠 目录](../README.md) · [论文与开源代码](research.md) →
+← [案例精读](cases.md) · [🏠 目录](handbook.md) · [论文与开源代码](research.md) →
 
 <sub>有帮助的话，回 [首页](../README.md) 点个 ⭐ Star；发现错误或过时信息，欢迎 [提 Issue](https://github.com/Fangx-AI/geo-doctor/issues/new/choose)。</sub>
 

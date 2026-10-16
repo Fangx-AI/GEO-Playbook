@@ -1,6 +1,6 @@
 # 🎙 内容创作者 GEO：视频与播客如何被 AI 找到并引用
 
-> [GEO 实战手册](../../README.md) › 按项目实战 › 创作者
+> [GEO 实战手册](../handbook.md) › 按项目实战 › 创作者
 
 **方法和结论只藏在声音里，自动字幕还常出错？给一条代表作配一份可核查的文字资料。**
 
@@ -74,7 +74,7 @@
 
 <div align="center">
 
-← [B2B 服务实战](b2b.md) · [🏠 目录](../../README.md) · [多语言实战](multilingual.md) →
+← [B2B 服务实战](b2b.md) · [🏠 目录](../handbook.md) · [多语言实战](multilingual.md) →
 
 <sub>有帮助的话，回 [首页](../../README.md) 点个 ⭐ Star；发现错误或过时信息，欢迎 [提 Issue](https://github.com/Fangx-AI/geo-doctor/issues/new/choose)。</sub>
 

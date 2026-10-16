@@ -1,0 +1,128 @@
+<!doctype html>
+<!-- Source for assets/geo-doctor-demo*.gif. Render one frame per URL hash, e.g. geo-doctor-demo.html#zh-3.
+     The audit lines are copied from a real run of cli/geo-audit.mjs against the local "小鹿记账 / Fawn Budget"
+     test page (a JavaScript shell). The product, competitors, questions and diagnosis numbers are fictional demo data. -->
+<html>
+<head>
+<meta charset="utf-8">
+<style>
+  * { box-sizing: border-box; }
+  html, body { margin: 0; background: #f4f5f7; }
+  body { position: relative; overflow: hidden; width: 900px; height: 640px; font-family: "WenQuanYi Zen Hei", "Noto Sans CJK SC", "DejaVu Sans", sans-serif; color: #1f2328; }
+  .win { position: absolute; inset: 16px; background: #fff; border-radius: 14px; box-shadow: 0 6px 24px rgba(0,0,0,.10); display: flex; flex-direction: column; overflow: hidden; }
+  .bar { height: 44px; flex: none; display: flex; align-items: center; gap: 8px; padding: 0 16px; border-bottom: 1px solid #eaecef; font-size: 14px; color: #57606a; }
+  .dot { width: 11px; height: 11px; border-radius: 50%; background: #e1e4e8; }
+  .bar .title { margin-left: 10px; font-weight: bold; color: #1f2328; }
+  .bar .tag { margin-left: auto; font-size: 12px; background: #fff8c5; color: #7d4e00; border-radius: 10px; padding: 3px 10px; }
+  .chat { flex: 1; display: flex; flex-direction: column; justify-content: flex-end; gap: 12px; padding: 16px 22px; overflow: hidden; }
+  .msg { max-width: 92%; font-size: 15px; line-height: 1.55; }
+  .user { align-self: flex-end; background: #0969da; color: #fff; border-radius: 14px 14px 4px 14px; padding: 9px 14px; max-width: 75%; }
+  .ai { align-self: flex-start; display: flex; gap: 10px; }
+  .avatar { width: 30px; height: 30px; flex: none; border-radius: 50%; background: #dafbe1; display: flex; align-items: center; justify-content: center; font-size: 17px; font-family: "Noto Color Emoji", sans-serif; }
+  .body { background: #f6f8fa; border-radius: 4px 14px 14px 14px; padding: 9px 14px; }
+  .term { margin-top: 6px; background: #0d1117; color: #e6edf3; border-radius: 8px; padding: 9px 12px; font-family: "DejaVu Sans Mono", "WenQuanYi Zen Hei Mono", monospace; font-size: 12.5px; line-height: 1.6; white-space: pre; }
+  .term .bad { color: #ff7b72; } .term .warn { color: #e3b341; } .term .ok { color: #7ee787; } .term .dim { color: #8b949e; }
+  table { border-collapse: collapse; margin: 6px 0 2px; font-size: 14px; background: #fff; }
+  th, td { border: 1px solid #d0d7de; padding: 4px 10px; text-align: left; }
+  th { background: #eef1f4; }
+  td.n { text-align: right; font-variant-numeric: tabular-nums; }
+  tr.me td { background: #fff1e5; font-weight: bold; }
+  .barcell { width: 150px; }
+  .b { display: inline-block; height: 10px; border-radius: 3px; background: #8c959f; vertical-align: middle; }
+  tr.me .b { background: #fb8500; }
+  ol, ul { margin: 4px 0; padding-left: 22px; }
+  .hl { color: #cf222e; font-weight: bold; }
+  .typing { color: #8b949e; letter-spacing: 3px; font-size: 20px; line-height: 1; padding: 10px 14px 12px; }
+  .end { position: absolute; inset: 16px; border-radius: 14px; background: linear-gradient(135deg, #0b3d91, #0969da); color: #fff; display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 14px; text-align: center; }
+  .end h1 { margin: 0; font-size: 44px; }
+  .end h1 span { font-family: "Noto Color Emoji", sans-serif; }
+  .end p { margin: 0; font-size: 21px; opacity: .95; }
+  .end code { margin-top: 10px; background: rgba(255,255,255,.14); border-radius: 8px; padding: 10px 18px; font-family: "DejaVu Sans Mono", monospace; font-size: 17px; }
+  .end small { font-size: 13px; opacity: .75; }
+  .hidden { display: none !important; }
+</style>
+</head>
+<body>
+<div id="app"></div>
+<script>
+const T = {
+  zh: {
+    title: 'AI 助手 · 已安装 GEO 医生',
+    tag: '演示：虚构产品与示例数据',
+    msgs: [
+      ['user', '帮我做 GEO。产品是小鹿记账（个人记账 App），官网 shop.example，想让豆包和 DeepSeek 推荐它。'],
+      ['ai', `先给官网做个体检，看 AI 爬虫能不能读到你的页面。
+<div class="term"><span class="dim">⑥ 正文与页面信息</span>
+  <span class="bad">❌ 原始 HTML 未提取到正文：检查页面是否为空、依赖 JavaScript 或需要登录</span>
+  <span class="warn">⚠️  没有 H1：给页面一个说清主题的主标题</span>
+
+得分：<span class="bad">60/100</span>  ·  11 项通过 · 1 项注意 · 1 项问题</div>
+爬虫都放行了，但首页正文靠 JavaScript 渲染，<span class="hl">不执行 JS 的 AI 爬虫看到的是一片空白</span>。这条排第一位修。`],
+      ['ai', `接着看 AI 现在怎么回答你的用户。我按用户的原话整理了 10 道题，请在豆包里每题问 2 次，把回答贴回来：
+<ul><li>有没有不用联网也能用的记账 App？</li><li>适合大学生的免费记账软件推荐</li><li>记账 App 哪个能自动导入微信账单？ …</li></ul>`],
+      ['user', '20 条回答都贴好了。'],
+      ['ai', `<b>竞品推荐榜</b>（豆包，20 条有效回答）
+<table><tr><th>品牌</th><th>被推荐次数</th><th class="barcell"></th></tr>
+<tr><td>竞品甲</td><td class="n">13/20</td><td><span class="b" style="width:130px"></span></td></tr>
+<tr><td>竞品乙</td><td class="n">9/20</td><td><span class="b" style="width:90px"></span></td></tr>
+<tr><td>竞品丙</td><td class="n">6/20</td><td><span class="b" style="width:60px"></span></td></tr>
+<tr class="me"><td>小鹿记账</td><td class="n">1/20</td><td><span class="b" style="width:10px"></span></td></tr></table>
+豆包推荐竞品时，最常引用的是<b>今日头条测评、知乎回答、什么值得买清单</b>。这些地方都还没有你。`],
+      ['ai', `<b>处方</b>（按优先级）
+<ol><li>把首页正文写进 HTML，补上 H1（体检里的 ❌）</li>
+<li>竞品抢走最多的一题是"不用联网的记账 App"：写一篇问答页，只用你确认过的事实</li>
+<li>把这篇发到头条和知乎同题下，两周后用同一批题复查推荐率</li></ol>
+要我现在开始写第 2 条吗？`],
+    ],
+    end: ['<span>🩺</span> GEO 医生', '查出 AI 推荐了谁、为什么不是你，<br>再帮你写、帮你发、帮你复查', '一句话安装 → github.com/Fangx-AI/geo-doctor', '免费开源 · 中英双语 · 不保证排名，只报次数和分母'],
+  },
+  en: {
+    title: 'AI assistant · GEO Doctor installed',
+    tag: 'Demo: fictional product and sample data',
+    msgs: [
+      ['user', 'Help me with GEO. My product is Fawn Budget, a personal expense tracker at app.example. I want ChatGPT and Perplexity to recommend it.'],
+      ['ai', `First, an audit: can AI crawlers read your site?
+<div class="term"><span class="dim">⑥ Content &amp; page info</span>
+  <span class="bad">❌ No body text extracted from the raw HTML: check for an empty</span>
+  <span class="bad">   page, JavaScript rendering or a login requirement</span>
+  <span class="warn">⚠️  No H1: give the page one heading that states its topic</span>
+
+Score: <span class="bad">60/100</span>  ·  11 passed · 1 warning · 1 problem</div>
+Crawlers are allowed, but your homepage text is rendered by JavaScript, so <span class="hl">AI crawlers that don't run JS see a blank page</span>. That's fix #1.`],
+      ['ai', `Next, what AI tells your users today. I wrote 10 questions in your users' own words. Ask each one twice in ChatGPT and paste the answers back:
+<ul><li>Is there a budgeting app that works offline?</li><li>Best free expense tracker for college students</li><li>Which budget app imports bank CSV files? …</li></ul>`],
+      ['user', 'Here are all 20 answers.'],
+      ['ai', `<b>Who AI recommends</b> (ChatGPT, 20 valid answers)
+<table><tr><th>Brand</th><th>Recommended</th><th class="barcell"></th></tr>
+<tr><td>Competitor A</td><td class="n">13/20</td><td><span class="b" style="width:130px"></span></td></tr>
+<tr><td>Competitor B</td><td class="n">9/20</td><td><span class="b" style="width:90px"></span></td></tr>
+<tr><td>Competitor C</td><td class="n">6/20</td><td><span class="b" style="width:60px"></span></td></tr>
+<tr class="me"><td>Fawn Budget</td><td class="n">1/20</td><td><span class="b" style="width:10px"></span></td></tr></table>
+When ChatGPT recommends competitors it mostly cites <b>Reddit threads, review roundups and comparison pages</b>. You're in none of them.`],
+      ['ai', `<b>Prescription</b> (in priority order)
+<ol><li>Put your homepage text in the HTML and add an H1 (the ❌ above)</li>
+<li>Your biggest gap is "budgeting app that works offline": write a Q&amp;A page using only facts you confirmed</li>
+<li>Publish it where ChatGPT looks, then re-ask the same questions in two weeks</li></ol>
+Want me to write #2 now?`],
+    ],
+    end: ['<span>🩺</span> GEO Doctor', 'Find out who AI recommends and why it isn\'t you,<br>then write, publish and re-test', 'One-sentence install → github.com/Fangx-AI/geo-doctor', 'Free & open source · English & Chinese · No ranking promises, just counts and denominators'],
+  },
+};
+// Frame list: [messages shown, typing indicator after them, end card]
+const FRAMES = [[1], [1, 'typing'], [2], [3], [4], [4, 'typing'], [5], [5, 'typing'], [6], ['end']];
+const [lang, step] = (location.hash.slice(1) || 'zh-0').split('-');
+const t = T[lang]; const f = FRAMES[+step];
+const app = document.getElementById('app');
+if (f[0] === 'end') {
+  app.innerHTML = `<div class="end"><h1>${t.end[0]}</h1><p>${t.end[1]}</p><code>${t.end[2]}</code><small>${t.end[3]}</small></div>`;
+} else {
+  const msgs = t.msgs.slice(0, f[0]).map(([who, html]) => who === 'user'
+    ? `<div class="msg user">${html}</div>`
+    : `<div class="msg ai"><div class="avatar">🩺</div><div class="body">${html}</div></div>`);
+  if (f[1] === 'typing') msgs.push('<div class="msg ai"><div class="avatar">🩺</div><div class="body typing">● ● ●</div></div>');
+  app.innerHTML = `<div class="win"><div class="bar"><span class="dot"></span><span class="dot"></span><span class="dot"></span><span class="title">${t.title}</span><span class="tag">${t.tag}</span></div><div class="chat">${msgs.join('')}</div></div>`;
+}
+document.title = `${lang}-${step}`;
+</script>
+</body>
+</html>

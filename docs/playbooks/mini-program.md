@@ -1,6 +1,6 @@
 # 💬 微信小程序 GEO 实战
 
-> [GEO 实战手册](../../README.md) › 按项目实战 › 小程序
+> [GEO 实战手册](../handbook.md) › 按项目实战 › 小程序
 
 **服务都在小程序里，AI 不知道你卖什么，用户也找不到入口？先把“被读到”和“进得来”分开打通。**
 
@@ -99,7 +99,7 @@
 
 <div align="center">
 
-← [网站实战](website.md) · [🏠 目录](../../README.md) · [独立产品实战](product.md) →
+← [网站实战](website.md) · [🏠 目录](../handbook.md) · [独立产品实战](product.md) →
 
 <sub>有帮助的话，回 [首页](../../README.md) 点个 ⭐ Star；发现错误或过时信息，欢迎 [提 Issue](https://github.com/Fangx-AI/geo-doctor/issues/new/choose)。</sub>
 

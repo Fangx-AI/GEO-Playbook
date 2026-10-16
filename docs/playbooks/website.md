@@ -1,6 +1,6 @@
 # 🌐 网站 GEO 实战：7 天跑通一轮
 
-> [GEO 实战手册](../../README.md) › 按项目实战 › 网站
+> [GEO 实战手册](../handbook.md) › 按项目实战 › 网站
 
 **官网上线了，AI 却搜不到、引用旧内容、把产品说错？照这一页做 7 天。**
 
@@ -144,7 +144,7 @@ sitemap 提交是帮助发现 URL 的提示，不能规定搜索引擎何时处�
 
 <div align="center">
 
-← [改稿实战课](../content-rewrite.md) · [🏠 目录](../../README.md) · [小程序实战](mini-program.md) →
+← [改稿实战课](../content-rewrite.md) · [🏠 目录](../handbook.md) · [小程序实战](mini-program.md) →
 
 <sub>有帮助的话，回 [首页](../../README.md) 点个 ⭐ Star；发现错误或过时信息，欢迎 [提 Issue](https://github.com/Fangx-AI/geo-doctor/issues/new/choose)。</sub>
 

@@ -1,6 +1,6 @@
 # 🇨🇳 中文平台：豆包、DeepSeek、百度、元宝、Kimi、千问
 
-> [GEO 实战手册](../../README.md) › 平台规则 › 中文
+> [GEO 实战手册](../handbook.md) › 平台规则 › 中文
 
 **国产 AI 怎么找资料、引用谁？官方能确认的写清楚，没公开的标为未知，然后教你自己测。**
 
@@ -173,7 +173,7 @@ run_id,citation_id,answer_claim,cited_title,shown_url,final_url,hostname,origina
 
 <div align="center">
 
-← [国际平台规则](international.md) · [🏠 目录](../../README.md) · [效果测量](../measurement.md) →
+← [国际平台规则](international.md) · [🏠 目录](../handbook.md) · [效果测量](../measurement.md) →
 
 <sub>有帮助的话，回 [首页](../../README.md) 点个 ⭐ Star；发现错误或过时信息，欢迎 [提 Issue](https://github.com/Fangx-AI/geo-doctor/issues/new/choose)。</sub>
 

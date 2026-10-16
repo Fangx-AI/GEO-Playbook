@@ -1,6 +1,6 @@
 # 🛠 工具：先确定问题，再选软件
 
-> [GEO 实战手册](../README.md) › 工具
+> [GEO 实战手册](handbook.md) › 工具
 
 **刚开始只需要浏览器、表格和本仓库的工具箱。付费监测软件放到你有了稳定题集之后再考虑。**
 
@@ -39,7 +39,7 @@
 
 <div align="center">
 
-← [论文与开源代码](research.md) · [🏠 目录](../README.md) · [毕业项目](capstone.md) →
+← [论文与开源代码](research.md) · [🏠 目录](handbook.md) · [毕业项目](capstone.md) →
 
 <sub>有帮助的话，回 [首页](../README.md) 点个 ⭐ Star；发现错误或过时信息，欢迎 [提 Issue](https://github.com/Fangx-AI/geo-doctor/issues/new/choose)。</sub>
 

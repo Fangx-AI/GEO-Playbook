@@ -1,6 +1,6 @@
 # 🚧 中文网站 AI 爬虫封锁榜
 
-> [GEO 实战手册](../README.md) › AI 爬虫封锁榜 · 扫描日期 2026-10-14 · 可复现：`node scripts/ai-crawler-scan.mjs`
+> [GEO 实战手册](handbook.md) › AI 爬虫封锁榜 · 扫描日期 2026-10-14 · 可复现：`node scripts/ai-crawler-scan.mjs`
 
 **我们读取了 97 个知名中文网站公开的 robots.txt，看它们的首页允许哪些 AI 和搜索爬虫抓取。成功读取 94 个。**
 
