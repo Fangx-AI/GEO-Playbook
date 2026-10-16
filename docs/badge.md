@@ -21,6 +21,18 @@
 npx github:Fangx-AI/geo-doctor https://你的网站 --badge geo-badge.svg
 ```
 
+## 分享图
+
+想发朋友圈、群聊或社交平台，加 `--card`：
+
+```bash
+npx github:Fangx-AI/geo-doctor https://你的网站 --card geo-card.png
+```
+
+生成一张 1200×630 的图片：网址、分数、七类检查各自的结果，以及"只代表技术体检，不代表 AI 会推荐"的说明。本机有 Chrome 或 Edge 时直接出 PNG（找不到浏览器可以用 `CHROME_PATH` 指定）；没有浏览器就生成 SVG，用浏览器打开截图即可。任何分数都能生成，修好后再生成一张，改前改后对比最有说服力。
+
+<p align="center"><img src="../assets/geo-card-demo.png" alt="分享图示例：shop.example/pricing 体检 72 分" width="80%"></p>
+
 ## 让徽章每周自动更新（GitHub Actions）
 
 在你的仓库里新建 `.github/workflows/geo-badge.yml`：
