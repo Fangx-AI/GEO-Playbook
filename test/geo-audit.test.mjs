@@ -310,14 +310,19 @@ test('audit results carry a badge; text output only offers it at a good score', 
   assert.match(text, new RegExp(`修到 ${BADGE_MIN} 分以上`));
 });
 
-test('Markdown report has a badge for the lowest-scoring page', async () => {
+test('Markdown report offers a badge only when the lowest score reaches BADGE_MIN', async () => {
   const good = await audit(base + '/good', { lang: 'en', probe: false });
-  const shell = await audit(base + '/empty', { lang: 'en', probe: false });
-  const md = formatMarkdown([good, shell], 'en');
+  const good2 = await audit(base + '/good', { lang: 'en', probe: false });
+  const md = formatMarkdown([good, good2], 'en');
   assert.match(md, /## 📛 Audit badge/);
-  assert.ok(md.includes(shell.badge.markdown));
-  assert.ok(md.includes(shell.badge.html));
+  assert.ok(md.includes(good.badge.markdown));
+  assert.ok(md.includes(good.badge.html));
   assert.match(md, /lowest score/);
+  const shell = await audit(base + '/empty', { lang: 'en', probe: false });
+  const mixed = formatMarkdown([good, shell], 'en');
+  assert.ok(!mixed.includes('img.shields.io'));
+  assert.ok(!mixed.includes('## 📛'));
+  assert.match(mixed, new RegExp(`Reach ${BADGE_MIN}\\+`));
 });
 
 test('--badge writes an SVG with the lowest score', async () => {

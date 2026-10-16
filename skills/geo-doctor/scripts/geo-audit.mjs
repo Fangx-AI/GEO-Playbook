@@ -575,11 +575,11 @@ export function formatMarkdown(results, lang) {
     }
   }
   const low = results.reduce((a, b) => (b.score < a.score ? b : a), results[0]);
-  if (low?.badge) {
+  if (low?.badge && low.score >= BADGE_MIN) {
     out.push('', `## ${t.badgeTitle}`, '', low.badge.markdown, '');
     if (results.length > 1) out.push(`${t.badgeMulti}.`, '');
     out.push('```markdown', low.badge.markdown, '```', '', '```html', low.badge.html, '```', '', `> ${t.badgeNote}`);
-  }
+  } else if (low?.badge) out.push('', `> ${t.badgeLocked(BADGE_MIN)}`);
   out.push('', `<sub>${t.remind} · [geo-doctor](https://github.com/Fangx-AI/geo-doctor)</sub>`, '');
   return out.join('\n');
 }
