@@ -1,6 +1,6 @@
 # 🎓 毕业项目：完成一轮可复查的 GEO
 
-> [GEO 实战手册](../README.md) › 毕业项目
+> [GEO 实战手册](handbook.md) › 毕业项目
 
 **选一个你有权限修改的真实页面，按 8 步走完一轮。做完你就有一份能给老板、客户或面试官看的完整 GEO 作品。**
 
@@ -27,7 +27,7 @@
 
 <div align="center">
 
-← [工具选择](tools.md) · [🏠 目录](../README.md)
+← [工具选择](tools.md) · [🏠 目录](handbook.md)
 
 <sub>有帮助的话，回 [首页](../README.md) 点个 ⭐ Star；发现错误或过时信息，欢迎 [提 Issue](https://github.com/Fangx-AI/geo-doctor/issues/new/choose)。</sub>
 

@@ -22,7 +22,7 @@ Install it into your AI assistant with one sentence. It finds out which competit
 [![test](https://github.com/Fangx-AI/geo-doctor/actions/workflows/test.yml/badge.svg)](https://github.com/Fangx-AI/geo-doctor/actions/workflows/test.yml)
 [![License: MIT](https://img.shields.io/badge/skill-MIT-blue.svg)](skills/geo-doctor/SKILL.md)
 
-[📦 Install](#install) · [🩺 What it does](#what) · [❓ FAQ](#faq) · [🧰 No-install audit](#quickstart) · [📛 Badge](#badge) · [📚 Handbook](#handbook) · [中文](README.md)
+[🎬 Demo](#demo) · [📦 Install](#install) · [🩺 What it does](#what) · [❓ FAQ](#faq) · [🧰 No-install audit](#quickstart) · [📛 Badge](#badge) · [📚 Handbook](#handbook) · [中文](README.md)
 
 </div>
 
@@ -31,6 +31,13 @@ Install it into your AI assistant with one sentence. It finds out which competit
 People now ask AI directly: "best CRM for a 10-person startup?", "an expense app that works offline?"
 
 **If the answer leaves you out, or gets your pricing and features wrong, you are losing customers without noticing.** GEO Doctor puts a complete, evidence-based method into the AI assistant you already use. You just say "help me with GEO".
+
+<a id="demo"></a>
+
+## 🎬 See it work in 30 seconds
+
+<p align="center"><img src="assets/geo-doctor-demo-en.gif" alt="Demo: say 'help me with GEO' in an AI assistant. GEO Doctor audits the site (60/100, AI crawlers can't read the body text), gives 10 sampling questions, then after 20 ChatGPT answers are pasted back it shows who AI recommends (Competitor A 13/20, Fawn Budget 1/20), the sources ChatGPT cites and a prioritized prescription" width="100%"></p>
+<p align="center"><sub>Fawn Budget is a fictional product and the competitors and counts are sample data. The audit snippet is real output of the script against a local test page.</sub></p>
 
 <a id="install"></a>
 
@@ -114,25 +121,14 @@ No Node? Use [`toolkit/geo-audit.sh`](toolkit/geo-audit.sh) (macOS / Linux) or [
 
 <a id="badge"></a>
 
-## 📛 Audit badge: show your score
+## 📛 Audit badge
 
-Score **80 or higher** and the audit prints one extra line of badge code. Paste it into your README or website footer:
+Score **80 or higher** and the audit prints one extra line of badge code. Paste it into your README or website footer to show visitors that AI crawlers can read your site:
 
 [![GEO audit 96/100](https://img.shields.io/badge/GEO%20audit-96%2F100-brightgreen)](#badge)
 [![GEO audit 85/100](https://img.shields.io/badge/GEO%20audit-85%2F100-green)](#badge)
-[![GEO 体检 92/100](https://img.shields.io/badge/GEO%20%E4%BD%93%E6%A3%80-92%2F100-brightgreen)](#badge)
 
-It tells visitors two things: this site takes AI search seriously, and AI crawlers can read it.
-
-| Where | How |
-| --- | --- |
-| GitHub README | Copy the Markdown line at the end of the audit output |
-| Website footer | Run again with `--report audit.md`; the report ends with an HTML version |
-| Self-hosted, no third-party image | Add `--badge geo-badge.svg` to write an SVG file you can commit or host |
-
-```bash
-npx github:Fangx-AI/geo-doctor https://your-site.com --badge geo-badge.svg
-```
+Add `--report audit.md` for an HTML version, or `--badge geo-badge.svg` for a self-hosted SVG. Colours: 90+ bright green, 80–89 green, 61–79 yellow, 60 or below red.
 
 <details>
 <summary markdown="span"><b>Keep it current every week</b> (GitHub Actions)</summary>
@@ -164,11 +160,7 @@ Then use `[![GEO audit](.github/geo-badge.svg)](https://github.com/Fangx-AI/geo-
 
 </details>
 
-**Colours**: 90+ bright green, 80–89 green, 61–79 yellow, 60 or below red (a critical problem, such as AI being unable to read the page text).
-
-> The badge reflects one technical audit: whether AI crawlers can read the page, and when it was checked (the date is in the badge's alt text). It does **not** mean AI will recommend the site. Re-run after you change the page.
->
-> **Came here from a badge on someone's site?** Test your own with the command above, or [install GEO Doctor](#install) to get ChatGPT, Claude and others to recommend you.
+> The badge reflects one technical audit, not whether AI will recommend the site. **Came here from a badge on someone's site?** Test your own with the command above, or [install GEO Doctor](#install) to get ChatGPT, Claude and others to recommend you.
 
 <a id="handbook"></a>
 

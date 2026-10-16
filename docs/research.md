@@ -1,6 +1,6 @@
 # 📄 论文与开源代码：GEO 的学术源头
 
-> [GEO 实战手册](../README.md) › 测量与研究 › 论文
+> [GEO 实战手册](handbook.md) › 测量与研究 › 论文
 
 **“GEO”这个词来自哪篇论文？后续研究推翻或修正了什么？按问题选读 8 项论文与作者代码。**
 
@@ -151,7 +151,7 @@
 
 <div align="center">
 
-← [研究速读](studies.md) · [🏠 目录](../README.md) · [工具选择](tools.md) →
+← [研究速读](studies.md) · [🏠 目录](handbook.md) · [工具选择](tools.md) →
 
 <sub>有帮助的话，回 [首页](../README.md) 点个 ⭐ Star；发现错误或过时信息，欢迎 [提 Issue](https://github.com/Fangx-AI/geo-doctor/issues/new/choose)。</sub>
 

@@ -1,6 +1,6 @@
 # 🤝 B2B 服务 GEO：没有增长数字，也能赢得采购
 
-> [GEO 实战手册](../../README.md) › 按项目实战 › B2B 服务
+> [GEO 实战手册](../handbook.md) › 按项目实战 › B2B 服务
 
 **咨询、设计、翻译、培训、内容制作等服务：客户比较的是人、流程、交付物和风险，不是功能按钮。**
 
@@ -68,7 +68,7 @@
 
 <div align="center">
 
-← [电商实战](ecommerce.md) · [🏠 目录](../../README.md) · [创作者实战](creator.md) →
+← [电商实战](ecommerce.md) · [🏠 目录](../handbook.md) · [创作者实战](creator.md) →
 
 <sub>有帮助的话，回 [首页](../../README.md) 点个 ⭐ Star；发现错误或过时信息，欢迎 [提 Issue](https://github.com/Fangx-AI/geo-doctor/issues/new/choose)。</sub>
 
