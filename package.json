@@ -1,16 +1,18 @@
 {
   "name": "geo-doctor",
-  "version": "1.2.0",
-  "description": "GEO toolkit: audit whether AI search (ChatGPT, Perplexity, Claude, Google AI, Doubao…) can read your page, then batch-check and publish fact-based articles. Part of geo-doctor (GEO 医生).",
+  "version": "1.3.0",
+  "description": "GEO toolkit: audit whether AI search (ChatGPT, Perplexity, Claude, Google AI, Doubao…) can read your page, sample AI answers through their APIs to count who gets recommended, then batch-check and publish fact-based articles. Part of geo-doctor (GEO 医生).",
   "type": "module",
   "bin": {
     "geo-doctor": "cli/geo-audit.mjs",
     "geo-audit": "cli/geo-audit.mjs",
-    "geo-publish": "cli/geo-publish.mjs"
+    "geo-publish": "cli/geo-publish.mjs",
+    "geo-probe": "cli/geo-probe.mjs"
   },
   "files": [
     "cli/geo-audit.mjs",
-    "cli/geo-publish.mjs"
+    "cli/geo-publish.mjs",
+    "cli/geo-probe.mjs"
   ],
   "engines": {
     "node": ">=18"
@@ -28,7 +30,9 @@
     "perplexity",
     "llm-seo",
     "audit",
-    "cli"
+    "cli",
+    "ai-visibility",
+    "llm-monitoring"
   ],
   "repository": {
     "type": "git",
