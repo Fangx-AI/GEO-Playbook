@@ -132,6 +132,11 @@ Score **80 or higher** and the audit prints one extra line of badge code. Paste 
 [![GEO audit 96/100](https://img.shields.io/badge/GEO%20audit-96%2F100-brightgreen)](#badge)
 [![GEO audit 85/100](https://img.shields.io/badge/GEO%20audit-85%2F100-green)](#badge)
 
+**Want to share it?** Add `--card geo-card.png` for a 1200×630 image you can post anywhere (PNG needs Chrome or Edge installed; otherwise you get an SVG). It works at any score, and a before/after pair is the most convincing.
+
+<p align="center"><img src="assets/geo-card-demo-en.png" alt="Share image example: fawn-budget.example scores 94/100; every check passes except content, which needs a look" width="70%"></p>
+<p align="center"><sub>Example site and score.</sub></p>
+
 Add `--report audit.md` for an HTML version, or `--badge geo-badge.svg` for a self-hosted SVG. Colours: 90+ bright green, 80–89 green, 61–79 yellow, 60 or below red.
 
 <details>

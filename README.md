@@ -138,7 +138,12 @@ npx github:Fangx-AI/geo-doctor https://你的网站/重要页面 --phrase "页�
 
 体检到 **80 分以上**，命令行最后会多给你一行徽章代码，贴到 README 或官网页脚，告诉访客"AI 爬虫能读到这个网站"。加 `--badge geo-badge.svg` 可以生成不依赖外部服务的 SVG。颜色、每周自动更新和官网 HTML 版见 [徽章说明](docs/badge.md)。
 
-> 徽章只代表那次技术体检的结果，**不代表** AI 一定会推荐这个网站。
+**想晒一下？** 加 `--card geo-card.png`，生成一张 1200×630 的分享图，发朋友圈、群聊、即刻、小红书都行（本机有 Chrome 或 Edge 就能出 PNG，没有就给 SVG）。任何分数都能生成，改前改后各一张最有说服力。
+
+<p align="center"><img src="assets/geo-card-demo.png" alt="分享图示例：shop.example/pricing 体检 72 分，robots.txt 与 AI 爬虫一项有问题，规范地址和正文两项需要注意" width="70%"></p>
+<p align="center"><sub>示例网址，分数为演示数据。</sub></p>
+
+> 徽章和分享图只代表那次技术体检的结果，**不代表** AI 一定会推荐这个网站。
 >
 > **你是点了别人网站上的徽章过来的？** 想测测自己的网站，复制上面那行命令；想让豆包、DeepSeek、ChatGPT 推荐你，[一句话装上 GEO 医生](#install)。
 

@@ -9,11 +9,14 @@
 // 只读取公开页面，不向任何第三方发送数据。
 // SPDX-License-Identifier: MIT
 
-import { mkdirSync, writeFileSync } from 'node:fs';
-import { basename, dirname } from 'node:path';
+import { execFileSync } from 'node:child_process';
+import { existsSync, mkdirSync, mkdtempSync, readFileSync, rmSync, writeFileSync } from 'node:fs';
+import { tmpdir } from 'node:os';
+import { basename, dirname, join, resolve } from 'node:path';
 import { pathToFileURL } from 'node:url';
+import { deflateSync, inflateSync } from 'node:zlib';
 
-export const VERSION = '1.1.0';
+export const VERSION = '1.2.0';
 const DOCS = 'https://github.com/Fangx-AI/geo-doctor/blob/master/';
 const BADGE_LINK = { zh: 'https://github.com/Fangx-AI/geo-doctor#badge', en: 'https://github.com/Fangx-AI/geo-doctor/blob/master/README.en.md#badge' };
 const BROWSER_UA = 'Mozilla/5.0 (compatible; geo-doctor-audit/1.0; +https://github.com/Fangx-AI/geo-doctor)';
@@ -96,6 +99,13 @@ const M = {
     badgeSaved: (f, s) => `已生成徽章文件 ${f}（${s}/100），可以提交到仓库或放到网站上引用`,
     badgeMulti: '多个网址按最低分生成徽章',
     badgeTitle: '📛 体检徽章',
+    cardTip: '📸 加 --card geo-card.png 生成一张分享图',
+    cardHead: 'GEO 体检 · AI 能读到这个页面吗',
+    cardWord: { pass: '通过', warn: '注意', fail: '问题' },
+    cardCta: '免费体检你的网站：github.com/Fangx-AI/geo-doctor',
+    cardNote: '只代表技术体检，不代表 AI 会推荐',
+    cardSaved: (f, s) => `已生成分享图 ${f}（${s}/100），可以发朋友圈、群聊或社交平台`,
+    cardSvgOnly: (f) => `没找到 Chrome 或 Edge，先生成了 SVG：${f}。用浏览器打开后截图，或装好 Chrome 后重跑；也可以用 CHROME_PATH 指定浏览器路径`,
     badgeNote: '徽章只代表这次技术体检（AI 爬虫能否读到页面）的分数和日期，不代表 AI 会推荐你。页面改动后请重新体检。',
     code: 'zh',
     usage: `用法：geo-audit <网址...> [选项]
@@ -108,6 +118,7 @@ const M = {
   --lang zh|en        输出语言（默认跟随系统）
   --no-probe          跳过“用 AI 爬虫 UA 访问”的防火墙检查
   --badge 文件.svg    生成体检分数徽章（SVG，多个网址按最低分）
+  --card 文件.png     生成 1200×630 分享图（.png 需要本机有 Chrome 或 Edge，.svg 不需要；多个网址取最低分那个）
   -h, --help          显示帮助
   -v, --version       显示版本
 
@@ -172,6 +183,13 @@ const M = {
     badgeSaved: (f, s) => `Badge written to ${f} (${s}/100). Commit it to your repo or host it on your site`,
     badgeMulti: 'With several URLs the badge uses the lowest score',
     badgeTitle: '📛 Audit badge',
+    cardTip: '📸 Add --card geo-card.png for a share image',
+    cardHead: 'GEO audit · can AI read this page?',
+    cardWord: { pass: 'pass', warn: 'check', fail: 'problem' },
+    cardCta: 'Free GEO audit: github.com/Fangx-AI/geo-doctor',
+    cardNote: 'Technical audit only, not an AI ranking',
+    cardSaved: (f, s) => `Share image written to ${f} (${s}/100). Post it anywhere`,
+    cardSvgOnly: (f) => `Chrome or Edge not found, so wrote an SVG instead: ${f}. Open it in a browser and screenshot it, install Chrome, or set CHROME_PATH`,
     badgeNote: 'The badge shows this technical audit (can AI crawlers read the page) and its date. It does not mean AI will recommend you. Re-run after you change the page.',
     code: 'en',
     usage: `Usage: geo-audit <url...> [options]
@@ -184,6 +202,7 @@ Options:
   --lang zh|en        output language (default: system locale)
   --no-probe          skip the "fetch with AI crawler user-agents" firewall check
   --badge file.svg    write a score badge (SVG; lowest score when auditing several URLs)
+  --card file.png     write a 1200×630 share image (.png needs Chrome or Edge installed, .svg does not; lowest-scoring URL)
   -h, --help          show help
   -v, --version       show version
 
@@ -539,6 +558,107 @@ export function badgeSvg(score, lang = 'en', date = today()) {
     + `</svg>\n`;
 }
 
+// ---------------------------------------------------------------- share card
+
+// A 1200×630 image people can post: score, host, one line per check section, and where to run it themselves.
+// 分享图：分数、网址、每类检查一行，以及去哪里免费体检。只说技术体检的结果，不暗示 AI 会推荐。
+const CARD_COLORS = { pass: '#22c55e', warn: '#eab308', fail: '#ef4444' };
+const RANK = { pass: 0, warn: 1, fail: 2 };
+const clip = (s, px, size) => {
+  let out = ''; for (const ch of String(s)) { if (textWidth(out + ch) * size / 11 > px) return out + '…'; out += ch; }
+  return out;
+};
+
+export function cardSvg(r, lang = 'en', date = today()) {
+  const t = M[lang] || M.en; const { hex } = badgeColor(r.score);
+  const font = `font-family='"PingFang SC","Microsoft YaHei","Noto Sans CJK SC","Source Han Sans SC",Inter,"Segoe UI",Roboto,Helvetica,Arial,sans-serif'`;
+  let host = r.url; try { const u = new URL(r.finalUrl || r.url); host = u.host + (u.pathname === '/' ? '' : u.pathname); } catch {}
+  const sections = [];
+  for (const c of r.checks) {
+    if (c.status === 'info') continue;
+    let s = sections.find((x) => x.key === c.section);
+    if (!s) sections.push(s = { key: c.section, status: c.status });
+    else if (RANK[c.status] > RANK[s.status]) s.status = c.status;
+  }
+  const rows = sections.map((s, i) => {
+    const y = 236 + i * 44; const name = t.sections[s.key].replace(/^[①-⑩]\s*/, '');
+    return `<circle cx="78" cy="${y - 8}" r="8" fill="${CARD_COLORS[s.status]}"/>`
+      + `<text x="100" y="${y}" font-size="24" fill="#e2e8f0">${escapeXml(name)}</text>`
+      + `<text x="600" y="${y}" font-size="22" fill="${CARD_COLORS[s.status]}" text-anchor="end">${escapeXml(t.cardWord[s.status])}</text>`;
+  }).join('');
+  const R = 128; const C = 2 * Math.PI * R; const dash = (C * Math.max(0, Math.min(100, r.score))) / 100;
+  return `<svg xmlns="http://www.w3.org/2000/svg" width="1200" height="630" viewBox="0 0 1200 630" role="img" aria-label="${escapeXml(`${t.title} ${r.score}/100 · ${host}`)}">`
+    + `<defs><linearGradient id="bg" x1="0" y1="0" x2="1" y2="1"><stop offset="0" stop-color="#0b1220"/><stop offset="1" stop-color="#16233f"/></linearGradient></defs>`
+    + `<rect width="1200" height="630" fill="url(#bg)"/>`
+    + `<g ${font}>`
+    + `<text x="64" y="86" font-size="26" fill="#94a3b8">${escapeXml(t.cardHead)}</text>`
+    + `<text x="64" y="156" font-size="50" font-weight="700" fill="#ffffff">${escapeXml(clip(host, 1000 - 64 - 330, 50))}</text>`
+    + rows
+    + `<circle cx="940" cy="300" r="${R}" fill="none" stroke="#1e2b47" stroke-width="22"/>`
+    + `<circle cx="940" cy="300" r="${R}" fill="none" stroke="${hex}" stroke-width="22" stroke-linecap="round" stroke-dasharray="${dash.toFixed(1)} ${C.toFixed(1)}" transform="rotate(-90 940 300)"/>`
+    + `<text x="940" y="330" font-size="104" font-weight="800" fill="#ffffff" text-anchor="middle">${r.score}</text>`
+    + `<text x="940" y="372" font-size="26" fill="#94a3b8" text-anchor="middle">/ 100</text>`
+    + `<text x="940" y="482" font-size="22" fill="#cbd5e1" text-anchor="middle">${escapeXml(t.summary(r.passed, r.warnings, r.problems))}</text>`
+    + `<rect y="548" width="1200" height="82" fill="#0a1020"/>`
+    + `<text x="64" y="598" font-size="26" font-weight="600" fill="#ffffff">${escapeXml(t.cardCta)}</text>`
+    + `<text x="1136" y="586" font-size="17" fill="#64748b" text-anchor="end">${escapeXml(t.cardNote)}</text>`
+    + `<text x="1136" y="610" font-size="17" fill="#64748b" text-anchor="end">${escapeXml(date)}</text>`
+    + `</g></svg>\n`;
+}
+
+// Find a local Chrome or Edge for the PNG; nothing is downloaded. 找本机的 Chrome 或 Edge，不下载任何东西。
+export function findBrowser(env = process.env, platform = process.platform, exists = existsSync) {
+  if (env.CHROME_PATH && exists(env.CHROME_PATH)) return env.CHROME_PATH;
+  const pf = [env.PROGRAMFILES, env['PROGRAMFILES(X86)'], env.LOCALAPPDATA].filter(Boolean);
+  const list = platform === 'darwin'
+    ? ['/Applications/Google Chrome.app/Contents/MacOS/Google Chrome', '/Applications/Microsoft Edge.app/Contents/MacOS/Microsoft Edge', '/Applications/Chromium.app/Contents/MacOS/Chromium']
+    : platform === 'win32'
+      ? pf.flatMap((d) => [join(d, 'Google', 'Chrome', 'Application', 'chrome.exe'), join(d, 'Microsoft', 'Edge', 'Application', 'msedge.exe')])
+      : ['google-chrome', 'google-chrome-stable', 'chromium', 'chromium-browser', 'microsoft-edge']
+        .flatMap((n) => (env.PATH || '').split(':').filter(Boolean).map((d) => join(d, n)));
+  return list.find((p) => exists(p)) || null;
+}
+
+// Headless Chrome's viewport can be shorter than --window-size, so shoot a taller window and keep the top 630 rows.
+// 无头 Chrome 的可视区可能比窗口矮，所以截一张更高的图，再裁出上面 630 行。
+export function renderPng(svg, file, browser = findBrowser()) {
+  if (!browser) return false;
+  const dir = mkdtempSync(join(tmpdir(), 'geo-card-'));
+  try {
+    const html = join(dir, 'card.html'); const shot = join(dir, 'shot.png');
+    writeFileSync(html, `<!doctype html><meta charset="utf-8"><style>html,body{margin:0;background:#0b1220}svg{display:block}</style>${svg}`);
+    execFileSync(browser, ['--headless=new', '--disable-gpu', '--hide-scrollbars', '--no-first-run', '--no-default-browser-check',
+      `--user-data-dir=${join(dir, 'profile')}`, '--force-device-scale-factor=1', '--window-size=1200,1000',
+      `--screenshot=${shot}`, ...(process.getuid?.() === 0 ? ['--no-sandbox'] : []), pathToFileURL(html).href], { stdio: 'ignore', timeout: 60000 });
+    if (!existsSync(shot)) return false;
+    writeFileSync(file, cropPngHeight(readFileSync(shot), 630));
+    return true;
+  } catch { return false; } finally { rmSync(dir, { recursive: true, force: true }); }
+}
+
+// Keep the first `height` rows of a non-interlaced PNG. Scanlines only depend on rows above them, so no re-filtering.
+const CRC = new Int32Array(256).map((_, n) => { let c = n; for (let k = 0; k < 8; k++) c = c & 1 ? 0xedb88320 ^ (c >>> 1) : c >>> 1; return c; });
+const crc32 = (buf) => { let c = -1; for (const b of buf) c = CRC[(c ^ b) & 255] ^ (c >>> 8); return (c ^ -1) >>> 0; };
+const chunk = (type, data) => {
+  const out = Buffer.alloc(12 + data.length); out.writeUInt32BE(data.length, 0); out.write(type, 4, 'latin1'); data.copy(out, 8);
+  out.writeUInt32BE(crc32(out.subarray(4, 8 + data.length)), 8 + data.length); return out;
+};
+export function cropPngHeight(png, height) {
+  let pos = 8; let ihdr; const idat = [];
+  while (pos < png.length) {
+    const len = png.readUInt32BE(pos); const type = png.toString('latin1', pos + 4, pos + 8); const data = png.subarray(pos + 8, pos + 8 + len);
+    if (type === 'IHDR') ihdr = Buffer.from(data); else if (type === 'IDAT') idat.push(data);
+    pos += 12 + len;
+  }
+  const width = ihdr.readUInt32BE(0); const rows = ihdr.readUInt32BE(4);
+  if (rows <= height) return png;
+  if (ihdr[12] !== 0) throw new Error('interlaced PNG');
+  const channels = { 0: 1, 2: 3, 3: 1, 4: 2, 6: 4 }[ihdr[9]]; const stride = 1 + Math.ceil((width * channels * ihdr[8]) / 8);
+  const raw = inflateSync(Buffer.concat(idat)).subarray(0, stride * height);
+  ihdr.writeUInt32BE(height, 4);
+  return Buffer.concat([png.subarray(0, 8), chunk('IHDR', ihdr), chunk('IDAT', deflateSync(raw)), chunk('IEND', Buffer.alloc(0))]);
+}
+
 // ---------------------------------------------------------------- output
 
 const ICON = { pass: '✅', warn: '⚠️ ', fail: '❌', info: 'ℹ️ ' };
@@ -559,6 +679,7 @@ export function formatText(r, lang) {
   out.push(color('2', t.remind));
   if (r.badge && r.score >= BADGE_MIN) out.push('', t.badgeTip, r.badge.markdown);
   else if (r.badge) out.push('', color('2', t.badgeLocked(BADGE_MIN)));
+  out.push(color('2', t.cardTip));
   return out.join('\n');
 }
 
@@ -600,6 +721,7 @@ export function parseArgs(argv) {
     else if (a === '--json') o.json = true;
     else if (a === '--report') o.report = valueFor(a, argv[++i]);
     else if (a === '--badge') o.badge = valueFor(a, argv[++i]);
+    else if (a === '--card') o.card = valueFor(a, argv[++i]);
     else if (a === '--fail-under') {
       o.failUnder = Number(valueFor(a, argv[++i]));
       if (!Number.isFinite(o.failUnder) || o.failUnder < 0 || o.failUnder > 100) {
@@ -649,6 +771,15 @@ export async function main(argv) {
     mkdirSync(dirname(o.badge), { recursive: true });
     writeFileSync(o.badge, badgeSvg(min, lang));
     if (!o.json) console.error(M[lang].badgeSaved(o.badge, min));
+  }
+  if (o.card) {
+    const low = results.reduce((a, b) => (b.score < a.score ? b : a), results[0]);
+    const svg = cardSvg(low, lang);
+    mkdirSync(dirname(resolve(o.card)), { recursive: true });
+    if (/\.png$/i.test(o.card)) {
+      if (renderPng(svg, o.card)) console.error(M[lang].cardSaved(o.card, low.score));
+      else { const f = o.card.replace(/\.png$/i, '.svg'); writeFileSync(f, svg); console.error(M[lang].cardSvgOnly(f)); }
+    } else { writeFileSync(o.card, svg); console.error(M[lang].cardSaved(o.card, low.score)); }
   }
   return Number.isFinite(o.failUnder) && min < o.failUnder ? 1 : 0;
 }
